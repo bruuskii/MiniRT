@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <unistd.h>
+#include <fcntl.h>
+
+#define ERROR_MESSAGE "Error\n"
 
 typedef struct s_win
 {

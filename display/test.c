@@ -31,9 +31,10 @@ void    ft_display(t_win *w)
         {
         pix = data + (x * (bpp / 8) + y * sl);
         *(int *)pix = ft_color();
-        y--;
+        x--;
 
         }
+        y--;
     }
     mlx_put_image_to_window(w->ptr, w->win, w->img, 0, 0);
 }
