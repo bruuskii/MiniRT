@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
+/*   Updated: 2024/09/30 14:38:21 by kbassim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
 void  mlx_helpers(void)
 {
     t_win *win;
 
-    win = ft_window(800, 800);
+    win = ft_window(HEIGHT, WIDTH);
     if (!win)
         return;
     ft_display(win);
@@ -13,33 +25,13 @@ void  mlx_helpers(void)
     mlx_loop(win->ptr);
 }
 
-int parse_scene_file(const char *filename)
-{
-    int fd = open(filename, O_RDONLY);
-    if(fd < 0)
-    {
-        perror(ERROR_MESSAGE "Failed to open scene file");
-        return 1;
-    }
-    close(fd);
-    return 0;
-    
-}
-
-
-
-
 int main(int argc, char **argv)
 {
-    if(argc != 2)
-        return 0;
-    while (argc == 2)
-    {
-        if(parse_scene_file(argv[1] ) != 0)
-        {
-            fprintf(stderr, ERROR_MESSAGE "Failed to parse scene file.\n");
-            return 1;
-        }
-        mlx_helpers();
-    }
+    char    **lst;
+
+    if (ft_check_args(argc))
+        return (1);
+    if (parse_scene_file(argv[1]) || ft_check_extention(argv[1]))
+        return (1);
+    return (0);
 }

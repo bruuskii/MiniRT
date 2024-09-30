@@ -1,7 +1,13 @@
 NAME = miniRT
 CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror
-CFILES = display/window.c\
+CFILES = libft/libft.c\
+		libft/libft00.c\
+		libft/get_next_line/get_next_line.c\
+		libft/get_next_line/get_next_line_utils.c\
+		parsing/check_file.c\
+		parsing/read_from_file.c\
+		display/window.c\
 		display/win_events.c\
 		display/test.c\
 		main.c\

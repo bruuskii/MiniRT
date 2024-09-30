@@ -22,17 +22,16 @@ void    ft_display(t_win *w)
     int     endn;
     int     bpp = 32;
 
-    y = 600;
+    y = HEIGHT - 200;
     data = mlx_get_data_addr(w->img, &bpp, &sl, &endn);
     while (y > 0)
     {
-        x = 600;
+        x = WIDTH - 200;
         while (x > 0)
         {
-        pix = data + (x * (bpp / 8) + y * sl);
-        *(int *)pix = ft_color();
-        x--;
-
+            pix = data + (x * (bpp / 8) + y * sl);
+            *(int *)pix = ft_color();
+            x--;
         }
         y--;
     }
