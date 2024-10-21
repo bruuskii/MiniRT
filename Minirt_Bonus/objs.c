@@ -6,11 +6,11 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:22:42 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 09:30:14 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/10/21 14:24:25 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "includes/minirt_bonus.h"
 
 t_obj   *ft_new(void *content)
 {
