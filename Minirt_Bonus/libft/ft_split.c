@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 static int	ft_countwords(char const *s, char c)
 {

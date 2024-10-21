@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 static int	ft_countwords(char const *s)
 {
@@ -37,7 +37,7 @@ static char	*ft_malloc_words(char const *s, int st, int f)
 	char	*word;
 
 	i = 0;
-	word = malloc(100 + 1);
+	word = malloc(f - st + 1);
 	while (st < f)
 		word[i++] = s[st++];
 	word[i] = '\0';
@@ -85,7 +85,7 @@ char	**ft_fullsplit(char const *s)
 	if (!s)
 		return (NULL);
 	word_count = ft_countwords(s);
-	list = malloc((1000+ 1) * sizeof(char *));
+	list = malloc((word_count + 1) * sizeof(char *));
 	if (!ft_memalloc_list(list, s, 0))
 	{
 		return (NULL);

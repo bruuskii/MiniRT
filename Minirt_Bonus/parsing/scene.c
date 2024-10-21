@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 t_scene *ft_scene(char **lst)
 {
@@ -19,10 +19,10 @@ t_scene *ft_scene(char **lst)
     scene = malloc(sizeof(t_scene));
     if (!scene)
         return (NULL);
-    scene->camera = ft_cam(lst);
+    scene->cam = ft_cam(lst);
     scene->obj = ft_obj(lst);
     scene->light = ft_light(lst);
-    scene = ft_alight(lst);
+    scene->alight = ft_alight(lst);
     ft_lstfree(lst);
     return (scene);
 }

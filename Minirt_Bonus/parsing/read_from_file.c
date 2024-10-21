@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 void    ft_line_utils(int *c, int fd, char **lst)
 {
@@ -100,12 +100,12 @@ t_obj   *ft_obj(char **lst)
         }
         else if (!ft_strcmp(tmp[0], "sp"))
         {
-            ptr = malloc(sizeof(t_sphere));
+            ptr = malloc(sizeof(t_sp));
             if (!ptr)
                 return (NULL);
-            node = ft_new((t_sphere *)ptr);
+            node = ft_new((t_sp *)ptr);
             node->type = SPHERE;
-            ft_assign_sp((t_sphere *)ptr, tmp + 1);
+            ft_assign_sp((t_sp *)ptr, tmp + 1);
             ft_add_back(&lt, node);
         }
         ft_lstfree(tmp);
@@ -114,10 +114,10 @@ t_obj   *ft_obj(char **lst)
     return (lt);
 }
 
-t_camera   *ft_cam(char **lst)
+t_cam   *ft_cam(char **lst)
 {
     int     i;
-    t_camera   *ptr;
+    t_cam   *ptr;
     char    **tmp;
 
     if (!lst || !*lst)
@@ -131,11 +131,11 @@ t_camera   *ft_cam(char **lst)
             return (NULL);
         if (!ft_strcmp(tmp[0], "C"))
         {
-            ptr = malloc(sizeof(t_camera));
+            ptr = malloc(sizeof(t_cam));
             ptr->type = CAM;
             ft_assign_camera(ptr, tmp);
         }
-        //ft_lstfree(tmp);
+        ft_lstfree(tmp);
         i++;
     }
     return (ptr);
@@ -169,11 +169,11 @@ t_light   *ft_light(char **lst)
     return (lt);
 }
 
-t_scene   *ft_alight(char **lst)
+t_alight   *ft_alight(char **lst)
 {
     int         i;
     char        **tmp;
-    t_scene    *node;
+    t_alight    *node;
 
     if (!lst || !*lst)
         return (NULL);

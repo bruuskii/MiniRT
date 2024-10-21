@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 double	ft_atoi(char *str)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt_bonus.h"
+#include "../miniRT.h"
 
 void    ft_assign_plane(t_plane *pl, char **lst)
 {
@@ -36,7 +36,7 @@ void    ft_assign_cy(t_cylinder *cy, char **lst)
     }
 }
 
-void    ft_assign_sp(t_sphere *sp, char **lst)
+void    ft_assign_sp(t_sp *sp, char **lst)
 {
     int     i;
 
@@ -49,7 +49,7 @@ void    ft_assign_sp(t_sphere *sp, char **lst)
     }
 }
 
-void    ft_assign_camera(t_camera *cam, char **tmp)
+void    ft_assign_camera(t_cam *cam, char **tmp)
 {
     int     i;
 
@@ -74,7 +74,7 @@ void    ft_assign_light(t_light *lt, char **lst)
     }
 }
 
-void    ft_assign_alight(t_scene *lt, char **lst)
+void    ft_assign_alight(t_alight *lt, char **lst)
 {
     int     i;
 

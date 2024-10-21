@@ -24,7 +24,7 @@ t_ray *create_ray(t_camera *camera, double u, double v)
     double aspect_ratio = (double)WINDOW_WIDTH / WINDOW_HEIGHT;
     double viewport_height = 2.0 * tan(camera->fov * 0.5 * M_PI / 180.0);
     double viewport_width = aspect_ratio * viewport_height;
-    
+
     t_vec3 *w = vec3_normalize(vec3_scale(camera->direction, -1));
     t_vec3 *u_vec = vec3_create(0, 1, 0); // Assuming 'up' is (0,1,0)
     t_vec3 *v_vec = vec3_cross(w, u_vec);
