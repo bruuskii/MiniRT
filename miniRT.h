@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 21:18:06 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/10/21 23:14:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ typedef struct s_vctr
     float   z;
 }               t_vctr;
 
+typedef struct s_material
+{
+    double ambient;
+    double diffuse;
+    double specular;
+    double shininess;
+} t_material;
+
 typedef struct  s_light
 {
     t_vctr          *dir;
@@ -82,9 +90,10 @@ typedef struct s_alight
 
 typedef struct s_sp
 {
-    double   d;
-    t_vctr  *cntr;
-    t_color *color;
+    double      d;
+    t_material  *mtrl;
+    t_vctr      *cntr;
+    t_color     *color;
 }               t_sp;
 
 typedef struct s_plane
@@ -107,6 +116,7 @@ typedef struct s_cylinder
 typedef struct s_obj
 {
     t_type         type;
+    t_material     *mtrl;
     void           *obj;
     struct s_obj   *next;
 }               t_obj;

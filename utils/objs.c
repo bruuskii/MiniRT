@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:22:42 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 09:30:14 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/10/22 19:43:11 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 t_obj   *ft_new(void *content)
 {
-    t_obj   *obj;
+    t_obj       *obj;
+    t_material  *mtrl;
 
+    mtrl = malloc(sizeof(t_material));
+    if (!mtrl)
+        return (NULL);
     obj = malloc(sizeof(t_obj));
     if (!obj)
         return (NULL);
     obj->obj = content;
+    obj->mtrl = mtrl;
+    obj->mtrl->ambient = 0.1;
+    obj->mtrl->diffuse = 0.5;
+    obj->mtrl->shininess = 10;
+    obj->mtrl->specular = 0.5;
     obj->next = NULL;
     return (obj);
 }

@@ -1,116 +1,45 @@
 #ifndef MINIRT_BONUS_H
 # define MINIRT_BONUS_H
 
-# include "../libx/mlx.h"
+#include "../../miniRT.h"
+# include <mlx.h>
 # include <math.h> 
 # include <stdio.h>
 # include <stdlib.h>
 
-
-
 #define WINDOW_WIDTH 1080
 #define WINDOW_HEIGHT 1080
 
-
-typedef enum    s_type
-{
-    SPHERE,
-    PLANE,
-    CYLINDRE,
-    LIGHT,
-    ALIGHT,
-    CAM,
-}               t_type;
-
-typedef struct s_vec3
-{
-    double x;
-    double y;
-    double z;
-} t_vec3;
-
 typedef struct s_ray
 {
-    t_vec3 *origin;
-    t_vec3 *direction;
-} t_ray;
-
-typedef struct s_camera
-{
-    t_vec3 *position;
-    t_vec3 *direction;
-    t_type          type;
-    double fov;
-} t_camera;
-
-
-typedef struct s_material
-{
-    t_vec3 *color;
-    double ambient;
-    double diffuse;
-    double specular;
-    double shininess;
-} t_material;
-
-typedef struct s_light
-{
-    t_vec3 *position;
-    t_vec3 *color;
-    t_type          type;
-    struct s_light  *next;
-    double intensity;
-} t_light;
-
-typedef struct s_sphere
-{
-    t_vec3 *center;
-    double radius;
-    t_material *material;
-} t_sphere;
-
-
-typedef struct s_obj
-{
-    t_type         type;
-    void           *obj;
-    struct s_obj   *next;
-}               t_obj;
-
-typedef struct s_scene
-{
-    t_camera *camera;
-    t_sphere *sphere;
-    t_obj   *obj;
-    t_light *light;
-    t_vec3 *ambient_light;
-} t_scene;
+    t_vctr *origin;
+    t_vctr *direction;
+}               t_ray;
 
 typedef struct s_hit
 {
     int hit;
     double t;
-    t_vec3 *point;
-    t_vec3 *normal;
-} t_hit;
+    t_vctr *point;
+    t_vctr *normal;
+}               t_hit;
 
-
-typedef struct s_data {
+typedef struct s_data 
+{
     void *mlx;
     void *win;
-} t_data;
+}               t_data;
 
-t_vec3 *vec3_create(double x, double y, double z);
-t_ray *create_ray(t_camera *camera, double u, double v);
-t_hit *intersect_sphere(t_ray *ray, t_sphere *sphere);
-t_vec3 *calculate_lighting(t_ray *ray, t_vec3 *hit_point, t_vec3 *normal, t_scene *scene, t_material *material);
-t_vec3 *phong_lighting(t_vec3 *light_dir, t_vec3 *view_dir, t_vec3 *normal, t_material *material, t_light *light); 
-
-t_vec3 *vec3_add(t_vec3 *v1, t_vec3 *v2);
-t_vec3 *vec3_sub(t_vec3 *v1, t_vec3 *v2);
-t_vec3 *vec3_scale(t_vec3 *v, double t);
-t_vec3 *vec3_cross(t_vec3 *v1, t_vec3 *v2);
-double vec3_dot(t_vec3 *v1, t_vec3 *v2);
-t_vec3 *vec3_normalize(t_vec3 *v);
+t_vctr *vec3_create(double x, double y, double z);
+t_ray *create_ray(t_cam *camera, double u, double v);
+t_hit *intersect_sphere(t_ray *ray, t_sp *sphere);
+t_vctr *calculate_lighting(t_ray *ray, t_vctr *hit_point, t_vctr *normal, t_scene *scene, t_material *material, t_color *color);
+t_vctr *phong_lighting(t_vctr *light_dir, t_vctr *view_dir, t_vctr *normal, t_material *material, t_light *light, t_scene *scene, t_color *color);
+t_vctr *vec3_add(t_vctr *v1, t_vctr *v2);
+t_vctr *vec3_sub(t_vctr *v1, t_vctr *v2);
+t_vctr *vec3_scale(t_vctr *v, double t);
+t_vctr *vec3_cross(t_vctr *v1, t_vctr *v2);
+double vec3_dot(t_vctr *v1, t_vctr *v2);
+t_vctr *vec3_normalize(t_vctr *v);
 
 #endif

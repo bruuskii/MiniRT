@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:06:58 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 22:01:11 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/10/22 20:28:10 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ double gyroid(double x, double y, double z)
     return sin(x) * cos(y) + sin(y) * cos(z) + sin(z) * cos(x);
 }
 
-void ft_display_plane(t_win *w) 
+void ft_display_plane(t_win *w, t_plane *pl, t_cam *cam) 
 {
     char *pix;
     char *data;
@@ -100,10 +100,7 @@ void ft_display_plane(t_win *w)
     int bpp;
     double x, y, z;
     int x2, y2;
-    double d = calculate_distance(60);
-    double point_on_plane[3] = {1.0, 1.0, 1.0};
-    double normal_vector[3] = {1.0, 1.0, -1.0};
-
+    double d = calculate_distance(cam->fov);
     data = mlx_get_data_addr(w->img, &bpp, &sl, &endn);
     x = -1.0;
     while (x <= 1.0)
@@ -111,19 +108,19 @@ void ft_display_plane(t_win *w)
         y = -1.0;
         while (y <= 1) 
         {
-            if (fabs(normal_vector[2]) > 1e-3)
+            if (fabs(pl->normal->z) > 1e-3)
             {
-                z = (normal_vector[0] * (x - point_on_plane[0]) +
-                     normal_vector[1] * (y - point_on_plane[1])) / 
-                     normal_vector[2] + point_on_plane[2];
+                z = (pl->normal->x * (x - pl->point->x) +
+                     pl->normal->y * (y - pl->point->y)) / 
+                     pl->normal->z + pl->point->z;
             } 
             else 
-                z = point_on_plane[2];
+                z = pl->point->z;
             convert_3d_to_2d(x * 400, y * 400 , z * 400 , d, &x2, &y2);
             if (x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT) 
             {
                 pix = data + (x2 * (bpp / 8) + y2 * sl);
-                *(int *)pix = 0xFFFFFF;
+                *(int *)pix = pl->color->r << 16 | pl->color->g << 8 | pl->color->b;
             }
             y += 0.001;
         }
@@ -137,8 +134,9 @@ void ft_display(t_win *w, t_scene *scene)
     {
         if (scene->obj->type == SPHERE)
             ft_display_sphere(w, scene->cam, ((t_sp *)(scene->obj->obj)));
+        else if(scene->obj->type == PLANE)
+            ft_display_plane(w, ((t_plane *)(scene->obj->obj)), scene->cam);
         scene->obj = scene->obj->next;
     }
-    //ft_display_plane(w);
     mlx_put_image_to_window(w->ptr, w->win, w->img, 0, 0);
 }
