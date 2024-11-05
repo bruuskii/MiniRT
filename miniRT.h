@@ -44,13 +44,6 @@ typedef struct s_win
     void    *img;
 }               t_win;
 
-typedef struct s_color
-{
-    int r;
-    int g;
-    int b;
-}               t_color;
-
 typedef struct s_pnt
 {
     float   x;
@@ -66,6 +59,7 @@ typedef struct s_vctr
 
 typedef struct s_material
 {
+    t_vctr  color;
     double ambient;
     double diffuse;
     double specular;
@@ -76,7 +70,7 @@ typedef struct  s_light
 {
     t_vctr          *dir;
     double          brightness;
-    t_color         *color;
+    t_vctr          *color;
     t_type          type;
     struct s_light  *next;
 }               t_light;
@@ -85,7 +79,7 @@ typedef struct s_alight
 {
     float   ratio;
     t_type  type;
-    t_color *color;
+    t_vctr *color;
 }               t_alight;
 
 typedef struct s_sp
@@ -93,14 +87,14 @@ typedef struct s_sp
     double      d;
     t_material  *mtrl;
     t_vctr      *cntr;
-    t_color     *color;
+    t_vctr     *color;
 }               t_sp;
 
 typedef struct s_plane
 {
     t_vctr  *point;
-    t_vctr  *normal;
-    t_color *color;
+    t_vctr *normal;
+    t_vctr  *color;
 }               t_plane;
 
 typedef struct s_cylinder
@@ -109,7 +103,7 @@ typedef struct s_cylinder
     t_vctr  *c_axis;
     double  d;
     double  height;
-    t_color *color;
+    t_vctr  *color;
 }               t_cylinder;
 
 
@@ -152,7 +146,7 @@ int         ft_check_args(int ac);
 char        **ft_lines(char *filename);
 char	    **ft_fullsplit(char const *s);
 int	        ft_is_void(char c);
-t_obj       *ft_new(void *contenT);
+t_obj       *ft_new(void *content);
 void        ft_add_back(t_obj **objs, t_obj *node);
 void	    ft_lstfree(char **lst);
 char	    **ft_split(char const *s, char c);

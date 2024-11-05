@@ -85,7 +85,7 @@ t_obj   *ft_obj(char **lst)
                 return (NULL);
             node = ft_new((t_plane *)ptr);
             node->type = PLANE;
-            ft_assign_plane((t_plane *)ptr, tmp + 1);
+            ft_assign_plane((t_plane *)node, tmp + 1);
             ft_add_back(&lt, node);
         }
         else if (!ft_strcmp(tmp[0], "cy"))
@@ -95,7 +95,7 @@ t_obj   *ft_obj(char **lst)
                 return (NULL);
             node = ft_new((t_cylinder *)ptr);
             node->type = CYLINDRE;
-            ft_assign_cy((t_cylinder *)ptr, tmp + 1);
+            ft_assign_cy((t_cylinder *)node, tmp + 1);
             ft_add_back(&lt, node);
         }
         else if (!ft_strcmp(tmp[0], "sp"))
@@ -105,7 +105,7 @@ t_obj   *ft_obj(char **lst)
                 return (NULL);
             node = ft_new((t_sp *)ptr);
             node->type = SPHERE;
-            ft_assign_sp((t_sp *)ptr, tmp + 1);
+            ft_assign_sp((t_sp *)node, tmp + 1);
             ft_add_back(&lt, node);
         }
         ft_lstfree(tmp);

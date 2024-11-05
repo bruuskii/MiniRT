@@ -15,12 +15,14 @@
 t_scene *ft_scene(char **lst)
 {
     t_scene *scene;
-
+    t_sp *lol;
     scene = malloc(sizeof(t_scene));
     if (!scene)
         return (NULL);
     scene->cam = ft_cam(lst);
     scene->obj = ft_obj(lst);
+    lol = (t_sp *)(scene->obj);
+    printf("hnaa  == %f\n\n", lol->cntr->y);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
     ft_lstfree(lst);

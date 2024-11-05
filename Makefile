@@ -14,7 +14,7 @@ NAME = miniRT
 BONUS_NAME = miniRT_bonus
 
 CC = cc -g3
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 CFILES = libft/libft.c\
 		libft/ft_fullsplit.c\
 		libft/ft_split.c\
@@ -30,7 +30,7 @@ CFILES = libft/libft.c\
 		display/win_events.c\
 		display/test.c\
 		utils/objs.c\
-		
+
 MAIN = main.c\
 
 CBFILES = Minirt_Bonus/src/intersect.c\

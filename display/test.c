@@ -61,7 +61,6 @@ void ft_display_sphere(t_win *w, t_cam *cam, t_sp *sp)
     double x, y, z;
     int x2, y2;
     double radius = (sp->d  / 2) * 8;
-    printf("radius == %f\n", radius);
     double d = calculate_distance(cam->fov);
 
     data = mlx_get_data_addr(w->img, &bpp, &sl, &endn);
@@ -78,7 +77,7 @@ void ft_display_sphere(t_win *w, t_cam *cam, t_sp *sp)
             if (x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT)
             {
                 pix = data + (x2 * (bpp / 8) + y2 * sl);
-                *(int *)pix = sp->color->r << 16 | sp->color->g << 8 | sp->color->b;
+                *(int *)pix = (int)sp->color->x << 16 | (int)sp->color->y << 8 | (int)sp->color->z;
             }
             phi += 0.01;
         }
@@ -120,7 +119,7 @@ void ft_display_plane(t_win *w, t_plane *pl, t_cam *cam)
             if (x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT) 
             {
                 pix = data + (x2 * (bpp / 8) + y2 * sl);
-                *(int *)pix = pl->color->r << 16 | pl->color->g << 8 | pl->color->b;
+                *(int *)pix = (int)pl->color->x << 16 | (int)pl->color->y << 8 | (int)pl->color->z;
             }
             y += 0.001;
         }
