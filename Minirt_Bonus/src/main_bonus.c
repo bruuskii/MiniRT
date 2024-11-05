@@ -92,10 +92,7 @@ int main(int ac, char **av)
         return (1);
     }
     scene =  data_input(av[1]);
-    while (scene->obj)
-    {
-        if (scene->obj->type == SPHERE)
-        {
+
             sphere = (t_sp *)(scene->obj);
             sphere->mtrl = malloc(sizeof(t_material));
             sphere->mtrl->color = *sphere->color;
@@ -104,9 +101,6 @@ int main(int ac, char **av)
             sphere->mtrl->specular = 0.5;
             sphere->mtrl->shininess = 60;
             render_scene(data.mlx, data.win, scene);
-        }
-
-    }
     mlx_key_hook(data.win, (int (*)(int, void *))ft_escape_key, &data);
     mlx_hook(data.win, 17, 0, ft_close, &data);
     mlx_loop(data.mlx);
