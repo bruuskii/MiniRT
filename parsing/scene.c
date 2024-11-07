@@ -20,8 +20,8 @@ t_scene *ft_scene(char **lst)
     if (!scene)
         return (NULL);
     scene->cam = ft_cam(lst);
-    scene->obj = ft_obj(lst);
-    printf("hnaa  == %f\n\n", scene->obj->cntr->y);
+    scene->sp = ft_obj(lst);
+    scene->pl = ft_obj_pl(lst);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
     ft_lstfree(lst);

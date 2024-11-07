@@ -31,9 +31,9 @@ int main(int argc, char **argv)
     t_sp *sphere;
 
     scene = data_input(argv[1]);
-    if (scene->obj)
+    if (scene->sp)
     {
-        sphere = (t_sp *)scene->obj;
+        sphere = (t_sp *)scene->sp;
     }
     printf("%f : sphere->cntr->y \n\n", sphere->cntr->y);
     if (!scene)

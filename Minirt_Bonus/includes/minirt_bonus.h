@@ -58,6 +58,6 @@ t_vctr vec3_scale(t_vctr v, double t);
 t_vctr vec3_cross(t_vctr v1, t_vctr v2);
 double vec3_dot(t_vctr v1, t_vctr v2);
 t_vctr vec3_normalize(t_vctr v);
-
+t_hit *intersect_plane(t_ray *ray, t_plane *plane);
 
 #endif

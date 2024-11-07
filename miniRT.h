@@ -64,7 +64,7 @@ typedef struct s_material
     double diffuse;
     double specular;
     double shininess;
-} t_material;
+}               t_material;
 
 typedef struct  s_light
 {
@@ -94,9 +94,11 @@ typedef struct s_sp
 
 typedef struct s_plane
 {
-    t_vctr  *point;
-    t_vctr *normal;
-    t_vctr  *color;
+    t_vctr          *point;
+    t_vctr          *normal;
+    t_material      *mtrl;
+    t_vctr          *color;
+    struct s_plane  *next;
 }               t_plane;
 
 typedef struct s_cylinder
@@ -128,7 +130,8 @@ typedef struct s_cam
 typedef struct s_scene
 {
     struct s_cam    *cam;
-    struct s_sp     *obj;
+    struct s_sp     *sp;
+    struct s_plane  *pl;
     struct s_light  *light;
     struct s_alight *alight;
 }               t_scene;
@@ -148,8 +151,11 @@ int         ft_check_args(int ac);
 char        **ft_lines(char *filename);
 char	    **ft_fullsplit(char const *s);
 int	        ft_is_void(char c);
-t_sp       *ft_new(t_sp *content);
 void        ft_add_back(t_sp **objs, t_sp *node);
+t_sp        *ft_new(t_sp *content);
+t_plane     *ft_new_pl(t_plane *content);
+t_plane     *ft_obj_pl(char **lst);
+void        ft_add_back_pl(t_plane **objs, t_plane *node);
 void	    ft_lstfree(char **lst);
 char	    **ft_split(char const *s, char c);
 double	    ft_atodbl(char *str);

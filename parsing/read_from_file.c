@@ -91,6 +91,36 @@ t_sp   *ft_obj(char **lst)
     return (lt);
 }
 
+t_plane  *ft_obj_pl(char **lst)
+{
+    int     i;
+    t_plane    *ptr;
+    char    **tmp;
+    t_plane   *node;
+    t_plane   *lt;
+
+    if (!lst || !*lst)
+        return (NULL);
+    i = 0;
+    lt = NULL;
+    while (lst[i])
+    {
+        tmp = ft_fullsplit(lst[i]);
+        if (!ft_strcmp(tmp[0], "pl"))
+        {
+            ptr = malloc(sizeof(t_plane));
+            if (!ptr)
+                return (NULL);
+            ft_assign_plane(ptr, tmp + 1);
+            node = ft_new_pl(ptr);
+            ft_add_back_pl(&lt, node);
+        }
+        ft_lstfree(tmp);
+        i++;
+    }
+    return (lt);
+}
+
 t_cam   *ft_cam(char **lst)
 {
     int     i;

@@ -13,7 +13,7 @@ void put_pixel_to_image(char *img_data, int x, int y, int color)
     *(unsigned int*)(img_data + offset) = color;
 }
 
-void render_scene(void *mlx, void *win, void *img, t_scene *scene)
+void render_scene(void *img, t_scene *scene)
 {
     int x, y;
     t_ray ray;
@@ -22,11 +22,9 @@ void render_scene(void *mlx, void *win, void *img, t_scene *scene)
     t_vctr color;
     char *img_data;
     int bits_per_pixel, size_line, endian;
-    (void)mlx;
-    (void)win;
 
     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-    sp = (t_sp *)scene->obj;
+    sp = (t_sp *)scene->sp;
     y = 0;
     while (y < WINDOW_HEIGHT)
     {
@@ -42,40 +40,63 @@ void render_scene(void *mlx, void *win, void *img, t_scene *scene)
                 color = calculate_lighting(&ray, hit->point, hit->normal, scene, sp->mtrl);
                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)(color.x ), (int)(color.y), (int)(color.z)));
             }
-            // else
-            //     put_pixel_to_image(img_data, x, y, create_trgb(0, 50, 50, 50));  // Background color
             x++;
         }
         y++;
     }
-    
-    //mlx_destroy_image(mlx, img);
 }
 
+void render_scene_plane(void *img, t_scene *scene)
+{
+    int x, y;
+    t_ray ray;
+    t_plane *sp;
+    t_hit *hit;
+    t_vctr color;
+    char *img_data;
+    int bits_per_pixel, size_line, endian;
 
-// int ft_escape_key(int keycode, t_data *data)
-// {
-//     if (keycode == 65307)
-//     {
-//         mlx_destroy_window(data->mlx, data->win);
-//         mlx_destroy_display(data->mlx);
-//         free(data->mlx);
-//         exit(0);
-//     }
-//     return (0);
-// }
+    img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
+    sp = (t_plane *)scene->pl;
+    y = 0;
+    while (y < WINDOW_HEIGHT)
+    {
+        x = 0;
+        while (x < WINDOW_WIDTH)
+        {
+            double u = (double)x / (WINDOW_WIDTH - 1);
+            double v = (double)y / (WINDOW_HEIGHT - 1);
+            ray = create_ray(scene->cam, u, v);
+            hit = intersect_plane(&ray, scene->pl);
+            if (hit->hit)
+            {
+                color = calculate_lighting(&ray, hit->point, hit->normal, scene, sp->mtrl);
+                put_pixel_to_image(img_data, x, y, create_trgb(0, (int)(color.x), (int)(color.y), (int)(color.z)));
+            }
+            x++;
+        }
+        y++;
+    }
+}
 
-// int ft_close(void *param)
-// {
-//     (void)param;
-//     exit(0);
-//     return (0);
-// }
+void    ft_render_sphere(t_sp **sphere, void *img, t_scene *scene)
+{
+    *sphere = (t_sp *)(scene->sp);
+    (*sphere)->mtrl = malloc(sizeof(t_material));
+    (*sphere)->mtrl->color = *(*sphere)->color;
+    (*sphere)->mtrl->ambient = scene->alight->ratio;
+    (*sphere)->mtrl->diffuse = 0.5;
+    (*sphere)->mtrl->specular = 0.5;
+    (*sphere)->mtrl->shininess = 60;
+    render_scene(img, scene);
+}
+
 int main(int ac, char **av)
 {
-    t_data data;
+    t_data   data;
     t_scene *scene;
     t_sp    *sphere;
+    t_plane *plane;
     void    *img;
 
     if (ac != 2)
@@ -92,19 +113,30 @@ int main(int ac, char **av)
     }
     scene =  data_input(av[1]);
     img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-    while (scene->obj)
+    if (scene->pl)
     {
-      
-        printf("%f\n\n", scene->obj->cntr->y);
-        sphere = (t_sp *)(scene->obj);
-        sphere->mtrl = malloc(sizeof(t_material));
-        sphere->mtrl->color = *sphere->color;
-        sphere->mtrl->ambient = scene->alight->ratio;
-        sphere->mtrl->diffuse = 0.5;
-        sphere->mtrl->specular = 0.5;
-        sphere->mtrl->shininess = 60;
-        render_scene(data.mlx, data.win, img, scene);
-        scene->obj = scene->obj->next;
+        while (scene->pl)
+        {
+            plane = (t_plane *)(scene->pl);
+            plane->mtrl = malloc(sizeof(t_material));
+            plane->mtrl->color = *plane->color;
+            plane->mtrl->ambient = scene->alight->ratio;
+            plane->mtrl->diffuse = 0.5;
+            plane->mtrl->specular = 0.5;
+            plane->mtrl->shininess = 60;
+            render_scene_plane( img, scene);
+            scene->pl = scene->pl->next;
+        }
+    }
+    if (scene->sp)
+    {
+        while (scene->sp)
+        {
+
+            sphere = (t_sp *)(scene->sp);
+            ft_render_sphere(&sphere, img, scene);
+            scene->sp = scene->sp->next;
+        }
     }
     mlx_put_image_to_window(data.mlx, data.win, img, 0, 0);
     mlx_key_hook(data.win, (int (*)(int, void *))ft_escape_key, &data);

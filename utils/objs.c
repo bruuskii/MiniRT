@@ -26,9 +26,39 @@ t_sp   *ft_new(t_sp *content)
     return (obj);
 }
 
+t_plane   *ft_new_pl(t_plane *content)
+{
+    t_plane       *obj;
+
+    obj = malloc(sizeof(t_plane));
+    if (!obj)
+        return (NULL);
+    obj->mtrl = NULL;
+    obj->point = content->point;
+    obj->color = content->color;
+    obj->normal = content->normal;
+    obj->next = NULL;
+    return (obj);
+}
+
 void   ft_add_back(t_sp **objs, t_sp *node)
 {
     t_sp *tmp;
+
+    if (!*objs)
+    {
+        *objs = node;
+        return ;
+    }
+    tmp = *objs;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = node;
+}
+
+void   ft_add_back_pl(t_plane **objs, t_plane *node)
+{
+    t_plane *tmp;
 
     if (!*objs)
     {
