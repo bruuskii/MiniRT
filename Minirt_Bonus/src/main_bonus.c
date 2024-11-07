@@ -93,14 +93,14 @@ int main(int ac, char **av)
     }
     scene =  data_input(av[1]);
 
-            sphere = (t_sp *)(scene->obj);
-            sphere->mtrl = malloc(sizeof(t_material));
-            sphere->mtrl->color = *sphere->color;
-            sphere->mtrl->ambient = scene->alight->ratio;
-            sphere->mtrl->diffuse = 0.5;
-            sphere->mtrl->specular = 0.5;
-            sphere->mtrl->shininess = 60;
-            render_scene(data.mlx, data.win, scene);
+        sphere = (t_sp *)(scene->obj);
+        sphere->mtrl = malloc(sizeof(t_material));
+        sphere->mtrl->color = *sphere->color;
+        sphere->mtrl->ambient = scene->alight->ratio;
+        sphere->mtrl->diffuse = 0.5;
+        sphere->mtrl->specular = 0.5;
+        sphere->mtrl->shininess = 60;
+        render_scene(data.mlx, data.win, scene);
     mlx_key_hook(data.win, (int (*)(int, void *))ft_escape_key, &data);
     mlx_hook(data.win, 17, 0, ft_close, &data);
     mlx_loop(data.mlx);

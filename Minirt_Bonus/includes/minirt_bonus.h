@@ -9,8 +9,8 @@
 
 
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 700
+#define WINDOW_HEIGHT 700
 
 typedef struct s_ray
 {
