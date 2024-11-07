@@ -13,22 +13,20 @@ void put_pixel_to_image(char *img_data, int x, int y, int color)
     *(unsigned int*)(img_data + offset) = color;
 }
 
-void render_scene(void *mlx, void *win, t_scene *scene)
+void render_scene(void *mlx, void *win, void *img, t_scene *scene)
 {
     int x, y;
     t_ray ray;
     t_sp *sp;
     t_hit *hit;
     t_vctr color;
-    void *img;
     char *img_data;
     int bits_per_pixel, size_line, endian;
+    (void)mlx;
+    (void)win;
 
-    img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
     sp = (t_sp *)scene->obj;
-    if (sp)
-        printf("kayna %f\n", sp->color->x);
     y = 0;
     while (y < WINDOW_HEIGHT)
     {
@@ -44,14 +42,14 @@ void render_scene(void *mlx, void *win, t_scene *scene)
                 color = calculate_lighting(&ray, hit->point, hit->normal, scene, sp->mtrl);
                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)(color.x ), (int)(color.y), (int)(color.z)));
             }
-            else
-                put_pixel_to_image(img_data, x, y, create_trgb(0, 50, 50, 50));  // Background color
+            // else
+            //     put_pixel_to_image(img_data, x, y, create_trgb(0, 50, 50, 50));  // Background color
             x++;
         }
         y++;
     }
-    mlx_put_image_to_window(mlx, win, img, 0, 0);
-    mlx_destroy_image(mlx, img);
+    
+    //mlx_destroy_image(mlx, img);
 }
 
 
@@ -78,7 +76,8 @@ int main(int ac, char **av)
     t_data data;
     t_scene *scene;
     t_sp    *sphere;
-    
+    void    *img;
+
     if (ac != 2)
         return (1);
     data.mlx = mlx_init();
@@ -92,7 +91,11 @@ int main(int ac, char **av)
         return (1);
     }
     scene =  data_input(av[1]);
-
+    img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+    while (scene->obj)
+    {
+      
+        printf("%f\n\n", scene->obj->cntr->y);
         sphere = (t_sp *)(scene->obj);
         sphere->mtrl = malloc(sizeof(t_material));
         sphere->mtrl->color = *sphere->color;
@@ -100,7 +103,10 @@ int main(int ac, char **av)
         sphere->mtrl->diffuse = 0.5;
         sphere->mtrl->specular = 0.5;
         sphere->mtrl->shininess = 60;
-        render_scene(data.mlx, data.win, scene);
+        render_scene(data.mlx, data.win, img, scene);
+        scene->obj = scene->obj->next;
+    }
+    mlx_put_image_to_window(data.mlx, data.win, img, 0, 0);
     mlx_key_hook(data.win, (int (*)(int, void *))ft_escape_key, &data);
     mlx_hook(data.win, 17, 0, ft_close, &data);
     mlx_loop(data.mlx);

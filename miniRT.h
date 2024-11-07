@@ -88,6 +88,8 @@ typedef struct s_sp
     t_material  *mtrl;
     t_vctr      *cntr;
     t_vctr     *color;
+    struct s_sp *next;
+    
 }               t_sp;
 
 typedef struct s_plane
@@ -126,7 +128,7 @@ typedef struct s_cam
 typedef struct s_scene
 {
     struct s_cam    *cam;
-    struct s_obj    *obj;
+    struct s_sp     *obj;
     struct s_light  *light;
     struct s_alight *alight;
 }               t_scene;
@@ -146,8 +148,8 @@ int         ft_check_args(int ac);
 char        **ft_lines(char *filename);
 char	    **ft_fullsplit(char const *s);
 int	        ft_is_void(char c);
-t_obj       *ft_new(void *content);
-void        ft_add_back(t_obj **objs, t_obj *node);
+t_sp       *ft_new(t_sp *content);
+void        ft_add_back(t_sp **objs, t_sp *node);
 void	    ft_lstfree(char **lst);
 char	    **ft_split(char const *s, char c);
 double	    ft_atodbl(char *str);
@@ -163,7 +165,7 @@ double      ft_magnitude(t_vctr *vec);
 void        ft_assign_camera(t_cam *cam, char **lst);
 void        ft_assign_cam_utils(t_cam **cam, char **tmp, int i);
 t_cam       *ft_cam(char **lst);
-t_obj       *ft_obj(char **lst);
+t_sp       *ft_obj(char **lst);
 t_scene     *ft_scene(char **lst);
 t_scene     *data_input(char *s);
 void        ft_assign_light_utils(t_light **lt, char **lst, int i);

@@ -61,13 +61,13 @@ char    **ft_lines(char *filename)
     return (lst);
 }
 
-t_obj   *ft_obj(char **lst)
+t_sp   *ft_obj(char **lst)
 {
     int     i;
-    void    *ptr;
+    t_sp    *ptr;
     char    **tmp;
-    t_obj   *node;
-    t_obj   *lt;
+    t_sp   *node;
+    t_sp   *lt;
 
     if (!lst || !*lst)
         return (NULL);
@@ -76,36 +76,13 @@ t_obj   *ft_obj(char **lst)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
-        if (!tmp)
-            return (NULL);
-        if (!ft_strcmp(tmp[0], "pl"))
-        {
-            ptr = malloc(sizeof(t_plane));
-            if (!ptr)
-                return (NULL);
-            node = ft_new((t_plane *)ptr);
-            node->type = PLANE;
-            ft_assign_plane((t_plane *)node, tmp + 1);
-            ft_add_back(&lt, node);
-        }
-        else if (!ft_strcmp(tmp[0], "cy"))
-        {
-            ptr = malloc(sizeof(t_cylinder));
-            if (!ptr)
-                return (NULL);
-            node = ft_new((t_cylinder *)ptr);
-            node->type = CYLINDRE;
-            ft_assign_cy((t_cylinder *)node, tmp + 1);
-            ft_add_back(&lt, node);
-        }
-        else if (!ft_strcmp(tmp[0], "sp"))
+        if (!ft_strcmp(tmp[0], "sp"))
         {
             ptr = malloc(sizeof(t_sp));
             if (!ptr)
                 return (NULL);
-            node = ft_new((t_sp *)ptr);
-            node->type = SPHERE;
-            ft_assign_sp((t_sp *)node, tmp + 1);
+            ft_assign_sp(ptr, tmp + 1);
+            node = ft_new(ptr);
             ft_add_back(&lt, node);
         }
         ft_lstfree(tmp);

@@ -129,13 +129,14 @@ void ft_display_plane(t_win *w, t_plane *pl, t_cam *cam)
 
 void ft_display(t_win *w, t_scene *scene) 
 {
-    while (scene->obj)
-    {
-        if (scene->obj->type == SPHERE)
-            ft_display_sphere(w, scene->cam, ((t_sp *)(scene->obj->obj)));
-        else if(scene->obj->type == PLANE)
-            ft_display_plane(w, ((t_plane *)(scene->obj->obj)), scene->cam);
-        scene->obj = scene->obj->next;
-    }
+    (void)scene;
+    // while (scene->obj)
+    // {
+    //     if (scene->obj->type == SPHERE)
+    //         ft_display_sphere(w, scene->cam, ((t_sp *)(scene->obj->obj)));
+    //     else if(scene->obj->type == PLANE)
+    //         ft_display_plane(w, ((t_plane *)(scene->obj->obj)), scene->cam);
+    //     scene->obj = scene->obj->next;
+    // }
     mlx_put_image_to_window(w->ptr, w->win, w->img, 0, 0);
 }

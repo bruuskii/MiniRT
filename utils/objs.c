@@ -12,30 +12,23 @@
 
 #include "../miniRT.h"
 
-t_obj   *ft_new(void *content)
+t_sp   *ft_new(t_sp *content)
 {
-    t_obj       *obj;
-    t_material  *mtrl;
+    t_sp       *obj;
 
-    mtrl = malloc(sizeof(t_material));
-    if (!mtrl)
-        return (NULL);
-    obj = malloc(sizeof(t_obj));
+    obj = malloc(sizeof(t_sp));
     if (!obj)
         return (NULL);
-    obj->obj = content;
-    obj->mtrl = mtrl;
-    obj->mtrl->ambient = 0.1;
-    obj->mtrl->diffuse = 0.5;
-    obj->mtrl->shininess = 10;
-    obj->mtrl->specular = 0.5;
+    obj->cntr = content->cntr;
+    obj->color = content->color;
+    obj->d = content->d;
     obj->next = NULL;
     return (obj);
 }
 
-void   ft_add_back(t_obj **objs, t_obj *node)
+void   ft_add_back(t_sp **objs, t_sp *node)
 {
-    t_obj *tmp;
+    t_sp *tmp;
 
     if (!*objs)
     {
