@@ -124,9 +124,9 @@ t_plane  *ft_obj_pl(char **lst)
 
 t_cylinder  *ft_obj_cy(char **lst)
 {
-    int     i;
-    t_cylinder    *ptr;
-    char    **tmp;
+    int             i;
+    t_cylinder   *ptr;
+    char         **tmp;
     t_cylinder   *node;
     t_cylinder   *lt;
 

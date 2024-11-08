@@ -59,33 +59,40 @@ void    ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
 
     if (!*cy || !cy)
         return ;
-    tmp = ft_split(lst[i], ',');
     if (i == 0)
     {
+        tmp = ft_split(lst[i], ',');
         (*cy)->c_cntr = malloc(sizeof(t_vctr));
         (*cy)->c_cntr->x = ft_atodbl(tmp[0]);
         (*cy)->c_cntr->y = ft_atodbl(tmp[1]);
         (*cy)->c_cntr->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
     }
     else if (i == 1)
     {
+        tmp = ft_split(lst[i], ',');
         (*cy)->c_axis = malloc(sizeof(t_vctr));
         (*cy)->c_axis->x = ft_atodbl(tmp[0]);
         (*cy)->c_axis->y = ft_atodbl(tmp[1]);
         (*cy)->c_axis->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
     }
     else if (i == 2)
+    {
         (*cy)->d = ft_atodbl(lst[i]);
+    }
     else if (i == 3)
         (*cy)->height = ft_atodbl(lst[i]);
     else if (i == 4)
     {
+        tmp = ft_split(lst[i], ',');
         (*cy)->color = malloc(sizeof(t_vctr));
         (*cy)->color->x = ft_atodbl(tmp[0]);
         (*cy)->color->y  = ft_atodbl(tmp[1]);
         (*cy)->color->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
     }
-    ft_lstfree(tmp);
+    
 }
 
 void    ft_assign_sp_utils(t_sp **sp, char **lst, int i)

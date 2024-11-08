@@ -51,6 +51,8 @@ t_cylinder   *ft_new_cy(t_cylinder *content)
     obj->mtrl = NULL;
     obj->c_axis = content->c_axis;
     obj->color = content->color;
+    obj->d = content->d;
+    obj->height = content->height;
     obj->c_cntr = content->c_cntr;
     obj->next = NULL;
     return (obj);
