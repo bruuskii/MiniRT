@@ -22,6 +22,7 @@ t_scene *ft_scene(char **lst)
     scene->cam = ft_cam(lst);
     scene->sp = ft_obj(lst);
     scene->pl = ft_obj_pl(lst);
+    scene->cy = ft_obj_cy(lst);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
     ft_lstfree(lst);

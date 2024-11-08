@@ -40,7 +40,46 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
         hit->t = t;
         hit->hit = 1;
         hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
-        hit->normal = vec3_normalize(*plane->point);
+        hit->normal = vec3_normalize(*plane->normal);
+
     }
+    return hit;
+}
+
+t_hit *intersect_cylinder(t_ray *ray, t_cylinder *cy)
+{
+    t_hit *hit = malloc(sizeof(t_hit));
+    double a;
+    double b;
+    double c;
+
+    a = vec3_dot(ray->direction, ray->direction) - vec3_dot(ray->direction, *cy->c_axis) * vec3_dot(ray->direction, *cy->c_axis);
+    b = 2 * (vec3_dot(ray->direction, vec3_sub(ray->origin, *cy->c_cntr)) - vec3_dot(ray->direction, *cy->c_axis) * (vec3_dot(vec3_sub(ray->origin, *cy->c_cntr), *cy->c_axis)));
+    c = vec3_dot(vec3_sub(ray->origin, *cy->c_cntr), vec3_sub(ray->origin, *cy->c_cntr)) - vec3_dot(vec3_sub(ray->origin, *cy->c_cntr), *cy->c_axis) * vec3_dot(vec3_sub(ray->origin, *cy->c_cntr), *cy->c_axis) + (cy->d / 2) * (cy->d / 2);
+    double des;
+    des = b * b - 4 * a * c;
+    if (des < 0)
+    {
+        hit->hit = 0;
+        return (hit);
+    }
+    double t1 =  (-b - sqrt(des)) / (2 * a);
+    double t2 =  (-b + sqrt(des)) / (2 * a);
+    double t = -1;
+    if (t1)
+        t = t1;
+    else
+        t = t2;
+    hit->t = t;
+    hit->hit = 1;
+    hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
+    double height_proj = vec3_dot(vec3_sub(hit->point, *cy->c_cntr), *cy->c_axis);
+    if (height_proj < 0 || height_proj > cy->height) 
+    {
+        hit->hit = 0;
+        return hit;
+    }
+    t_vctr projection = vec3_scale(*cy->c_axis, vec3_dot(vec3_sub(hit->point,*cy->c_cntr), *cy->c_axis));
+    hit->normal = vec3_normalize(vec3_sub(hit->point, vec3_add(*cy->c_cntr, projection)));
     return hit;
 }

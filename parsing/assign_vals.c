@@ -24,17 +24,17 @@ void    ft_assign_plane(t_plane *pl, char **lst)
     }
 }
 
-// void    ft_assign_cy(t_cylinder *cy, char **lst)
-// {
-//     int     i;
+void    ft_assign_cy(t_cylinder *cy, char **lst)
+{
+    int     i;
 
-//     i = 0;
-//     while (lst[i])
-//     {
-//         ft_assign_cy_utils(&cy, lst, i);
-//         i++;
-//     }
-// }
+    i = 0;
+    while (lst[i])
+    {
+        ft_assign_cy_utils(&cy, lst, i);
+        i++;
+    }
+}
 
 void    ft_assign_sp(t_sp *sp, char **lst)
 {

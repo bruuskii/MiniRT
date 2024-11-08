@@ -121,6 +121,37 @@ t_plane  *ft_obj_pl(char **lst)
     return (lt);
 }
 
+
+t_cylinder  *ft_obj_cy(char **lst)
+{
+    int     i;
+    t_cylinder    *ptr;
+    char    **tmp;
+    t_cylinder   *node;
+    t_cylinder   *lt;
+
+    if (!lst || !*lst)
+        return (NULL);
+    i = 0;
+    lt = NULL;
+    while (lst[i])
+    {
+        tmp = ft_fullsplit(lst[i]);
+        if (!ft_strcmp(tmp[0], "cy"))
+        {
+            ptr = malloc(sizeof(t_cylinder));
+            if (!ptr)
+                return (NULL);
+            ft_assign_cy(ptr, tmp + 1);
+            node = ft_new_cy(ptr);
+            ft_add_back_cy(&lt, node);
+        }
+        ft_lstfree(tmp);
+        i++;
+    }
+    return (lt);
+}
+
 t_cam   *ft_cam(char **lst)
 {
     int     i;

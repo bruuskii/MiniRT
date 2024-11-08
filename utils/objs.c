@@ -41,6 +41,21 @@ t_plane   *ft_new_pl(t_plane *content)
     return (obj);
 }
 
+t_cylinder   *ft_new_cy(t_cylinder *content)
+{
+    t_cylinder       *obj;
+
+    obj = malloc(sizeof(t_cylinder));
+    if (!obj)
+        return (NULL);
+    obj->mtrl = NULL;
+    obj->c_axis = content->c_axis;
+    obj->color = content->color;
+    obj->c_cntr = content->c_cntr;
+    obj->next = NULL;
+    return (obj);
+}
+
 void   ft_add_back(t_sp **objs, t_sp *node)
 {
     t_sp *tmp;
@@ -59,6 +74,21 @@ void   ft_add_back(t_sp **objs, t_sp *node)
 void   ft_add_back_pl(t_plane **objs, t_plane *node)
 {
     t_plane *tmp;
+
+    if (!*objs)
+    {
+        *objs = node;
+        return ;
+    }
+    tmp = *objs;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = node;
+}
+
+void   ft_add_back_cy(t_cylinder **objs, t_cylinder *node)
+{
+    t_cylinder *tmp;
 
     if (!*objs)
     {

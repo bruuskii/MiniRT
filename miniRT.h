@@ -105,9 +105,11 @@ typedef struct s_cylinder
 {
     t_vctr  *c_cntr;
     t_vctr  *c_axis;
+    t_material      *mtrl;
     double  d;
     double  height;
     t_vctr  *color;
+    struct s_cylinder  *next;
 }               t_cylinder;
 
 
@@ -132,6 +134,7 @@ typedef struct s_scene
     struct s_cam    *cam;
     struct s_sp     *sp;
     struct s_plane  *pl;
+    struct s_cylinder   *cy;
     struct s_light  *light;
     struct s_alight *alight;
 }               t_scene;
@@ -183,5 +186,8 @@ t_alight    *ft_a_light();
 void        ft_assign_alight_utils(t_alight **lt, char **lst, int i);
 void        ft_assign_alight(t_alight *lt, char **lst);
 t_alight    *ft_alight(char **lst);
+void        ft_add_back_cy(t_cylinder **objs, t_cylinder *node);
+t_cylinder   *ft_new_cy(t_cylinder *content);
+t_cylinder  *ft_obj_cy(char **lst);
 
 #endif
