@@ -101,8 +101,22 @@ void render_scene_cy(void *img, t_scene *scene)
             double v = (double)y / (WINDOW_HEIGHT - 1);
             ray = create_ray(scene->cam, u, v);
             hit = intersect_cylinder(&ray, scene->cy);
+            
+            // Debug prints for middle of screen
+            if (x == WINDOW_WIDTH/2 && y == WINDOW_HEIGHT/2)
+            {
+                printf("Ray origin: (%f, %f, %f)\n", ray.origin.x, ray.origin.y, ray.origin.z);
+                printf("Ray direction: (%f, %f, %f)\n", ray.direction.x, ray.direction.y, ray.direction.z);
+                printf("Cylinder center: (%f, %f, %f)\n", cy->c_cntr->x, cy->c_cntr->y, cy->c_cntr->z);
+                printf("Cylinder axis: (%f, %f, %f)\n", cy->c_axis->x, cy->c_axis->y, cy->c_axis->z);
+                printf("Cylinder diameter: %f\n", cy->d);
+                printf("Cylinder height: %f\n", cy->height);
+                printf("Hit detected: %d\n", hit->hit);
+            }
+
             if (hit->hit)
             {
+                printf("Hit at point: (%f, %f, %f)\n", hit->point.x, hit->point.y, hit->point.z);
                 color = calculate_lighting(&ray, hit->point, hit->normal, scene, cy->mtrl);
                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)(color.x), (int)(color.y), (int)(color.z)));
             }
@@ -171,22 +185,35 @@ int main(int ac, char **av)
             scene->sp = scene->sp->next;
         }
     }
-    if (scene->cy)
+if (scene->cy)
+{
+    while (scene->cy)
     {
-        while (scene->cy)
+        t_cylinder  *cy;
+        cy = (t_cylinder *)(scene->cy);
+        cy->mtrl = malloc(sizeof(t_material));
+        if (!cy->mtrl)
         {
-            t_cylinder  *cy;
-            cy = (t_cylinder *)(scene->cy);
-            cy->mtrl = malloc(sizeof(t_cylinder));
-            cy->mtrl->color = *cy->color;
-            cy->mtrl->ambient = scene->alight->ratio;
-            cy->mtrl->diffuse = 0.5;
-            cy->mtrl->specular = 0.5;
-            cy->mtrl->shininess = 60;
-            render_scene_cy(img, scene);
-            scene->cy = scene->cy->next;
+            printf("Failed to allocate cylinder material\n");
+            return 0 ;
         }
+        printf("Cylinder material allocated successfully\n");
+        printf("Setting color: (%f, %f, %f)\n", cy->color->x, cy->color->y, cy->color->z);
+        printf("Cylinder properties:\n");
+        printf("- Center: (%f, %f, %f)\n", cy->c_cntr->x, cy->c_cntr->y, cy->c_cntr->z);
+        printf("- Axis: (%f, %f, %f)\n", cy->c_axis->x, cy->c_axis->y, cy->c_axis->z);
+        printf("- Diameter: %f\n", cy->d);
+        printf("- Height: %f\n", cy->height);
+        
+        cy->mtrl->color = *cy->color;
+        cy->mtrl->ambient = scene->alight->ratio;
+        cy->mtrl->diffuse = 0.5;
+        cy->mtrl->specular = 0.5;
+        cy->mtrl->shininess = 60;
+        render_scene_cy(img, scene);
+        scene->cy = scene->cy->next;
     }
+}
     mlx_put_image_to_window(data.mlx, data.win, img, 0, 0);
     mlx_key_hook(data.win, (int (*)(int, void *))ft_escape_key, &data);
     mlx_hook(data.win, 17, 0, ft_close, &data);
