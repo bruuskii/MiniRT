@@ -1,5 +1,4 @@
 #include "../includes/minirt_bonus.h"
-#include <math.h>
 
 t_vctr phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal, t_material *material, t_light *light)
 {
@@ -13,11 +12,12 @@ t_vctr phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal, t_materi
     color = vec3_add(color, vec3_scale(*light->color, specular));
     color = vec3_scale(color, light->brightness);
 
-    return vec3_create(
-        fmin(color.x, 255.0),
-        fmin(color.y, 255.0),
-        fmin(color.z, 255.0)
-    );
+    return (vec3_create(fmin(color.x, 255.0),fmin(color.y, 255.0),fmin(color.z, 255.0)));
+}
+
+double vec3_length(t_vctr vec) 
+{
+    return sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
 t_vctr calculate_lighting(t_ray *ray, t_vctr hit_point, t_vctr normal, t_scene *scene, t_material *material)
@@ -30,5 +30,5 @@ t_vctr calculate_lighting(t_ray *ray, t_vctr hit_point, t_vctr normal, t_scene *
     color.x = fmax(0.0, fmin(color.x, 255.0));
     color.y = fmax(0.0, fmin(color.y, 255.0));
     color.z = fmax(0.0, fmin(color.z, 255.0));
-    return color;
+    return (color);
 }

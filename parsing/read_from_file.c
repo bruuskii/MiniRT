@@ -84,6 +84,7 @@ t_sp   *ft_obj(char **lst)
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
             ft_add_back(&lt, node);
+            free(ptr);
         }
         ft_lstfree(tmp);
         i++;
@@ -114,6 +115,7 @@ t_plane  *ft_obj_pl(char **lst)
             ft_assign_plane(ptr, tmp + 1);
             node = ft_new_pl(ptr);
             ft_add_back_pl(&lt, node);
+            free(ptr);
         }
         ft_lstfree(tmp);
         i++;
@@ -145,6 +147,7 @@ t_cylinder  *ft_obj_cy(char **lst)
             ft_assign_cy(ptr, tmp + 1);
             node = ft_new_cy(ptr);
             ft_add_back_cy(&lt, node);
+            free(ptr);
         }
         ft_lstfree(tmp);
         i++;

@@ -27,11 +27,22 @@ t_ray create_ray(t_cam *cam, double u, double v)
     t_vctr lower_left_corner = vec3_sub(*(cam->pos), 
                                         vec3_add(vec3_scale(horizontal, 0.5), 
                                                  vec3_add(vec3_scale(vertical, 0.5), w)));
-
     ray.origin = *(cam->pos);
     ray.direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner, 
                                                      vec3_add(vec3_scale(horizontal, u), 
                                                               vec3_scale(vertical, v))), 
                                             *(cam->pos)));
     return (ray);
+}
+
+t_ray create_shadow_ray(t_hit hit, t_vctr l_pos)
+{
+    t_ray   s_ray;
+    t_vctr  direction;
+
+    direction = vec3_sub(l_pos, hit.point);
+    direction = vec3_normalize(direction);
+    s_ray.origin = vec3_add(hit.point, vec3_scale(direction, 10));
+    s_ray.direction = direction;
+    return (s_ray);
 }

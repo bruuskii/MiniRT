@@ -16,14 +16,20 @@ double	ft_atoi(char *str)
 {
 	int		i;
 	double	sum;
+	int		sign;
 
+	sign = 1;
 	sum = 0.0;
 	i = 0;
 	if (str[i] && (str[i] == '-' || str[i] == '+'))
+	{
+		if (str[i] == '-')
+			sign = -1;
 		i++;
+	}
 	while (str[i] && str[i] != '.')
 		sum = sum * 10 + str[i++] - '0';
-	return (sum);
+	return (sign * sum);
 }
 
 double	ft_atodbl(char *str)
@@ -37,9 +43,8 @@ double	ft_atodbl(char *str)
 	i = 0;
 	while (str[i] && str[i] != '.')
 		i++;
-	if (!str[i])
-		return (sum0);
-	i++;
+	if (str[i])
+		i++;
 	sum1 = 0.0;
 	decimal = 0.1;
 	while (str[i])
@@ -48,7 +53,5 @@ double	ft_atodbl(char *str)
 		decimal *= 0.1;
 	}
 	sum0 += sum1;
-	if (str[0] == '-')
-		sum0 *= -1;
 	return (sum0);
 }

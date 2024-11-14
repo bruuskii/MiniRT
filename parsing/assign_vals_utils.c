@@ -161,7 +161,7 @@ void    ft_assign_cam_utils(t_cam **cam, char **lst, int i)
 void    ft_assign_light_utils(t_light **lt, char **lst, int i)
 {
     char    **tmp;
-    
+
     tmp = NULL;
     if (i == 0)
     {

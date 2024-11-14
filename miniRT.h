@@ -52,7 +52,7 @@ typedef struct s_pnt
 
 typedef struct s_vctr
 {
-    float   x;
+    double   x;
     float   y;
     float   z;
 }               t_vctr;
@@ -189,5 +189,7 @@ t_alight    *ft_alight(char **lst);
 void        ft_add_back_cy(t_cylinder **objs, t_cylinder *node);
 t_cylinder   *ft_new_cy(t_cylinder *content);
 t_cylinder  *ft_obj_cy(char **lst);
-
+double  ft_magnitude(t_vctr *vec);
+void    ft_free_cylinder(t_cylinder *c);
+void    ft_free_scene(t_scene *scene);
 #endif
