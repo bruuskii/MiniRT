@@ -51,9 +51,8 @@ typedef struct s_data {
 t_vctr vec3_create(double x, double y, double z);
 t_ray create_ray(t_cam *cam, double u, double v);
 t_hit *intersect_sphere(t_ray *ray, t_sp *sphere);
-t_vctr calculate_lighting(t_ray *ray, t_vctr hit_point, t_vctr normal, t_scene *scene, t_material *material);
-t_vctr phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal, t_material *material, t_light *light); 
-
+t_vctr calculate_lighting(t_ray *ray, t_hit *hit, t_scene *scene, t_material material);
+t_vctr phong_lighting(t_ray *ray, t_hit *hit, t_material material, t_light *light, double shadow_factor);
 t_vctr vec3_add(t_vctr v1, t_vctr v2);
 t_vctr vec3_sub(t_vctr v1, t_vctr v2);
 t_vctr vec3_scale(t_vctr v, double t);

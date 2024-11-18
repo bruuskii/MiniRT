@@ -19,6 +19,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include "libft/get_next_line/get_next_line.h"
 
 #define HEIGHT 800
@@ -192,4 +193,5 @@ t_cylinder  *ft_obj_cy(char **lst);
 double  ft_magnitude(t_vctr *vec);
 void    ft_free_cylinder(t_cylinder *c);
 void    ft_free_scene(t_scene *scene);
+t_vctr amb_color(t_vctr ambiant, t_material *mtrl);
 #endif
