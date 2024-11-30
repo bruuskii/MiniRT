@@ -1,5 +1,4 @@
-#include "../includes/minirt_bonus.h"
-#include <math.h>
+#include "../miniRT.h"
 
 t_vctr vec3_create(double x, double y, double z)
 {
@@ -13,7 +12,7 @@ t_vctr vec3_create(double x, double y, double z)
 t_ray create_ray(t_cam *cam, double u, double v)
 {
     t_ray ray;
-    double aspect_ratio = (double)WINDOW_WIDTH / WINDOW_HEIGHT;
+    double aspect_ratio = (double)WIDTH / HEIGHT;
     double viewport_height = 2.0 * tan(cam->fov * 0.5 * M_PI / 180.0);
     double viewport_width = aspect_ratio * viewport_height;
 

@@ -27,8 +27,8 @@ void    ft_line_utils(int *c, int fd, char **lst)
         }
         else
         {
-            lst[i] = line;
             (*c)++;
+            lst[i] = line;
         }
         i++;
     }
@@ -41,7 +41,7 @@ char    **ft_lines(char *filename)
     char    **lst;
     int     c;
 
-    lst = malloc(20 * sizeof(char *));
+    lst = malloc(1000 * sizeof(char *));
     fd = open(filename, O_RDONLY);
     if (fd < 0)
     {
@@ -84,6 +84,7 @@ t_sp   *ft_obj(char **lst)
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
             ft_add_back(&lt, node);
+
             free(ptr);
         }
         ft_lstfree(tmp);

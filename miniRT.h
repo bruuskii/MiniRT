@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/21 23:14:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/11/29 17:49:33 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <math.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdbool.h>
 #include "libft/get_next_line/get_next_line.h"
 
 #define HEIGHT 800
@@ -140,6 +139,61 @@ typedef struct s_scene
     struct s_alight *alight;
 }               t_scene;
 
+typedef struct s_ray
+{
+    t_vctr origin;
+    t_vctr direction;
+} t_ray;
+
+typedef struct s_camera
+{
+    t_vctr position;
+    t_vctr direction;
+    double fov;
+} t_camera;
+
+typedef struct s_sphere
+{
+    t_vctr center;
+    double radius;
+    t_material material;
+} t_sphere;
+
+typedef struct s_hit
+{
+    int     hit;
+    double  shaddow;
+    double  t;
+    t_vctr  point;
+    t_vctr  normal;
+} t_hit;
+
+
+typedef struct s_data {
+    void *mlx;
+    void *win;
+} t_data;
+
+t_vctr vec3_create(double x, double y, double z);
+t_ray create_ray(t_cam *cam, double u, double v);
+t_hit *intersect_sphere(t_ray *ray, t_sp *sphere);
+
+t_vctr  calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, t_material *material, t_light *light, double u, double v);
+t_vctr  phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal, t_material *material, t_light *light); 
+t_ray   create_nray(t_vctr point, t_vctr dir, double u, double v);
+int     ft_is_shadowed(t_scene *scene, t_vctr *point, double u, double v);
+t_vctr vec3_add(t_vctr v1, t_vctr v2);
+t_vctr vec3_sub(t_vctr v1, t_vctr v2);
+t_vctr vec3_scale(t_vctr v, double t);
+t_vctr vec3_cross(t_vctr v1, t_vctr v2);
+double vec3_dot(t_vctr v1, t_vctr v2);
+t_vctr vec3_normalize(t_vctr v);
+t_hit  *intersect_plane(t_ray *ray, t_plane *plane, double d);
+t_hit  *intersect_cylinder(t_ray *ray, t_cylinder *cy);
+t_ray  create_shadow_ray(t_hit hit, t_vctr l_pos);
+t_hit  *intersect_scene(t_ray *ray, t_scene *scene);
+
+
 t_win       *ft_window(int height, int width);
 void        ft_free_win(t_win *win);
 int         ft_escape_key(int key, void *param);
@@ -190,8 +244,7 @@ t_alight    *ft_alight(char **lst);
 void        ft_add_back_cy(t_cylinder **objs, t_cylinder *node);
 t_cylinder   *ft_new_cy(t_cylinder *content);
 t_cylinder  *ft_obj_cy(char **lst);
-double  ft_magnitude(t_vctr *vec);
-void    ft_free_cylinder(t_cylinder *c);
-void    ft_free_scene(t_scene *scene);
-t_vctr amb_color(t_vctr ambiant, t_material *mtrl);
+double      ft_magnitude(t_vctr *vec);
+void        ft_free_cylinder(t_cylinder *c);
+void        ft_free_scene(t_scene *scene);
 #endif

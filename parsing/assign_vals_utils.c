@@ -78,9 +78,7 @@ void    ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
         ft_lstfree(tmp);
     }
     else if (i == 2)
-    {
         (*cy)->d = ft_atodbl(lst[i]);
-    }
     else if (i == 3)
         (*cy)->height = ft_atodbl(lst[i]);
     else if (i == 4)
@@ -112,10 +110,7 @@ void    ft_assign_sp_utils(t_sp **sp, char **lst, int i)
         ft_lstfree(tmp);
     }
     else if (i == 1)
-    {
         (*sp)->d = ft_atodbl(lst[1]);
-        
-    }
     else if (i == 2)
     {
         tmp = ft_split(lst[i], ',');

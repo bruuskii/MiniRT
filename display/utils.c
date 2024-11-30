@@ -12,20 +12,6 @@
 
 #include "../miniRT.h"
 
-double dgrs_to_rdn(double angle)
-{
-    return (angle * (M_PI / 180.0));
-}
-
-double calculate_distance(double fov)
-{
-    double d;
-    double fv;
-
-    fv = dgrs_to_rdn(fov);
-    d = WIDTH / (2 * tan(fv / 2.0));
-    return (d);
-}
 
 void convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2)
 {
