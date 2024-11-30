@@ -34,14 +34,14 @@ t_ray create_ray(t_cam *cam, double u, double v)
     return (ray);
 }
 
-t_ray create_shadow_ray(t_hit hit, t_vctr l_pos)
+t_ray create_shadow_ray(t_vctr point, t_vctr l_pos)
 {
     t_ray   s_ray;
     t_vctr  direction;
 
-    direction = vec3_sub(l_pos, hit.point);
+    direction = vec3_sub(l_pos, point);
     direction = vec3_normalize(direction);
-    s_ray.origin = vec3_add(hit.point, vec3_scale(direction, 10));
+    s_ray.origin = vec3_add(point, vec3_scale(direction, 10));
     s_ray.direction = direction;
     return (s_ray);
 }

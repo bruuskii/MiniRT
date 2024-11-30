@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/11/29 17:49:33 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/11/30 21:51:53 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ double vec3_dot(t_vctr v1, t_vctr v2);
 t_vctr vec3_normalize(t_vctr v);
 t_hit  *intersect_plane(t_ray *ray, t_plane *plane, double d);
 t_hit  *intersect_cylinder(t_ray *ray, t_cylinder *cy);
-t_ray  create_shadow_ray(t_hit hit, t_vctr l_pos);
+t_ray   create_shadow_ray(t_vctr point, t_vctr l_pos);
 t_hit  *intersect_scene(t_ray *ray, t_scene *scene);
 
 

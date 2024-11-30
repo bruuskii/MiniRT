@@ -66,11 +66,10 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     color = vec3_add(color, ambient);
 
     if (shadowed && !hit.hit)
-        color = vec3_create(255,125,0);
+        return (vec3_create(255,125,0));
     color.x = fmin(fmax(color.x, 0.0), 255.0);
     color.y = fmin(fmax(color.y, 0.0), 255.0);
     color.z = fmin(fmax(color.z, 0.0), 255.0);
-
     return color;
 }
 
