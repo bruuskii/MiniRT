@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2024/11/29 17:56:30 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/01 21:36:43 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,9 @@ void render_scene_plane(void *img, t_scene *scene)
     t_hit *hit;
     char *img_data;
     int bits_per_pixel, size_line, endian;
-    double d;
 
     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
     y = 0;
-    d = calculate_distance(scene->cam->fov);
     while (y < HEIGHT) 
     {
         x = 0;
@@ -146,7 +144,7 @@ void render_scene_plane(void *img, t_scene *scene)
             double u = ((double)x / (WIDTH - 1));
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
-            hit = intersect_plane(&ray, scene->pl, d);
+            hit = intersect_plane(&ray, scene->pl);
             if (hit && hit->hit) 
             {
                 t_vctr final_color = {0, 0, 0};
@@ -171,42 +169,6 @@ void render_scene_plane(void *img, t_scene *scene)
     }
 }
 
-
-
-// void render_scene_cy(void *img, t_scene *scene)
-// {
-//     int x, y;
-//     t_ray ray;
-//     t_cylinder *cy;
-//     t_hit *hit;
-//     t_vctr color;
-//     char *img_data;
-//     int bits_per_pixel, size_line, endian;
-
-//     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-//     cy = (t_cylinder *)scene->cy;
-//     y = 0;
-//     while (y < HEIGHT)
-//     {
-//         x = 0;
-//         while (x < WIDTH)
-//         {
-//             double u = ((double)x / (WIDTH - 1));
-//             double v = ((double)y / (HEIGHT - 1));
-//             ray = create_ray(scene->cam, u, v);
-//             hit = intersect_cylinder(&ray, cy);
-//             if (hit->hit)
-//             {
-//                 color = calculate_lighting(&ray, hit->point, hit->normal, scene, cy->mtrl);
-//                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)(color.x), (int)(color.y), (int)(color.z)));
-//             }
-//             free(hit);
-//             x++;
-//         }
-//         y++;
-//     }
-// }
-
 void    ft_render_sphere(t_sp **sphere, void *img, t_scene *scene)
 {
     *sphere = (t_sp *)(scene->sp);
@@ -223,8 +185,6 @@ int main(int ac, char **av)
 {
     t_win   *data;
     t_scene *scene;
-    t_sp    *sphere;
-    t_plane *plane;
 
     if (ac != 2)
         return (1);
@@ -242,13 +202,12 @@ int main(int ac, char **av)
         return (1);
     }
     scene =  data_input(av[1]);
-    printf("light x ==  %f\n", scene->light->dir->x);
     data->img = mlx_new_image(data->ptr, WIDTH, HEIGHT);
     if (scene->pl)
     {
         while (scene->pl)
         {
-            plane = (t_plane *)(scene->pl);
+           t_plane *plane = (t_plane *)(scene->pl);
             plane->mtrl = malloc(sizeof(t_material));
             plane->mtrl->color = *plane->color;
             plane->mtrl->ambient = scene->alight->ratio;
@@ -256,29 +215,28 @@ int main(int ac, char **av)
             plane->mtrl->specular = 0.5;
             plane->mtrl->shininess = 60;
             render_scene_plane( data->img, scene);
-            free(scene->pl->mtrl);
-            free(scene->pl->point);
-            free(scene->pl->normal);
-            free(scene->pl->color);
-    
-
+            free(plane->mtrl);
+            free(plane->point);
+            free(plane->normal);
+            free(plane->color);
             scene->pl = scene->pl->next;
+            free(plane);
         }
     }
-    if (scene->sp)
+   if (scene->sp)
+{
+    while (scene->sp)
     {
-        while (scene->sp)
-        {
-
-            sphere = (t_sp *)(scene->sp);
-            ft_render_sphere(&sphere, data->img, scene);
-            free(scene->sp->cntr);
-            free(scene->sp->color);
-            free(scene->sp->mtrl);
-            scene->sp = scene->sp->next;
-        }
+        t_sp *sphere = scene->sp;
+        ft_render_sphere(&sphere, data->img, scene);
+        free(sphere->cntr);
+        free(sphere->color);
+        free(sphere->mtrl);
+        scene->sp = scene->sp->next; 
+        free(sphere);
     }
-            free(scene->sp);
+}
+
     if (scene->cy)
     {
         while (scene->cy)
@@ -296,18 +254,18 @@ int main(int ac, char **av)
             cy->mtrl->diffuse = 0.5;
             cy->mtrl->specular = 0.5;
             cy->mtrl->shininess = 60;
-            //render_scene_cy(data->img, scene);
-            free(scene->cy->color);
-            free(scene->cy->c_axis);
-            free(scene->cy->c_cntr);
-            free(scene->cy->mtrl);
+            render_scene_cy(data->img, scene);
+            free(cy->color);
+            free(cy->c_axis);
+            free(cy->c_cntr);
+            free(cy->mtrl);
+            free(cy);
             scene->cy = scene->cy->next;
         }
     }
     mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
-    mlx_key_hook(data->win, ft_escape_key, data);
-    mlx_hook(data->win, 17, 0, ft_close, data);
-    mlx_loop(data->ptr);
+    free(scene->pl);
+    free(scene->sp);
     free(scene->cam->dir);
     free(scene->cam->pos);
     free(scene->cam);
@@ -317,5 +275,8 @@ int main(int ac, char **av)
     free(scene->light->dir);
     free(scene->light);
     free(scene);
+    mlx_key_hook(data->win, ft_escape_key, data);
+    mlx_hook(data->win, 17, 0, ft_close, data);
+    mlx_loop(data->ptr);
     return (0);
 }

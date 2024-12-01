@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/11/30 21:51:53 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/01 20:44:50 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ typedef struct s_data {
 t_vctr vec3_create(double x, double y, double z);
 t_ray create_ray(t_cam *cam, double u, double v);
 t_hit *intersect_sphere(t_ray *ray, t_sp *sphere);
+t_ray create_shadow_ray(t_hit hit, t_vctr point, t_light *light);
 
 t_vctr  calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, t_material *material, t_light *light, double u, double v);
 t_vctr  phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal, t_material *material, t_light *light); 
@@ -188,9 +189,8 @@ t_vctr vec3_scale(t_vctr v, double t);
 t_vctr vec3_cross(t_vctr v1, t_vctr v2);
 double vec3_dot(t_vctr v1, t_vctr v2);
 t_vctr vec3_normalize(t_vctr v);
-t_hit  *intersect_plane(t_ray *ray, t_plane *plane, double d);
+t_hit  *intersect_plane(t_ray *ray, t_plane *plane);
 t_hit  *intersect_cylinder(t_ray *ray, t_cylinder *cy);
-t_ray   create_shadow_ray(t_vctr point, t_vctr l_pos);
 t_hit  *intersect_scene(t_ray *ray, t_scene *scene);
 
 

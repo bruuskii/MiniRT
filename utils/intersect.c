@@ -24,50 +24,21 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     if (t1 > 1e-6)
         hit->t = t1;
     else if (t2 > 1e-6)
-        hit->t = t1;
+        hit->t = t2;
     else 
         return (hit);
-    hit->hit = 1;
     hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
     hit->normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
     return (hit);
 }
 
-
-// typedef struct s_hit
-// {
-//     int     hit;
-//     double  shaddow;
-//     double  t;
-//     t_vctr  point;
-//     t_vctr  normal;
-// } t_hit;
-
-
-// t_hit *normal_sphere(t_hit *nhit, t_sp *sp, t_ray *ray)
-// {
-//     t_hit *tmp;
-
-//     tmp = intersect_sphere(ray, sp);
-//     if (tmp && ((nhit->t > tmp->t || nhit->t == -1) && tmp->t > 1e-6))
-//     {
-//         tmp->hit = vec3_add(ray->origin, vec3_scale(ray->direction, tmp->t));
-//         tmp->normal = vec3_normalize(vec3_sub(tmp->normal, *sp->cntr));
-//         if (vec3_dot(ray->direction, tmp->normal) > 1e-6)
-//             tmp->normal = vec3_scale(tmp->normal, -1);
-//         *nhit = *tmp;
-//     }
-//     return nhit;
-// }
-
-t_hit *intersect_plane(t_ray *ray, t_plane *plane, double d)
+t_hit *intersect_plane(t_ray *ray, t_plane *plane)
 {
     t_hit *hit = malloc(sizeof(t_hit));
     if (!hit)
         return NULL;
 
     hit->hit = 0;
-    hit->t = 0;
     double denom = vec3_dot(*plane->normal, ray->direction);
     
     if (fabs(denom) < 1e-6)
@@ -79,8 +50,8 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane, double d)
     {
         hit->t = t;
         t_vctr intersection_point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
-        intersection_point.x /= (intersection_point.z + d);
-        intersection_point.y /= (intersection_point.z + d);
+        intersection_point.x /= (intersection_point.z);
+        intersection_point.y /= (intersection_point.z);
         hit->hit = 1;
         hit->point = intersection_point;
         hit->normal = vec3_normalize(*plane->normal);
@@ -136,61 +107,3 @@ t_hit *intersect_cylinder(t_ray *ray, t_cylinder *cy)
     hit->normal = vec3_normalize(vec3_sub(hit->point, proj_point));
     return hit;
 }
-
-
-// t_hit *intersect_scene(t_ray *ray, t_scene *scene)
-// {
-//     t_hit *hit = NULL;
-//     t_hit *closest_hit = NULL;
-//     double closest_t = INFINITY;
-
-//     if (scene->cy)
-//     {
-//         t_cylinder *cy = scene->cy;
-//         while (cy)
-//         {
-//             hit = intersect_cylinder(ray, cy);
-//             if (hit->hit && hit->t < closest_t)
-//             {
-//                 if (closest_hit) free(closest_hit);
-//                 closest_hit = hit;
-//                 closest_t = hit->t;
-//             }
-//             free(hit);
-//             cy = cy->next;
-//         }
-//     }
-//     if (scene->sp)
-//     {
-//         t_sp *sphere = scene->sp;
-//         while (sphere)
-//         {
-//             hit = intersect_sphere(ray, sphere);
-//             if (hit->hit && hit->t < closest_t)
-//             {
-//                 if (closest_hit) free(closest_hit);
-//                 closest_hit = hit;
-//                 closest_t = hit->t;
-//             }
-//             free(hit);
-//             sphere = sphere->next;
-//         }
-//     }
-//     if (scene->pl)
-//     {
-//         t_plane *plane = scene->pl;
-//         while (plane)
-//         {
-//             hit = intersect_plane(ray, plane);
-//             if (hit->hit && hit->t < closest_t)
-//             {
-//                 if (closest_hit) free(closest_hit);
-//                 closest_hit = hit;
-//                 closest_t = hit->t;
-//             }
-//             free(hit);
-//             plane = plane->next;
-//         }
-//     }
-//     return (closest_hit);
-// }

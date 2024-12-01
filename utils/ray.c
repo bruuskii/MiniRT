@@ -34,14 +34,20 @@ t_ray create_ray(t_cam *cam, double u, double v)
     return (ray);
 }
 
-t_ray create_shadow_ray(t_vctr point, t_vctr l_pos)
+t_ray create_shadow_ray(t_hit hit, t_vctr point, t_light *light)
 {
+    t_vctr  vec;
     t_ray   s_ray;
-    t_vctr  direction;
+    t_vctr  normal;
+    t_vctr  light_dir;
+    t_vctr  biased;
 
-    direction = vec3_sub(l_pos, point);
-    direction = vec3_normalize(direction);
-    s_ray.origin = vec3_add(point, vec3_scale(direction, 10));
-    s_ray.direction = direction;
+    vec = vec3_sub(hit.point, point);
+    normal = vec3_normalize(vec);
+    biased = vec3_add(vec3_scale(normal, 1e-6), hit.point);
+    light_dir = vec3_sub(*light->dir, biased);
+    s_ray.origin = biased;
+    s_ray.direction = vec3_normalize(light_dir);
+
     return (s_ray);
 }

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 09:35:00 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/01 12:28:39 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ t_sp   *ft_obj(char **lst)
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
             ft_add_back(&lt, node);
-
             free(ptr);
         }
         ft_lstfree(tmp);

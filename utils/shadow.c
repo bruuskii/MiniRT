@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2024/11/30 21:56:48 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/01 20:48:04 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ int ft_is_shadowed(t_scene *scene, t_vctr *point, double u, double v)
     t_vctr  vc;
     t_hit   *hit;
     t_ray   ray;
+    t_vctr  dir;
 
     vc = vec3_sub(*scene->light->dir, *point);       
     distance = ft_magnitude(&vc);                                             
-    ray = create_ray(scene->cam, u, v);            
+    dir = vec3_normalize(vc);
+    ray = create_nray(*point, dir, u, v);            
     hit = intersect_sphere(&ray, scene->sp);          
     if (hit && hit->t < distance)                     
     {
