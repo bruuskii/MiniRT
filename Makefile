@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2024/12/01 12:01:13 by kbassim          ###   ########.fr        #
+#    Updated: 2024/12/02 16:50:40 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ CFILES = libft/libft.c\
 		utils/objs.c\
 		utils/shadow.c\
 		utils/intersect.c\
+		utils/reflection.c\
 		utils/lighting.c\
 		utils/ray.c\
 		utils/vectors.c\

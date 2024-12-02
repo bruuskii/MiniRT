@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/01 21:36:43 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/02 17:03:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void render_scene(void *img, t_scene *scene)
 {
     int x, y;
     t_ray ray;
+    t_ray rf;
     t_sp *sp;
     t_hit *hit;
     //t_vctr color;
@@ -101,13 +102,14 @@ void render_scene(void *img, t_scene *scene)
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
             hit = intersect_sphere(&ray, scene->sp);
+            rf = reflected_ray(hit, &ray);
             if (hit && hit->hit)
             {
                 t_vctr final_color = {0, 0, 0};
                 t_light *light = scene->light;
                 while (light)
                 {
-                    t_vctr light_color = calculate_lighting(&ray, *hit, hit->normal, scene, sp->mtrl, light, u, v);
+                    t_vctr light_color = calculate_lighting(&rf, *hit, hit->normal, scene, sp->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
                     final_color.z += light_color.z;
@@ -254,7 +256,7 @@ int main(int ac, char **av)
             cy->mtrl->diffuse = 0.5;
             cy->mtrl->specular = 0.5;
             cy->mtrl->shininess = 60;
-            render_scene_cy(data->img, scene);
+            //render_scene_cy(data->img, scene);
             free(cy->color);
             free(cy->c_axis);
             free(cy->c_cntr);

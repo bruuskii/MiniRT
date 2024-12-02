@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/01 20:44:50 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/02 16:50:29 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ t_vctr vec3_normalize(t_vctr v);
 t_hit  *intersect_plane(t_ray *ray, t_plane *plane);
 t_hit  *intersect_cylinder(t_ray *ray, t_cylinder *cy);
 t_hit  *intersect_scene(t_ray *ray, t_scene *scene);
-
+t_ray   reflected_ray(t_hit *hit, t_ray *ray);
 
 t_win       *ft_window(int height, int width);
 void        ft_free_win(t_win *win);
