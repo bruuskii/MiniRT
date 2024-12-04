@@ -84,7 +84,7 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     if (lol->hit && !lol->t)
     {
         free(lol);
-        return vec3_scale(color, 0.05);
+        return vec3_scale(color, 0.75);
     }
     free(lol);
     t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
