@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/02 17:03:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/28 21:20:53 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,84 @@ int create_trgb(int t, int r, int g, int b)
 {
     return (t << 24 | r << 16 | g << 8 | b);
 }
+
+void    ft_free_all(t_scene *scene)
+{
+    t_sp        *sp;
+    t_cylinder  *cy;
+    t_plane     *pl;
+    t_light     *lt;
+
+    if (!scene)
+    {
+        return ;
+    }
+    if (scene->cam)
+    {
+        free(scene->cam->dir);
+        free(scene->cam->pos);
+        free(scene->cam);
+    }
+    if (scene->sp)
+    {
+        sp = scene->sp;
+        while (sp)
+        {
+            free(sp->cntr);
+            free(sp->color);
+            if (sp->mtrl)
+                free(sp->mtrl);
+            free(sp);
+            sp = scene->sp->next;
+        }
+    }
+    if (scene->pl)
+    {
+        pl = scene->pl;
+        while (pl)
+        {
+            free(pl->point);
+            free(pl->normal);
+            free(pl->color);
+            if (pl->mtrl)
+                free(pl->mtrl);
+            free(pl);
+            pl = scene->pl->next;
+        }
+    }
+    if (scene->cy)
+    {
+        cy = scene->cy;
+        while (cy)
+        {
+            free(cy->c_axis);
+            free(cy->c_cntr);
+            free(cy->color);
+            if (cy->mtrl)
+                free(cy->mtrl);
+            free(cy);
+            cy = scene->cy->next;
+        }
+    }
+    if (scene->light)
+    {
+        while (scene->light)
+        {
+            lt = scene->light;
+            free(lt->color);
+            free(lt->dir);
+            scene->light = scene->light->next;
+            free(lt);
+        }
+    }
+    if (scene->alight)
+    {
+        free(scene->alight->color);
+        free(scene->alight);
+    }
+    free(scene);
+}
+
 
 void put_pixel_to_image(char *img_data, int x, int y, int color)
 {
@@ -81,18 +159,19 @@ t_vctr amb_color(t_vctr ambiant, t_material *mtrl)
 
 void render_scene(void *img, t_scene *scene)
 {
-    int x, y;
-    t_ray ray;
-    t_ray rf;
-    t_sp *sp;
-    t_hit *hit;
-    //t_vctr color;
-    char *img_data;
-    int bits_per_pixel, size_line, endian;
+    int     x, y;
+    t_ray   *ray;
+    t_ray   *rf;
+    t_sp    *sp;
+    t_hit   *hit;
+    char    *img_data;
+    int     bits_per_pixel, size_line, endian;
 
     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
     sp = (t_sp *)scene->sp;
     y = 0;
+    if (!scene)
+        return ;
     while (y < HEIGHT)
     {
         x = 0;
@@ -101,15 +180,17 @@ void render_scene(void *img, t_scene *scene)
             double u = ((double)x / (WIDTH - 1));
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
-            hit = intersect_sphere(&ray, scene->sp);
-            rf = reflected_ray(hit, &ray);
+            hit = intersect_sphere(ray, scene->sp);
+            rf = reflected_ray(hit, ray);
+            if (!ray)
+                return ;
             if (hit && hit->hit)
             {
                 t_vctr final_color = {0, 0, 0};
                 t_light *light = scene->light;
                 while (light)
                 {
-                    t_vctr light_color = calculate_lighting(&rf, *hit, hit->normal, scene, sp->mtrl, light, u, v);
+                    t_vctr light_color = calculate_lighting(rf, *hit, hit->normal, scene, sp->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
                     final_color.z += light_color.z;
@@ -122,16 +203,72 @@ void render_scene(void *img, t_scene *scene)
                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(hit);
+            free(ray);
+            free(rf);
             x++;
         }
         y++;
     }
 }
 
+
+// void render_scene_cn(void *img, t_scene *scene)
+// {
+//     int     x, y;
+//     t_ray   *ray;
+//     t_ray   *rf;
+//     t_sp    *sp;
+//     t_hit   *hit;
+//     char    *img_data;
+//     int     bits_per_pixel, size_line, endian;
+
+//     img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
+//     sp = (t_sp *)scene->sp;
+//     y = 0;
+//     if (!scene)
+//         return ;
+//     while (y < HEIGHT)
+//     {
+//         x = 0;
+//         while (x < WIDTH)
+//         {
+//             double u = ((double)x / (WIDTH - 1));
+//             double v = ((double)y / (HEIGHT - 1));
+//             ray = create_ray(scene->cam, u, v);
+//             hit = intersect_sphere(ray, scene->cn);
+//             if (!ray)
+//                 return ;
+//             if (hit && hit->hit)
+//             {
+//                 t_vctr final_color = {0, 0, 0};
+//                 t_light *light = scene->light;
+//                 while (light)
+//                 {
+//                     t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, cn->mtrl, light, u, v);
+//                     final_color.x += light_color.x;
+//                     final_color.y += light_color.y;
+//                     final_color.z += light_color.z;
+//                     if (light)
+//                         light = light->next;
+//                 }
+//                 final_color.x = fmin(fmax(final_color.x, 0), 255);
+//                 final_color.y = fmin(fmax(final_color.y, 0), 255);
+//                 final_color.z = fmin(fmax(final_color.z, 0), 255);
+//                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+//             }
+//             free(hit);
+//             free(ray);
+//             free(rf);
+//             x++;
+//         }
+//         y++;
+//     }
+// }
+
 void render_scene_plane(void *img, t_scene *scene) 
 {
     int x, y;
-    t_ray ray;
+    t_ray *ray;
     t_hit *hit;
     char *img_data;
     int bits_per_pixel, size_line, endian;
@@ -146,14 +283,16 @@ void render_scene_plane(void *img, t_scene *scene)
             double u = ((double)x / (WIDTH - 1));
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
-            hit = intersect_plane(&ray, scene->pl);
+            if (!ray)
+                return ;
+            hit = intersect_plane(ray, scene->pl);
             if (hit && hit->hit) 
             {
                 t_vctr final_color = {0, 0, 0};
                 t_light *light = scene->light;
                 while (light) 
                 {
-                    t_vctr light_color = calculate_lighting(&ray, *hit, hit->normal, scene, scene->pl->mtrl, light, u, v);
+                    t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, scene->pl->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
                     final_color.z += light_color.z;
@@ -165,12 +304,58 @@ void render_scene_plane(void *img, t_scene *scene)
                  put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(hit);
+            free(ray);
             x++;
         }
         y++;
     }
 }
 
+void render_scene_cy(void *img, t_scene *scene) 
+{
+    int x, y;
+    t_ray *ray;
+    t_hit *hit;
+    char *img_data;
+    int bits_per_pixel, size_line, endian;
+
+    img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
+    y = 0;
+    while (y < HEIGHT) 
+    {
+        x = 0;
+        while (x < WIDTH) 
+        {
+            double u = ((double)x / (WIDTH - 1));
+            double v = ((double)y / (HEIGHT - 1));
+            ray = create_ray(scene->cam, u, v);
+            if (ray == 0)
+                return ;
+            hit = intersect_cylinder(ray, scene->cy);
+            if (hit && hit->hit) 
+            {
+                t_vctr final_color = {0, 0, 0};
+                t_light *light = scene->light;
+                while (light) 
+                {
+                    t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, scene->cy->mtrl, light, u, v);
+                    final_color.x += light_color.x;
+                    final_color.y += light_color.y;
+                    final_color.z += light_color.z;
+                    light = light->next;
+                }
+                final_color.x = fmin(fmax(final_color.x, 0), 255);
+                final_color.y = fmin(fmax(final_color.y, 0), 255);
+                final_color.z = fmin(fmax(final_color.z, 0), 255);
+                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+            }
+            free(ray);
+            free(hit);
+            x++;
+        }
+        y++;
+    }
+}
 void    ft_render_sphere(t_sp **sphere, void *img, t_scene *scene)
 {
     *sphere = (t_sp *)(scene->sp);
@@ -188,22 +373,23 @@ int main(int ac, char **av)
     t_win   *data;
     t_scene *scene;
 
-    if (ac != 2)
+     if (ft_check_args(ac) || ft_check_extention(av[1]))
+        return (1);
+    scene = data_input(av[1], 0);
+    if (!scene)
         return (1);
     data = malloc(sizeof(t_win));
     if (!data)
         return (1);
     data->ptr = mlx_init();
     if (!data->ptr)
-        return (1);
-    data->win = mlx_new_window(data->ptr, WIDTH, HEIGHT, "miniRT Bonus");
+        return (free(data), 1);
+    data->win = mlx_new_window(data->ptr, WIDTH, HEIGHT, "miniRT");
     if (!data->win)
     {
         mlx_destroy_display(data->ptr);
-        free(data->ptr);
         return (1);
     }
-    scene =  data_input(av[1]);
     data->img = mlx_new_image(data->ptr, WIDTH, HEIGHT);
     if (scene->pl)
     {
@@ -216,67 +402,44 @@ int main(int ac, char **av)
             plane->mtrl->diffuse = 0.5;
             plane->mtrl->specular = 0.5;
             plane->mtrl->shininess = 60;
-            render_scene_plane( data->img, scene);
-            free(plane->mtrl);
-            free(plane->point);
-            free(plane->normal);
-            free(plane->color);
+            render_scene_plane(data->img, scene);
             scene->pl = scene->pl->next;
-            free(plane);
         }
     }
-   if (scene->sp)
-{
-    while (scene->sp)
+    if (scene->sp)
     {
-        t_sp *sphere = scene->sp;
-        ft_render_sphere(&sphere, data->img, scene);
-        free(sphere->cntr);
-        free(sphere->color);
-        free(sphere->mtrl);
-        scene->sp = scene->sp->next; 
-        free(sphere);
+        while (scene->sp)
+        {
+            t_sp *sphere = scene->sp;
+            ft_render_sphere(&sphere, data->img, scene);
+            scene->sp = scene->sp->next; 
+        }
     }
-}
-
     if (scene->cy)
     {
         while (scene->cy)
         {
-            t_cylinder  *cy;
-            cy = (t_cylinder *)(scene->cy);
-            cy->mtrl = malloc(sizeof(t_material));
-            if (!cy->mtrl)
+            t_cylinder  *cyl;
+            cyl = (t_cylinder *)(scene->cy);
+            cyl->mtrl = malloc(sizeof(t_material));
+            if (!cyl->mtrl)
             {
                 printf("Failed to allocate cylinder material\n");
-                return 0 ;
+                free(cyl);
+                free(scene);
+                return (1);
             }
-            cy->mtrl->color = *cy->color;
-            cy->mtrl->ambient = scene->alight->ratio;
-            cy->mtrl->diffuse = 0.5;
-            cy->mtrl->specular = 0.5;
-            cy->mtrl->shininess = 60;
-            //render_scene_cy(data->img, scene);
-            free(cy->color);
-            free(cy->c_axis);
-            free(cy->c_cntr);
-            free(cy->mtrl);
-            free(cy);
+            cyl->mtrl->color = *cyl->color;
+            cyl->mtrl->ambient = scene->alight->ratio;
+            cyl->mtrl->diffuse = 0.5;
+            cyl->mtrl->specular = 0.5;
+            cyl->mtrl->shininess = 60;
+            render_scene_cy(data->img, scene);
             scene->cy = scene->cy->next;
         }
     }
     mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
-    free(scene->pl);
-    free(scene->sp);
-    free(scene->cam->dir);
-    free(scene->cam->pos);
-    free(scene->cam);
-    free(scene->alight->color);
-    free(scene->alight);
-    free(scene->light->color);
-    free(scene->light->dir);
-    free(scene->light);
-    free(scene);
+    ft_free_all(scene);
     mlx_key_hook(data->win, ft_escape_key, data);
     mlx_hook(data->win, 17, 0, ft_close, data);
     mlx_loop(data->ptr);

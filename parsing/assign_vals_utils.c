@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:37:17 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 21:44:17 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/28 20:48:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void    ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
         (*cy)->color->z = ft_atodbl(tmp[2]);
         ft_lstfree(tmp);
     }
-    
 }
 
 void    ft_assign_sp_utils(t_sp **sp, char **lst, int i)
@@ -202,6 +201,47 @@ void    ft_assign_alight_utils(t_alight **lt, char **lst, int i)
         (*lt)->color->x = ft_atodbl(tmp[0]);
         (*lt)->color->y = ft_atodbl(tmp[1]);
         (*lt)->color->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
+    }
+}
+
+void    ft_assign_cn_utils(t_cone **cn, char **lst, int i)
+{
+    char    **tmp;
+
+    if (!*cn || !cn)
+        return ;
+    if (i == 0)
+    {
+        tmp = ft_split(lst[i], ',');
+        (*cn)->vertex = malloc(sizeof(t_vctr));
+        (*cn)->vertex->x = ft_atodbl(tmp[0]);
+        (*cn)->vertex->y = ft_atodbl(tmp[1]);
+        (*cn)->vertex->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
+    }
+    else if (i == 1)
+    {
+        tmp = ft_split(lst[i], ',');
+        (*cn)->axis = malloc(sizeof(t_vctr));
+        (*cn)->axis->x = ft_atodbl(tmp[0]);
+        (*cn)->axis->y = ft_atodbl(tmp[1]);
+        (*cn)->axis->z = ft_atodbl(tmp[2]);
+        ft_lstfree(tmp);
+    }
+    else if (i == 2)
+        (*cn)->tang = ft_atodbl(lst[i]);
+    else if (i == 3)
+        (*cn)->minm = ft_atodbl(lst[i]);
+    else if (i == 4)
+        (*cn)->maxm = ft_atodbl(lst[i]);
+    else if (i == 5)
+    {
+        tmp = ft_split(lst[i], ',');
+        (*cn)->color = malloc(sizeof(t_vctr));
+        (*cn)->color->x = ft_atodbl(tmp[0]);
+        (*cn)->color->y = ft_atodbl(tmp[1]);
+        (*cn)->color->z = ft_atodbl(tmp[2]);
         ft_lstfree(tmp);
     }
 }

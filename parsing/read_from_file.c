@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/01 12:28:39 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/28 20:20:16 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,49 @@ char    **ft_lines(char *filename)
     return (lst);
 }
 
-t_sp   *ft_obj(char **lst)
+int     ft_lst_count(char **lst)
+{
+    int i;
+
+    i = 0;
+    while (lst[i])
+        i++;
+    return (i);
+}
+
+t_cone   *ft_cone(char **lst, int fl)
+{
+    int     i;
+    t_cone    *ptr;
+    char    **tmp;
+    t_cone   *node;
+    (void)fl;
+    t_cone   *lt;
+
+    if (!lst || !*lst)
+        return (NULL);
+    i = 0;
+    lt = NULL;
+    while (lst[i])
+    {
+        tmp = ft_fullsplit(lst[i]);
+        if (!ft_strcmp(tmp[0], "cn"))
+        {
+            ptr = malloc(sizeof(t_cone));
+            if (!ptr)
+                return (NULL);
+            ft_assign_cone(ptr, tmp + 1);
+            node = ft_new_cone(ptr);
+            ft_add_back_cn(&lt, node);
+            free(ptr);
+        }
+        ft_lstfree(tmp);
+        i++;
+    }
+    return (lt);
+}
+
+t_sp   *ft_obj(char **lst, int fl)
 {
     int     i;
     t_sp    *ptr;
@@ -78,11 +120,30 @@ t_sp   *ft_obj(char **lst)
         tmp = ft_fullsplit(lst[i]);
         if (!ft_strcmp(tmp[0], "sp"))
         {
+            int n = ft_lst_count(tmp);
+            if (n < 4 || n > 5 || (n == 5 && !fl))
+            {
+                printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
+                ft_lstfree(tmp);
+                ft_lstfree(lst);
+                return (NULL);
+            }
+            if (n == 5 && ft_strcmp(tmp[4], "B"))
+            {
+                printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
+                ft_lstfree(tmp);
+                ft_lstfree(lst);
+                return (NULL);
+            }
             ptr = malloc(sizeof(t_sp));
             if (!ptr)
                 return (NULL);
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
+            if (n == 5)
+                node->fl = 1;
+            else
+                node->fl = 0;
             ft_add_back(&lt, node);
             free(ptr);
         }
@@ -92,7 +153,7 @@ t_sp   *ft_obj(char **lst)
     return (lt);
 }
 
-t_plane  *ft_obj_pl(char **lst)
+t_plane  *ft_obj_pl(char **lst, int fl)
 {
     int     i;
     t_plane    *ptr;
@@ -100,6 +161,8 @@ t_plane  *ft_obj_pl(char **lst)
     t_plane   *node;
     t_plane   *lt;
 
+    (void) fl;
+    
     if (!lst || !*lst)
         return (NULL);
     i = 0;
@@ -160,11 +223,13 @@ t_cam   *ft_cam(char **lst)
     int     i;
     t_cam   *ptr;
     char    **tmp;
+    int     c;
 
     if (!lst || !*lst)
         return (NULL);
     i = 0;
     ptr = NULL;
+    c = 0;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
@@ -172,6 +237,23 @@ t_cam   *ft_cam(char **lst)
             return (NULL);
         if (!ft_strcmp(tmp[0], "C"))
         {
+            c++;
+            int n = ft_lst_count(tmp);
+            if (n != 4 || c != 1)
+            {
+                if (c > 1)
+                {
+                    printf("%sOnly one camera is needed\n",ERROR_MESSAGE);
+                    ft_lstfree(tmp);
+                    return (NULL);
+                }
+                else
+                {
+                    
+                    ft_lstfree(tmp);
+                    return (printf("%sThe camera has incorrect parameters\n",ERROR_MESSAGE), NULL);
+                }
+            }
             ptr = malloc(sizeof(t_cam));
             ptr->type = CAM;
             ft_assign_camera(ptr, tmp);
@@ -179,6 +261,13 @@ t_cam   *ft_cam(char **lst)
         ft_lstfree(tmp);
         i++;
     }
+    // if (!c)
+    // {
+    //     printf("%sA camera is needed\n",ERROR_MESSAGE);
+    //     ft_lstfree(tmp);
+    //     //ft_lstfree(lst);
+    //     return (NULL);
+    // }
     return (ptr);
 }
 
@@ -219,6 +308,7 @@ t_alight   *ft_alight(char **lst)
     if (!lst || !*lst)
         return (NULL);
     i = 0;
+    node = NULL;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);

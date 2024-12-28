@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:02:43 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/11 21:44:29 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/28 19:59:35 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ void    ft_assign_alight(t_alight *lt, char **lst)
     while (lst[i])
     {
         ft_assign_alight_utils(&lt, lst, i);
+        i++;
+    }
+}
+
+void    ft_assign_cone(t_cone *cn, char **lst)
+{
+    int     i;
+
+    i = 0;
+    while (lst[i])
+    {
+        ft_assign_cn_utils(&cn, lst, i);
         i++;
     }
 }

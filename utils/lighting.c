@@ -71,10 +71,9 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
 {
     (void)u;
     (void)v;
-    
-    t_vctr color = {0};
-    t_ray raysh;
 
+    t_vctr  color;
+    t_ray raysh;
     t_vctr light_dir = vec3_normalize(*light->dir); 
     t_vctr view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point)); 
     color = phong_lighting(light_dir, view_dir, normal, material, light);

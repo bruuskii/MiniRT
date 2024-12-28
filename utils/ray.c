@@ -9,9 +9,15 @@ t_vctr vec3_create(double x, double y, double z)
     return (vec);
 }
 
-t_ray create_ray(t_cam *cam, double u, double v)
+t_ray *create_ray(t_cam *cam, double u, double v)
 {
-    t_ray ray;
+    t_ray *ray;
+
+    if (!cam)
+        return (NULL);
+    ray = malloc(sizeof(t_ray));
+    if (!ray)
+        return (NULL);
     double aspect_ratio = (double)WIDTH / HEIGHT;
     double viewport_height = 2.0 * tan(cam->fov * 0.5 * M_PI / 180.0);
     double viewport_width = aspect_ratio * viewport_height;
@@ -26,8 +32,8 @@ t_ray create_ray(t_cam *cam, double u, double v)
     t_vctr lower_left_corner = vec3_sub(*(cam->pos), 
                                         vec3_add(vec3_scale(horizontal, 0.5), 
                                                  vec3_add(vec3_scale(vertical, 0.5), w)));
-    ray.origin = *(cam->pos);
-    ray.direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner, 
+    ray->origin = *(cam->pos);
+    ray->direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner, 
                                                      vec3_add(vec3_scale(horizontal, u), 
                                                               vec3_scale(vertical, v))), 
                                             *(cam->pos)));
