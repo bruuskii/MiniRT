@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 20:20:16 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/10/11 09:35:00 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void    ft_line_utils(int *c, int fd, char **lst)
         }
         else
         {
-            (*c)++;
             lst[i] = line;
+            (*c)++;
         }
         i++;
     }
@@ -41,7 +41,7 @@ char    **ft_lines(char *filename)
     char    **lst;
     int     c;
 
-    lst = malloc(1000 * sizeof(char *));
+    lst = malloc(20 * sizeof(char *));
     fd = open(filename, O_RDONLY);
     if (fd < 0)
     {
@@ -61,24 +61,13 @@ char    **ft_lines(char *filename)
     return (lst);
 }
 
-int     ft_lst_count(char **lst)
-{
-    int i;
-
-    i = 0;
-    while (lst[i])
-        i++;
-    return (i);
-}
-
-t_cone   *ft_cone(char **lst, int fl)
+t_obj   *ft_obj(char **lst)
 {
     int     i;
-    t_cone    *ptr;
+    void    *ptr;
     char    **tmp;
-    t_cone   *node;
-    (void)fl;
-    t_cone   *lt;
+    t_obj   *node;
+    t_obj   *lt;
 
     if (!lst || !*lst)
         return (NULL);
@@ -87,130 +76,37 @@ t_cone   *ft_cone(char **lst, int fl)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
-        if (!ft_strcmp(tmp[0], "cn"))
-        {
-            ptr = malloc(sizeof(t_cone));
-            if (!ptr)
-                return (NULL);
-            ft_assign_cone(ptr, tmp + 1);
-            node = ft_new_cone(ptr);
-            ft_add_back_cn(&lt, node);
-            free(ptr);
-        }
-        ft_lstfree(tmp);
-        i++;
-    }
-    return (lt);
-}
-
-t_sp   *ft_obj(char **lst, int fl)
-{
-    int     i;
-    t_sp    *ptr;
-    char    **tmp;
-    t_sp   *node;
-    t_sp   *lt;
-
-    if (!lst || !*lst)
-        return (NULL);
-    i = 0;
-    lt = NULL;
-    while (lst[i])
-    {
-        tmp = ft_fullsplit(lst[i]);
-        if (!ft_strcmp(tmp[0], "sp"))
-        {
-            int n = ft_lst_count(tmp);
-            if (n < 4 || n > 5 || (n == 5 && !fl))
-            {
-                printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
-            }
-            if (n == 5 && ft_strcmp(tmp[4], "B"))
-            {
-                printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
-            }
-            ptr = malloc(sizeof(t_sp));
-            if (!ptr)
-                return (NULL);
-            ft_assign_sp(ptr, tmp + 1);
-            node = ft_new(ptr);
-            if (n == 5)
-                node->fl = 1;
-            else
-                node->fl = 0;
-            ft_add_back(&lt, node);
-            free(ptr);
-        }
-        ft_lstfree(tmp);
-        i++;
-    }
-    return (lt);
-}
-
-t_plane  *ft_obj_pl(char **lst, int fl)
-{
-    int     i;
-    t_plane    *ptr;
-    char    **tmp;
-    t_plane   *node;
-    t_plane   *lt;
-
-    (void) fl;
-    
-    if (!lst || !*lst)
-        return (NULL);
-    i = 0;
-    lt = NULL;
-    while (lst[i])
-    {
-        tmp = ft_fullsplit(lst[i]);
+        if (!tmp)
+            return (NULL);
         if (!ft_strcmp(tmp[0], "pl"))
         {
             ptr = malloc(sizeof(t_plane));
             if (!ptr)
                 return (NULL);
-            ft_assign_plane(ptr, tmp + 1);
-            node = ft_new_pl(ptr);
-            ft_add_back_pl(&lt, node);
-            free(ptr);
+            node = ft_new((t_plane *)ptr);
+            node->type = PLANE;
+            ft_assign_plane((t_plane *)ptr, tmp + 1);
+            ft_add_back(&lt, node);
         }
-        ft_lstfree(tmp);
-        i++;
-    }
-    return (lt);
-}
-
-
-t_cylinder  *ft_obj_cy(char **lst)
-{
-    int             i;
-    t_cylinder   *ptr;
-    char         **tmp;
-    t_cylinder   *node;
-    t_cylinder   *lt;
-
-    if (!lst || !*lst)
-        return (NULL);
-    i = 0;
-    lt = NULL;
-    while (lst[i])
-    {
-        tmp = ft_fullsplit(lst[i]);
-        if (!ft_strcmp(tmp[0], "cy"))
+        else if (!ft_strcmp(tmp[0], "cy"))
         {
             ptr = malloc(sizeof(t_cylinder));
             if (!ptr)
                 return (NULL);
-            ft_assign_cy(ptr, tmp + 1);
-            node = ft_new_cy(ptr);
-            ft_add_back_cy(&lt, node);
-            free(ptr);
+            node = ft_new((t_cylinder *)ptr);
+            node->type = CYLINDRE;
+            ft_assign_cy((t_cylinder *)ptr, tmp + 1);
+            ft_add_back(&lt, node);
+        }
+        else if (!ft_strcmp(tmp[0], "sp"))
+        {
+            ptr = malloc(sizeof(t_sp));
+            if (!ptr)
+                return (NULL);
+            node = ft_new((t_sp *)ptr);
+            node->type = SPHERE;
+            ft_assign_sp((t_sp *)ptr, tmp + 1);
+            ft_add_back(&lt, node);
         }
         ft_lstfree(tmp);
         i++;
@@ -223,13 +119,11 @@ t_cam   *ft_cam(char **lst)
     int     i;
     t_cam   *ptr;
     char    **tmp;
-    int     c;
 
     if (!lst || !*lst)
         return (NULL);
     i = 0;
     ptr = NULL;
-    c = 0;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
@@ -237,23 +131,6 @@ t_cam   *ft_cam(char **lst)
             return (NULL);
         if (!ft_strcmp(tmp[0], "C"))
         {
-            c++;
-            int n = ft_lst_count(tmp);
-            if (n != 4 || c != 1)
-            {
-                if (c > 1)
-                {
-                    printf("%sOnly one camera is needed\n",ERROR_MESSAGE);
-                    ft_lstfree(tmp);
-                    return (NULL);
-                }
-                else
-                {
-                    
-                    ft_lstfree(tmp);
-                    return (printf("%sThe camera has incorrect parameters\n",ERROR_MESSAGE), NULL);
-                }
-            }
             ptr = malloc(sizeof(t_cam));
             ptr->type = CAM;
             ft_assign_camera(ptr, tmp);
@@ -261,13 +138,6 @@ t_cam   *ft_cam(char **lst)
         ft_lstfree(tmp);
         i++;
     }
-    // if (!c)
-    // {
-    //     printf("%sA camera is needed\n",ERROR_MESSAGE);
-    //     ft_lstfree(tmp);
-    //     //ft_lstfree(lst);
-    //     return (NULL);
-    // }
     return (ptr);
 }
 
@@ -308,7 +178,6 @@ t_alight   *ft_alight(char **lst)
     if (!lst || !*lst)
         return (NULL);
     i = 0;
-    node = NULL;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);

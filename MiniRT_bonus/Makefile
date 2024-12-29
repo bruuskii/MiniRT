@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2024/10/22 20:10:22 by kbassim          ###   ########.fr        #
+#    Updated: 2024/12/25 01:56:09 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,17 +28,16 @@ CFILES = libft/libft.c\
 		parsing/assign_vals_utils.c\
 		display/window.c\
 		display/win_events.c\
-		display/test.c\
 		utils/objs.c\
-		
+		utils/shadow.c\
+		utils/intersect.c\
+		utils/reflection.c\
+		utils/lighting.c\
+		utils/ray.c\
+		utils/vectors.c\
+
 MAIN = main.c\
-
-CBFILES = Minirt_Bonus/src/intersect.c\
-		Minirt_Bonus/src/lighting.c\
-		Minirt_Bonus/src/main_bonus.c\
-		Minirt_Bonus/src/ray.c\
-		Minirt_Bonus/src/vectors.c\
-
+		
 OBJS = $(CFILES:.c=.o)
 OBJS_B = $(CBFILES:.c=.o)
 OBJ_M = $(MAIN:.c=.o)
