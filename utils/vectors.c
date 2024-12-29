@@ -1,56 +1,38 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vectors.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 16:07:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/10/06 22:07:59 by kbassim          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../miniRT.h"
 
-t_vctr  *ft_verctor(float x, float y, float z)
+t_vctr vec3_add(t_vctr v1, t_vctr v2)
 {
-    t_vctr  *vector;
-
-    vector = malloc(sizeof(t_vctr));
-    if (!vector)
-        return (NULL);
-    vector->x = x;
-    vector->y = y;
-    vector->z = z;
-    return (vector);
+    return vec3_create(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
-double  ft_magnitude(t_vctr *vec)
+t_vctr vec3_sub(t_vctr v1, t_vctr v2)
 {
-    return (sqrt((vec->x * vec->x) + (vec->y * vec->y) + (vec->z * vec->z)));
+    return vec3_create(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
-t_vctr    *vct_norm(t_vctr *vec)
+t_vctr vec3_scale(t_vctr v, double t)
 {
-    double  magnitude;
-
-    if (!vec)
-        return (NULL);
-    magnitude = ft_magnitude(vec);
-    if (magnitude == 0)
-        return (NULL);
-    vec->x = vec->x / magnitude;
-    vec->y = vec->y / magnitude;
-    vec->z = vec->z / magnitude;
-    return (vec);
+    return vec3_create(v.x * t, v.y * t, v.z * t);
 }
 
-t_vctr    *vct_sub(t_vctr *v1, t_vctr *v2)
+t_vctr vec3_cross(t_vctr v1, t_vctr v2)
 {
-    t_vctr *v;
+    return vec3_create(
+        v1.y * v2.z - v1.z * v2.y,
+        v1.z * v2.x - v1.x * v2.z,
+        v1.x * v2.y - v1.y * v2.x
+    );
+}
 
-    v->x = v1->x - v2->x;
-    v->y = v1->y - v2->y;
-    v->z = v1->z - v2->z;
-    return (v);
+double vec3_dot(t_vctr v1, t_vctr v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+t_vctr vec3_normalize(t_vctr v)
+{
+    double length = sqrt(vec3_dot(v, v));
+    if (length == 0)
+        return vec3_create(0, 0, 0);
+    return vec3_scale(v, 1 / length);
 }
