@@ -6,11 +6,16 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/31 15:42:38 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/01 00:10:47 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
+
+int ft_check_first_param(char *s)
+{
+    return (!ft_strcmp(s, "A") || !ft_strcmp(s, "L") || !ft_strcmp(s, "C") || !ft_strcmp(s, "pl")|| !ft_strcmp(s, "sp") ||!ft_strcmp(s, "cy") || !ft_strcmp(s, "cn") );
+}
 
 void    ft_line_utils(int *c, int fd, char **lst)
 {
@@ -87,8 +92,12 @@ t_cone   *ft_cone(char **lst, int fl)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "cn"))
         {
+            if (ft_lst_count(tmp) != 7)
+                ft_print_and_exit("Cone has wrong number of elements", 1);
             ptr = malloc(sizeof(t_cone));
             if (!ptr)
                 return (NULL);
@@ -118,6 +127,8 @@ t_sp   *ft_obj(char **lst, int fl)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "sp"))
         {
             int n = ft_lst_count(tmp);
@@ -166,8 +177,12 @@ t_plane  *ft_obj_pl(char **lst, int fl)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "pl"))
         {
+            if (ft_lst_count(tmp) != 4)
+                ft_print_and_exit("Plane has wrong number of elements", 1);
             ptr = malloc(sizeof(t_plane));
             if (!ptr)
                 return (NULL);
@@ -198,8 +213,14 @@ t_cylinder  *ft_obj_cy(char **lst)
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
+        if (!tmp)
+            return (NULL);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "cy"))
         {
+            if (ft_lst_count(tmp) != 6)
+                ft_print_and_exit("Cylinder has wrong number of elements", 1);
             ptr = malloc(sizeof(t_cylinder));
             if (!ptr)
                 return (NULL);
@@ -231,6 +252,8 @@ t_cam   *ft_cam(char **lst)
         tmp = ft_fullsplit(lst[i]);
         if (!tmp)
             return (NULL);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "C"))
         {
             c++;
@@ -269,25 +292,35 @@ t_light   *ft_light(char **lst)
     char    **tmp;
     t_light   *node;
     t_light   *lt;
+    int         c;
 
     if (!lst || !*lst)
         return (NULL);
     i = 0;
+    c = 0;
     lt = NULL;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
         if (!tmp)
             return (NULL);
+        
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "L"))
         {
+            if (ft_lst_count(tmp) != 4)
+                ft_print_and_exit("Light has wrong number of elements", 1);
             node = ft_new_lt();
             ft_assign_light(node, tmp + 1);
             ft_add_back_lt(&lt, node);
+            c++;
         }
         ft_lstfree(tmp);
         i++;
     }
+    if (c == 0)
+        ft_print_and_exit("at least one light is need", 1);
     return (lt);
 }
 
@@ -296,23 +329,35 @@ t_alight   *ft_alight(char **lst)
     int         i;
     char        **tmp;
     t_alight    *node;
+    int         c;
 
     if (!lst || !*lst)
         return (NULL);
     i = 0;
     node = NULL;
+    c = 0;
     while (lst[i])
     {
         tmp = ft_fullsplit(lst[i]);
         if (!tmp)
             return (NULL);
+        if (!ft_check_first_param(tmp[0]))
+            ft_print_and_exit("Unditenfied object", 1);
         if (!ft_strcmp(tmp[0], "A"))
         {
+            if (ft_lst_count(tmp) != 3)
+                ft_print_and_exit("Light has wrong number of elements", 1);
             node = ft_a_light();
             ft_assign_alight(node, tmp + 1);
+            c++;
         }
         ft_lstfree(tmp);
         i++;
     }
+    if (c == 0)
+        ft_print_and_exit("at least one ambient light is need", 1);
+    else if (c > 1)
+        if (c == 0)
+        ft_print_and_exit("Only one ambient light is need", 1);
     return (node);
 }
