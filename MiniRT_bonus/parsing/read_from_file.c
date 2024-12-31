@@ -12,6 +12,13 @@
 
 #include "../miniRT.h"
 
+void ft_print_and_exit(const char *message, int exit_code)
+{
+    if (message)
+        fprintf(stderr, "%s\n", message);
+    exit(exit_code);
+}
+
 void    ft_line_utils(int *c, int fd, char **lst)
 {
     int     i;
