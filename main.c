@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 21:20:53 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/31 16:54:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 int create_trgb(int t, int r, int g, int b)
 {
     return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void ft_print_and_exit(char *s, int stat)
+{
+    printf("%s%s\n", ERROR_MESSAGE, s);
+    exit (stat);
 }
 
 void    ft_free_all(t_scene *scene)

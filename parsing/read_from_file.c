@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 20:20:16 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/31 15:42:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,16 +124,12 @@ t_sp   *ft_obj(char **lst, int fl)
             if (n < 4 || n > 5 || (n == 5 && !fl))
             {
                 printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
+                exit(1);
             }
             if (n == 5 && ft_strcmp(tmp[4], "B"))
             {
                 printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
+                exit(1);
             }
             ptr = malloc(sizeof(t_sp));
             if (!ptr)
@@ -244,14 +240,12 @@ t_cam   *ft_cam(char **lst)
                 if (c > 1)
                 {
                     printf("%sOnly one camera is needed\n",ERROR_MESSAGE);
-                    ft_lstfree(tmp);
-                    return (NULL);
+                    exit(1);
                 }
                 else
                 {
-                    
-                    ft_lstfree(tmp);
-                    return (printf("%sThe camera has incorrect parameters\n",ERROR_MESSAGE), NULL);
+                    printf("%sThe camera has incorrect parameters\n",ERROR_MESSAGE);
+                    exit(1);
                 }
             }
             ptr = malloc(sizeof(t_cam));
@@ -261,13 +255,11 @@ t_cam   *ft_cam(char **lst)
         ft_lstfree(tmp);
         i++;
     }
-    // if (!c)
-    // {
-    //     printf("%sA camera is needed\n",ERROR_MESSAGE);
-    //     ft_lstfree(tmp);
-    //     //ft_lstfree(lst);
-    //     return (NULL);
-    // }
+    if (!c)
+    {
+        printf("%sA camera is needed\n",ERROR_MESSAGE);
+        exit (1);
+    }
     return (ptr);
 }
 

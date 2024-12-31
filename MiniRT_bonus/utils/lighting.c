@@ -82,70 +82,49 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     t_vctr color;
     t_ray raysh;
     
-    // Normalize the light direction and view direction
     t_vctr light_dir = vec3_normalize(*light->dir); 
     t_vctr view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point)); 
     
-    // Calculate the base color using Phong lighting
     color = phong_lighting(light_dir, view_dir, normal, material, light);
     
-    // Prepare for shadow calculation (if needed)
     raysh.origin = hit.point;
     raysh.direction = vec3_scale(*light->dir, -hit.t);
     t_hit *lol = intersect_scene(&raysh, scene);
-
-    // Initialize chessboard flag
     int is_chessboard = 0;
-
-    // Check if the object has the chessboard flag
-    if (scene->sp && scene->sp->chess && strcmp(scene->sp->chess, "C") == 0)
+    if (scene->sp && scene->sp->chess)
         is_chessboard = 1;
 
     if (is_chessboard)
     {
-        // Create the chessboard pattern (mapping spherical coordinates to u, v)
-        int square_u = floor(u * 8);  // Adjust number of squares on the U axis
-        int square_v = floor(v * 8);  // Adjust number of squares on the V axis
-        
-        // Determine if the current square is black or white
+        int square_u = floor(u * 8);
+        int square_v = floor(v * 8);
         t_vctr pattern_color;
-        t_vctr white = {255.0, 255.0, 255.0};  // White color
-        t_vctr black = {0.0, 0.0, 0.0};       // Black color
-        pattern_color = (square_u + square_v) % 2 == 0 ? white : black;  // Alternating pattern
+        t_vctr white = {255.0, 255.0, 255.0}; 
+        t_vctr black = {0.0, 0.0, 0.0};
+        pattern_color = (square_u + square_v) % 2 == 0 ? white : black; 
 
-        // Check for shadow (hit and no intersection distance)
         if (lol->hit && !lol->t)
         {
             free(lol);
-            // Apply shadow: reduce color brightness
             t_vctr shadowed = vec3_scale(color, 0.75);
-            return vec3_multiply(shadowed, pattern_color);  // Apply chessboard pattern color to shadow
+            return vec3_multiply(shadowed, pattern_color);
         }
         free(lol);
-
-        // Add ambient lighting
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
         color = vec3_add(color, ambient);
-
-        // Apply the chessboard pattern to the color
         color = vec3_multiply(color, pattern_color);
     }
     else
     {
-        // Original lighting calculation if not using a chessboard pattern
         if (lol->hit && !lol->t)
         {
             free(lol);
-            return vec3_scale(color, 0.75);  // Shadow effect without pattern
+            return vec3_scale(color, 0.75);
         }
         free(lol);
-
-        // Add ambient lighting
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
         color = vec3_add(color, ambient);
     }
-
-    // Clamp color values between 0 and 255 (for RGB colors)
     color.x = fmin(fmax(color.x, 0.0), 255.0);
     color.y = fmin(fmax(color.y, 0.0), 255.0);
     color.z = fmin(fmax(color.z, 0.0), 255.0);

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 20:48:35 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/31 16:39:12 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_sp
     t_vctr      *cntr;
     t_vctr      *color;
     int         fl;
+    int         chess;
     struct s_sp *next;
     
 }               t_sp;
@@ -184,7 +185,9 @@ typedef struct  s_data
     void *win;
 }               t_data;
 
-t_hit      *intersect_cone(t_ray *ray, t_cone *cone);
+void        ft_print_and_exit(char *s, int stat);
+int         ft_lst_count(char **lst);
+t_hit       *intersect_cone(t_ray *ray, t_cone *cone);
 t_vctr      vec3_create(double x, double y, double z);
 t_ray       *create_ray(t_cam *cam, double u, double v);
 t_cone      *ft_cone(char **lst, int fl);

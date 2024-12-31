@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 20:20:16 by kbassim          ###   ########.fr       */
+/*   Updated: 2024/12/31 16:37:20 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,18 +122,12 @@ t_sp   *ft_obj(char **lst, int fl)
         {
             int n = ft_lst_count(tmp);
             if (n < 4 || n > 5 || (n == 5 && !fl))
+                ft_print_and_exit("Sphere has incorrect parameters", 1);
+            if (n == 5 && (ft_strcmp(tmp[4], "B") || ft_strcmp(tmp[4], "C")))
             {
-                printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
-            }
-            if (n == 5 && ft_strcmp(tmp[4], "B") && ft_strcmp(tmp[4], "C"))
-            {
+                printf("tmp[4] == %s\n", tmp[4]);
                 printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
-                ft_lstfree(tmp);
-                ft_lstfree(lst);
-                return (NULL);
+                exit (1);
             }
             ptr = malloc(sizeof(t_sp));
             if (!ptr)
@@ -144,9 +138,7 @@ t_sp   *ft_obj(char **lst, int fl)
             {
                 node->fl = 1;
                 if (!ft_strcmp(tmp[4], "C"))
-                {
-                    node->chess = strdup("C");  // Allocate and copy "C"
-                }
+                    node->chess = 1;
             }
             else
                 node->fl = 0;
@@ -248,17 +240,9 @@ t_cam   *ft_cam(char **lst)
             if (n != 4 || c != 1)
             {
                 if (c > 1)
-                {
-                    printf("%sOnly one camera is needed\n",ERROR_MESSAGE);
-                    ft_lstfree(tmp);
-                    return (NULL);
-                }
+                    ft_print_and_exit("Only one camera is needed", 1);
                 else
-                {
-                    
-                    ft_lstfree(tmp);
-                    return (printf("%sThe camera has incorrect parameters\n",ERROR_MESSAGE), NULL);
-                }
+                    ft_print_and_exit("The camera has incorrect parameters", 1);
             }
             ptr = malloc(sizeof(t_cam));
             ptr->type = CAM;
@@ -267,13 +251,6 @@ t_cam   *ft_cam(char **lst)
         ft_lstfree(tmp);
         i++;
     }
-    // if (!c)
-    // {
-    //     printf("%sA camera is needed\n",ERROR_MESSAGE);
-    //     ft_lstfree(tmp);
-    //     //ft_lstfree(lst);
-    //     return (NULL);
-    // }
     return (ptr);
 }
 
