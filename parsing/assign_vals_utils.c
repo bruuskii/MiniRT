@@ -106,7 +106,7 @@ void    ft_assign_plane_utils(t_plane **pl, char **lst, int i)
         (*pl)->color->x = ft_atodbl(tmp[0]);
         (*pl)->color->y  = ft_atodbl(tmp[1]);
         (*pl)->color->z = ft_atodbl(tmp[2]);
-        if (((*pl)->color->x > 255 || (*pl)->color->y > 255 || (*pl)->color->z > 255) || ((*pl)->color->x < 0 || (*pl)->color->y > 0 || (*pl)->color->z > 0))
+        if (((*pl)->color->x > 255 || (*pl)->color->y > 255 || (*pl)->color->z > 255) || ((*pl)->color->x < 0 || (*pl)->color->y < 0 || (*pl)->color->z < 0))
             ft_print_and_exit("Plane has wrong color parameters", 1);
         ft_lstfree(tmp);
     }
@@ -177,7 +177,7 @@ void    ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
         (*cy)->color->x = ft_atodbl(tmp[0]);
         (*cy)->color->y  = ft_atodbl(tmp[1]);
         (*cy)->color->z = ft_atodbl(tmp[2]);
-        if (((*cy)->color->x > 255 || (*cy)->color->y > 255 || (*cy)->color->z > 255) || ((*cy)->color->x < 0 || (*cy)->color->y > 0 || (*cy)->color->z > 0))
+        if (((*cy)->color->x > 255 || (*cy)->color->y > 255 || (*cy)->color->z > 255) || ((*cy)->color->x < 0 || (*cy)->color->y < 0 || (*cy)->color->z < 0))
             ft_print_and_exit("Cylinder has wrong color parameters", 1);
         ft_lstfree (tmp);
     }

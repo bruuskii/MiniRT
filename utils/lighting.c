@@ -21,6 +21,7 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
     double nearest_t = INFINITY;
     t_sp *sp = scene->sp;
     t_plane *pl = scene->pl;
+    t_cylinder *cy = scene->cy;
 
     while (sp)
     {
@@ -55,6 +56,26 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
                 free(hit);
             }
             pl = pl->next;
+        }
+
+    }
+    if (cy)
+    {
+        while (cy)
+        {
+            t_hit *hit = intersect_cylinder(ray, cy);
+            if (hit && hit->t < nearest_t)
+            {
+                if (nearest_hit) 
+                    free(nearest_hit);
+                nearest_hit = hit;
+                nearest_t = hit->t;
+            }
+            else if (hit)
+            {
+                free(hit);
+            }
+            cy = cy->next;
         }
 
     }
