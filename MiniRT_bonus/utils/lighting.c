@@ -21,22 +21,26 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
     double nearest_t = INFINITY;
     t_sp *sp = scene->sp;
     t_plane *pl = scene->pl;
+    t_cylinder *cy = scene->cy;
 
-    while (sp)
+    if (sp)
     {
-        t_hit *hit = intersect_sphere(ray, sp);
-        if (hit && hit->t < nearest_t)
+        while (sp)
         {
-            if (nearest_hit) 
-                free(nearest_hit);
-            nearest_hit = hit;
-            nearest_t = hit->t;
+            t_hit *hit = intersect_sphere(ray, sp);
+            if (hit && hit->t < nearest_t)
+            {
+                if (nearest_hit) 
+                    free(nearest_hit);
+                nearest_hit = hit;
+                nearest_t = hit->t;
+            }
+            else if (hit)
+            {
+                free(hit);
+            }
+            sp = sp->next;
         }
-        else if (hit)
-        {
-            free(hit);
-        }
-        sp = sp->next;
     }
     if (pl)
     {
@@ -55,6 +59,26 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
                 free(hit);
             }
             pl = pl->next;
+        }
+
+    }
+    if (cy)
+    {
+        while (cy)
+        {
+            t_hit *hit = intersect_cylinder(ray,cy);
+            if (hit && hit->t < nearest_t)
+            {
+                if (nearest_hit) 
+                    free(nearest_hit);
+                nearest_hit = hit;
+                nearest_t = hit->t;
+            }
+            else if (hit)
+            {
+                free(hit);
+            }
+            cy = cy->next;
         }
 
     }
@@ -90,12 +114,11 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     raysh.origin = hit.point;
     raysh.direction = vec3_scale(*light->dir, -hit.t);
     t_hit *lol = intersect_scene(&raysh, scene);
-    int is_chessboard = 0;
-    if (scene->sp && scene->sp->chess)
-        is_chessboard = 1;
 
-    if (is_chessboard)
+    if (scene->sp && scene->sp->chess == 2)
     {
+        u = 0.5 + atan2(normal.z, normal.x) / (2 * M_PI);
+        v = 0.5 - asin(normal.y) / M_PI;
         int square_u = floor(u * 8);
         int square_v = floor(v * 8);
         t_vctr pattern_color;
@@ -106,7 +129,7 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
         if (lol->hit && !lol->t)
         {
             free(lol);
-            t_vctr shadowed = vec3_scale(color, 0.75);
+            t_vctr shadowed = vec3_scale(color, -1);
             return vec3_multiply(shadowed, pattern_color);
         }
         free(lol);
@@ -116,7 +139,7 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     }
     else
     {
-        if (lol->hit && !lol->t)
+        if (lol && lol->hit && !lol->t)
         {
             free(lol);
             return vec3_scale(color, 0.75);

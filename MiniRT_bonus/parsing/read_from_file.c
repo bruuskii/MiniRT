@@ -128,9 +128,10 @@ t_sp   *ft_obj(char **lst, int fl)
         if (!ft_strcmp(tmp[0], "sp"))
         {
             int n = ft_lst_count(tmp);
+            printf("n == %d\n", n);
             if (n < 4 || n > 5 || (n == 5 && !fl))
                 ft_print_and_exit("Sphere has incorrect parameters", 1);
-            if (n == 5 && (ft_strcmp(tmp[4], "B") || ft_strcmp(tmp[4], "C")))
+            if (n == 4 && fl && (ft_strcmp(tmp[4], "B") || ft_strcmp(tmp[4], "C")))
             {
                 printf("tmp[4] == %s\n", tmp[4]);
                 printf("%sSphere has wrong flag\n",ERROR_MESSAGE);

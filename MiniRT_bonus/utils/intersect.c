@@ -33,7 +33,7 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
     
     // Original normal calculation
-    t_vctr original_normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
+    t_vctr original_normal = vec3_normalize(vec3_sub(*sphere->cntr, hit->point));
     
     // Check if this sphere has the "B" flag (fl = 1)
     if (sphere->fl == 1)
@@ -106,7 +106,7 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
         return NULL;
 
     hit->hit = 0;
-    double denom = vec3_dot(*plane->normal, ray->direction);
+    double denom = vec3_dot(vec3_normalize(*plane->normal), ray->direction);
     
     if (fabs(denom) < 1e-6)
         return hit;
@@ -166,7 +166,7 @@ t_hit *intersect_cylinder(t_ray *ray, t_cylinder *cy)
     t_vctr proj_point = vec3_add(*cy->c_cntr, projection);
     t_vctr vctr = vec3_sub(proj_point, *cy->c_cntr);
     double distance = ft_magnitude(&vctr);
-    if (distance > cy->height / 2)
+    if (distance > cy->height )
     {
         hit->hit = 0;
         return hit;

@@ -100,7 +100,7 @@ void put_pixel_to_image(char *img_data, int x, int y, int color)
 {
     int offset;
 
-    offset = (y * WIDTH + x) * 4;
+    offset = ((HEIGHT - 1 - y) * WIDTH + x) * 4;
     *(unsigned int*)(img_data + offset) = color;
 }
 
@@ -161,7 +161,6 @@ void render_scene(void *img, t_scene *scene)
 {
     int     x, y;
     t_ray   *ray;
-    t_ray   *rf;
     t_sp    *sp;
     t_hit   *hit;
     char    *img_data;
@@ -181,7 +180,6 @@ void render_scene(void *img, t_scene *scene)
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
             hit = intersect_sphere(ray, scene->sp);
-            rf = reflected_ray(hit, ray);
             if (!ray)
                 return ;
             if (hit && hit->hit)
@@ -190,7 +188,7 @@ void render_scene(void *img, t_scene *scene)
                 t_light *light = scene->light;
                 while (light)
                 {
-                    t_vctr light_color = calculate_lighting(rf, *hit, hit->normal, scene, sp->mtrl, light, u, v);
+                    t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, sp->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
                     final_color.z += light_color.z;
@@ -204,7 +202,6 @@ void render_scene(void *img, t_scene *scene)
             }
             free(hit);
             free(ray);
-            free(rf);
             x++;
         }
         y++;
