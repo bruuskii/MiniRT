@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/01 00:03:13 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/02 19:05:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ typedef struct s_cone
     double tang;
     double  minm;
     double  maxm;
-    t_material material;
+    t_material *mtrl;
     struct s_cone   *next;
 } t_cone;
 
@@ -185,6 +185,7 @@ typedef struct  s_data
     void *win;
 }               t_data;
 
+t_hit       *intersect_cone(t_ray *ray, t_cone *cone);
 void        ft_print_and_exit(char *s, int stat);
 int         ft_lst_count(char **lst);
 t_hit       *intersect_cone(t_ray *ray, t_cone *cone);

@@ -19,9 +19,10 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
 {
     t_hit *nearest_hit = NULL;
     double nearest_t = INFINITY;
-    t_sp *sp = scene->sp;
-    t_plane *pl = scene->pl;
-    t_cylinder *cy = scene->cy;
+    t_sp        *sp = scene->sp;
+    t_plane     *pl = scene->pl;
+    t_cylinder  *cy = scene->cy;
+    t_cone      *cn = scene->cn;
 
     while (sp)
     {
@@ -34,9 +35,7 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
             nearest_t = hit->t;
         }
         else if (hit)
-        {
             free(hit);
-        }
         sp = sp->next;
     }
     if (pl)
@@ -52,12 +51,9 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
                 nearest_t = hit->t;
             }
             else if (hit)
-            {
                 free(hit);
-            }
             pl = pl->next;
         }
-
     }
     if (cy)
     {
@@ -72,12 +68,26 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
                 nearest_t = hit->t;
             }
             else if (hit)
-            {
                 free(hit);
-            }
             cy = cy->next;
         }
-
+    }
+    if (cn)
+    {
+        while (cn)
+        {
+            t_hit *hit = intersect_cone(ray, cn);
+            if (hit && hit->t < nearest_t)
+            {
+                if (nearest_hit) 
+                    free(nearest_hit);
+                nearest_hit = hit;
+                nearest_t = hit->t;
+            }
+            else if (hit)
+                free(hit);
+            cn = cn->next;
+        }
     }
     return nearest_hit;
 }
@@ -101,7 +111,7 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     raysh.origin = hit.point;
     raysh.direction = vec3_scale(*light->dir, -hit.t);
     t_hit  *lol = intersect_scene(&raysh, scene);
-    if (lol->hit && !lol->t)
+    if (lol && lol->hit && !lol->t)
     {
         free(lol);
         return vec3_scale(color, 0.75);

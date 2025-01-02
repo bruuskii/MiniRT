@@ -34,40 +34,66 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     return (hit);
 }
 
-// t_hit *intersect_cone(t_ray *ray, t_cone *cone)
-// {
-//     t_hit *hit = malloc(sizeof(t_hit));
-//     if (!ray)
-//         return (NULL);
-    
-//     // t_vctr oc = vec3_sub(ray->origin, *sphere->cntr);
-//     // double a = vec3_dot(ray->direction, ray->direction);
-//     // double  r = sphere->d / 2;
-//     // double b = 2.0 * vec3_dot(oc, ray->direction);
-//     // double c = vec3_dot(oc, oc) - r * r;
-//     // double discriminant = b * b - 4 * a * c;
-//     // hit->t = 0;
-//     // if (discriminant < 0)
-//     // {
-//     //     hit->hit = 0;
-//     //     return (hit);
-//     // }
-//     // hit->shaddow = 0.0;
-//     // if (discriminant)
-//     //     hit->shaddow = 1.0;
-//     // double sqrt_discriminant = sqrt(discriminant);
-//     // double t1 = (-b - sqrt_discriminant) / (2.0 * a);
-//     // double t2 = (-b + sqrt_discriminant) / (2.0 * a);
-//     // if (t1 > 1e-6)
-//     //     hit->t = t1;
-//     // else if (t2 > 1e-6)
-//     //     hit->t = t2;
-//     // else 
-//     //     return (hit);
-//     // hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
-//     // hit->normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
-//     return (hit);
-// }
+t_hit *intersect_cone(t_ray *ray, t_cone *cone)
+{
+    if (!ray || !cone)
+        return NULL;
+
+    t_hit *hit = malloc(sizeof(t_hit));
+    if (!hit)
+        return NULL;
+
+    t_vctr CO = vec3_sub(ray->origin, *(cone->vertex));
+    t_vctr D = ray->direction;
+    t_vctr V = vec3_normalize(*(cone->axis));
+    double k = cone->tang;
+
+    double D_dot_V = vec3_dot(D, V);
+    double CO_dot_V = vec3_dot(CO, V);
+    double D_dot_D = vec3_dot(D, D);
+    double CO_dot_D = vec3_dot(CO, D);
+    double CO_dot_CO = vec3_dot(CO, CO);
+
+    double a = D_dot_D - (1 + k * k) * (D_dot_V * D_dot_V);
+    double b = 2 * (CO_dot_D - (1 + k * k) * D_dot_V * CO_dot_V);
+    double c = CO_dot_CO - (1 + k * k) * (CO_dot_V * CO_dot_V);
+    double discriminant = b * b - 4 * a * c;
+
+    if (discriminant < 0 || a == 0) {
+        free(hit);
+        return NULL;
+    }
+
+    double sqrt_discriminant = sqrt(discriminant);
+    double t0 = (-b - sqrt_discriminant) / (2.0 * a);
+    double t1 = (-b + sqrt_discriminant) / (2.0 * a);
+
+    double t = t0;
+    if (t0 < 0 || (t1 > 0 && t1 < t0))
+        t = t1;
+    if (t < 0) {
+        free(hit);
+        return NULL;
+    }
+
+    t_vctr intersection_point = vec3_add(ray->origin, vec3_scale(D, t));
+    t_vctr hit_to_vertex = vec3_sub(intersection_point, *(cone->vertex));
+    double m = vec3_dot(hit_to_vertex, V);
+    if (m < cone->minm || m > cone->maxm) {
+        free(hit);
+        return NULL;
+    }
+
+    t_vctr normal = vec3_sub(hit_to_vertex, vec3_scale(V, (1 + k * k) * m));
+    hit->t = t;
+    hit->hit = 1;
+    hit->point = intersection_point;
+    hit->normal = vec3_normalize(normal);
+
+    return hit;
+}
+
+
 
 t_hit *intersect_plane(t_ray *ray, t_plane *plane)
 {

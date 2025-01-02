@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2024/12/25 01:56:09 by kbassim          ###   ########.fr        #
+#    Updated: 2025/01/02 19:26:42 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,28 @@ NAME = miniRT
 BONUS_NAME = miniRT_bonus
 
 CC = cc -g3
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFILES = libft/libft.c\
+		libft/ft_fullsplit.c\
+		libft/ft_split.c\
+		libft/ft_atodbl.c\
+		libft/get_next_line/get_next_line.c\
+		libft/get_next_line/get_next_line_utils.c\
+		parsing/check_file.c\
+		parsing/scene.c\
+		parsing/read_from_file.c\
+		parsing/assign_vals.c\
+		parsing/assign_vals_utils.c\
+		display/window.c\
+		display/win_events.c\
+		utils/objs.c\
+		utils/shadow.c\
+		utils/intersect.c\
+		utils/reflection.c\
+		utils/lighting.c\
+		utils/ray.c\
+		utils/vectors.c\
+		
 CFILES = libft/libft.c\
 		libft/ft_fullsplit.c\
 		libft/ft_split.c\

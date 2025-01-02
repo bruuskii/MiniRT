@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:22:42 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 20:14:27 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/02 19:14:32 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_cone   *ft_new_cone(t_cone *content)
 {
     t_cone       *obj;
 
-    obj = malloc(sizeof(t_sp));
+    obj = malloc(sizeof(t_cone));
     if (!obj)
         return (NULL);
     obj->axis = content->axis;
