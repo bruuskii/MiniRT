@@ -119,8 +119,8 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     {
         u = 0.5 + atan2(normal.z, normal.x) / (2 * M_PI);
         v = 0.5 - asin(normal.y) / M_PI;
-        int square_u = floor(u * 8);
-        int square_v = floor(v * 8);
+        int square_u = floor(u * 16);
+        int square_v = floor(v * 16);
         t_vctr pattern_color;
         t_vctr white = {255.0, 255.0, 255.0}; 
         t_vctr black = {0.0, 0.0, 0.0};
