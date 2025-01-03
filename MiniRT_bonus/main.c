@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/03 03:11:10 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/03 03:27:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,30 @@ int main(int ac, char **av)
             cyl->mtrl->shininess = 60;
             render_scene_cy(data->img, scene);
             scene->cy = scene->cy->next;
+        }
+    }
+    if (scene->cn)
+    {
+        while (scene->cn)
+        {
+            t_cone  *cyl;
+            cyl = (t_cone *)(scene->cn);
+            cyl->mtrl = malloc(sizeof(t_material));
+            if (!cyl->mtrl)
+            {
+                printf("Failed to allocate cylinder material\n");
+                free(cyl);
+                free(scene);
+                return (1);
+            }
+            cyl->mtrl->color = *cyl->color;
+            cyl->mtrl->ambient = scene->alight->ratio;
+            cyl->mtrl->diffuse = 0.5;
+            cyl->mtrl->specular = 0.5;
+            cyl->mtrl->shininess = 60;
+            render_scene_cn(data->img, scene);
+            free(cyl->mtrl);
+            scene->cn = scene->cn->next;
         }
     }
     mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
