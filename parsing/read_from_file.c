@@ -132,12 +132,14 @@ t_sp   *ft_obj(char **lst, int fl)
         if (!ft_strcmp(tmp[0], "sp"))
         {
             int n = ft_lst_count(tmp);
-            if (n < 4 || n > 5 || (n == 5 && !fl))
+            if (n < 4 || n > 6 || (n == 5 && !fl))
             {
                 printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
                 exit(1);
             }
-            if (n == 5 && ft_strcmp(tmp[4], "B"))
+            if ((n == 5 && ft_strcmp(tmp[4], "B") && ft_strcmp(tmp[4], "C")) ||
+                (n == 6 && (ft_strcmp(tmp[4], "B") || ft_strcmp(tmp[5], "C")) &&
+                          (ft_strcmp(tmp[4], "C") || ft_strcmp(tmp[5], "B"))))
             {
                 printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
                 exit(1);
@@ -147,10 +149,30 @@ t_sp   *ft_obj(char **lst, int fl)
                 return (NULL);
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
+            
+            // Initialize flags
+            node->fl = 0;
+            node->chess = 0;
+            
+            // Handle n == 5 case
             if (n == 5)
-                node->fl = 1;
-            else
-                node->fl = 0;
+            {
+                if(!ft_strcmp(tmp[4], "B"))
+                    node->fl = 1;
+                else if (!ft_strcmp(tmp[4], "C"))
+                    node->chess = 1;
+            }
+            // Handle n == 6 case with both flags
+            else if (n == 6)
+            {
+                if ((!ft_strcmp(tmp[4], "B") && !ft_strcmp(tmp[5], "C")) ||
+                    (!ft_strcmp(tmp[4], "C") && !ft_strcmp(tmp[5], "B")))
+                {
+                    node->fl = 1;
+                    node->chess = 1;
+                }
+            }
+            
             ft_add_back(&lt, node);
             free(ptr);
         }

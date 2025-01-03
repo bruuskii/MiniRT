@@ -114,7 +114,7 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     raysh.origin = hit.point;
     raysh.direction = vec3_scale(*light->dir, -hit.t);
     t_hit *lol = intersect_scene(&raysh, scene);
-    scene->sp->chess = 0;
+    //scene->sp->chess = 0;
 
     if (scene->sp && scene->sp->chess == 1)
     {
