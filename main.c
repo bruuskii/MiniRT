@@ -260,16 +260,6 @@ void render_scene_cn(void *img, t_scene *scene)
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
             hit = intersect_cone(ray, scene->cn);
-            if (!hit)
-            {
-                free(ray);
-                return ;
-            }
-            if (!ray)
-            {
-                free(hit);
-                return ;
-            }
             if (hit && hit->hit)
             {
                 t_vctr final_color = {0, 0, 0};

@@ -43,10 +43,10 @@ t_hit *intersect_cone(t_ray *ray, t_cone *cone)
     if (!hit)
         return NULL;
 
-    t_vctr CO = vec3_sub(ray->origin, *(cone->vertex));
+    t_vctr CO = vec3_sub(ray->origin, *(cone->vertex)); // Vector from cone vertex to ray origin
     t_vctr D = ray->direction;
-    t_vctr V = vec3_normalize(*(cone->axis));
-    double k = cone->tang;
+    t_vctr V = vec3_normalize(*(cone->axis)); // Normalize cone axis
+    double k = tan(cone->tang * M_PI / 180.0); // Convert cone angle to radians and get tangent
 
     double D_dot_V = vec3_dot(D, V);
     double CO_dot_V = vec3_dot(CO, V);
@@ -54,44 +54,60 @@ t_hit *intersect_cone(t_ray *ray, t_cone *cone)
     double CO_dot_D = vec3_dot(CO, D);
     double CO_dot_CO = vec3_dot(CO, CO);
 
-    double a = D_dot_D - (1 + k * k) * (D_dot_V * D_dot_V);
-    double b = 2 * (CO_dot_D - (1 + k * k) * D_dot_V * CO_dot_V);
-    double c = CO_dot_CO - (1 + k * k) * (CO_dot_V * CO_dot_V);
-    double discriminant = b * b - 4 * a * c;
+    // Modified quadratic equation coefficients for cone intersection
+    double a = D_dot_D - (1.0 + k * k) * D_dot_V * D_dot_V;
+    double b = 2.0 * (CO_dot_D - (1.0 + k * k) * D_dot_V * CO_dot_V);
+    double c = CO_dot_CO - (1.0 + k * k) * CO_dot_V * CO_dot_V;
 
-    if (discriminant < 0 || a == 0) {
+    double discriminant = b * b - 4.0 * a * c;
+
+    if (discriminant < 0 || fabs(a) < 1e-6) {
         free(hit);
-        return NULL;
+        return NULL; // No intersection
     }
 
     double sqrt_discriminant = sqrt(discriminant);
     double t0 = (-b - sqrt_discriminant) / (2.0 * a);
     double t1 = (-b + sqrt_discriminant) / (2.0 * a);
 
-    double t = t0;
-    if (t0 < 0 || (t1 > 0 && t1 < t0))
+    // Choose the closest positive intersection
+    double t;
+    if (t0 > 1e-6 && t1 > 1e-6)
+        t = fmin(t0, t1);
+    else if (t0 > 1e-6)
+        t = t0;
+    else if (t1 > 1e-6)
         t = t1;
-    if (t < 0) {
+    else {
         free(hit);
-        return NULL;
+        return NULL; // No valid intersection
     }
 
+    // Calculate intersection point along the ray
     t_vctr intersection_point = vec3_add(ray->origin, vec3_scale(D, t));
     t_vctr hit_to_vertex = vec3_sub(intersection_point, *(cone->vertex));
-    double m = vec3_dot(hit_to_vertex, V);
-    if (m < cone->minm || m > cone->maxm) {
+
+    // Check if intersection point lies within the cone's height
+    double m = vec3_dot(hit_to_vertex, V); // Project the hit point onto the cone axis
+    if (m < cone->minm || m > cone->maxm) 
+    {
         free(hit);
-        return NULL;
+        return NULL; // Intersection is outside the cone's height bounds
     }
 
-    t_vctr normal = vec3_sub(hit_to_vertex, vec3_scale(V, (1 + k * k) * m));
+    // Calculate the normal at the intersection point
+    t_vctr normal = vec3_sub(hit_to_vertex, vec3_scale(V, m));
+    normal = vec3_normalize(normal); // Normalize the normal
+
+    // Fill the hit structure with the intersection data
     hit->t = t;
     hit->hit = 1;
     hit->point = intersection_point;
-    hit->normal = vec3_normalize(normal);
+    hit->normal = normal;
 
-    return hit;
+    return hit; // Return the intersection data
 }
+
 
 
 

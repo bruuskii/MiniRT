@@ -29,6 +29,7 @@ t_scene *ft_scene(char **lst, int fl)
     //     exit(1);
     // }
     scene->cn = ft_cone(lst, fl);
+    printf("%f->\n", scene->cn->vertex->y);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
     ft_lstfree(lst);
