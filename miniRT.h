@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/02 19:05:38 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/03 03:16:10 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,18 @@ typedef struct  s_data
     void *win;
 }               t_data;
 
+int         create_trgb(int t, int r, int g, int b);
+t_vctr      amb_color(t_vctr ambiant, t_material *mtrl);
+void        ft_free_all(t_scene *scene);
+void        put_pixel_to_image(char *img_data, int x, int y, int color);
+double      dgrs_to_rdn(double angle);
+void        convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2, double fov);
+double      calculate_distance(double fov);
+void        render_scene_plane(void *img, t_scene *scene);
+void        render_scene_cy(void *img, t_scene *scene);
+void        render_scene(void *img, t_scene *scene);
+void        ft_render_sphere(t_sp **sphere, void *img, t_scene *scene);
+void        render_scene_cn(void *img, t_scene *scene);
 t_hit       *intersect_cone(t_ray *ray, t_cone *cone);
 void        ft_print_and_exit(char *s, int stat);
 int         ft_lst_count(char **lst);

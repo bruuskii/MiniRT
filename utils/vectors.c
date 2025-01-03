@@ -15,6 +15,12 @@ t_vctr vec3_scale(t_vctr v, double t)
     return vec3_create(v.x * t, v.y * t, v.z * t);
 }
 
+void ft_print_and_exit(char *s, int stat)
+{
+    printf("%s%s\n", ERROR_MESSAGE, s);
+    exit (stat);
+}
+
 t_vctr vec3_cross(t_vctr v1, t_vctr v2)
 {
     return vec3_create(

@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/01/02 19:26:42 by kbassim          ###   ########.fr        #
+#    Updated: 2025/01/03 03:26:05 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,29 +34,11 @@ CFILES = libft/libft.c\
 		utils/reflection.c\
 		utils/lighting.c\
 		utils/ray.c\
+		utilities.c\
 		utils/vectors.c\
 		
-CFILES = libft/libft.c\
-		libft/ft_fullsplit.c\
-		libft/ft_split.c\
-		libft/ft_atodbl.c\
-		libft/get_next_line/get_next_line.c\
-		libft/get_next_line/get_next_line_utils.c\
-		parsing/check_file.c\
-		parsing/scene.c\
-		parsing/read_from_file.c\
-		parsing/assign_vals.c\
-		parsing/assign_vals_utils.c\
-		display/window.c\
-		display/win_events.c\
-		utils/objs.c\
-		utils/shadow.c\
-		utils/intersect.c\
-		utils/reflection.c\
-		utils/lighting.c\
-		utils/ray.c\
-		utils/vectors.c\
-
+CBFILES = MiniRT_bonus/main.c\
+		
 MAIN = main.c\
 		
 OBJS = $(CFILES:.c=.o)
@@ -64,12 +46,12 @@ OBJS_B = $(CBFILES:.c=.o)
 OBJ_M = $(MAIN:.c=.o)
 
 all : $(NAME)
-$(NAME) : $(OBJS) $(OBJ_M)
+$(NAME) : $(OBJ_M)
 	$(CC) $(CFLAGS) $(CFILES) $(MAIN) -o $(NAME) -lmlx -lX11 -lXext -lm
 
 bonus : $(BONUS_NAME)
 $(BONUS_NAME) : $(OBJS) $(OBJS_B)
-	$(CC) $(CFLAGS) $(CFILES) $(CBFILES) -o $(BONUS_NAME) -lmlx -lX11 -lXext -lm
+	$(CC) $(CFLAGS) $(CBFILES) $(CFILES) -o $(BONUS_NAME) -lmlx -lX11 -lXext -lm
 
 clean :
 	rm -rf $(OBJS) $(OBJS_B) $(OBJ_M)
