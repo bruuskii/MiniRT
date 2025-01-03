@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:52:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/02 19:27:25 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/03 03:31:19 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_scene *ft_scene(char **lst, int fl)
     //     exit(1);
     // }
     scene->cn = ft_cone(lst, fl);
-    printf("%f->\n", scene->cn->vertex->y);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
     ft_lstfree(lst);

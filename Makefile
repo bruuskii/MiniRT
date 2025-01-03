@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/01/03 03:26:05 by kbassim          ###   ########.fr        #
+#    Updated: 2025/01/03 03:33:04 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ OBJS_B = $(CBFILES:.c=.o)
 OBJ_M = $(MAIN:.c=.o)
 
 all : $(NAME)
-$(NAME) : $(OBJ_M)
+$(NAME) : $(OBJ_M) $(OBJS)
 	$(CC) $(CFLAGS) $(CFILES) $(MAIN) -o $(NAME) -lmlx -lX11 -lXext -lm
 
 bonus : $(BONUS_NAME)

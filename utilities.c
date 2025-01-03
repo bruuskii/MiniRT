@@ -21,16 +21,12 @@ void ft_free_all(t_scene *scene)
 
     if (!scene)
         return;
-
-    // Free camera
     if (scene->cam)
     {
         free(scene->cam->dir);
         free(scene->cam->pos);
         free(scene->cam);
     }
-
-    // Free spheres
     sp = scene->sp;
     while (sp)
     {
@@ -42,8 +38,6 @@ void ft_free_all(t_scene *scene)
         free(sp);
         sp = sp_next;
     }
-
-    // Free planes
     pl = scene->pl;
     while (pl)
     {
@@ -56,8 +50,6 @@ void ft_free_all(t_scene *scene)
         free(pl);
         pl = pl_next;
     }
-
-    // Free cylinders
     cy = scene->cy;
     while (cy)
     {
@@ -70,8 +62,6 @@ void ft_free_all(t_scene *scene)
         free(cy);
         cy = cy_next;
     }
-
-    // Free lights
     lt = scene->light;
     while (lt)
     {
@@ -81,8 +71,6 @@ void ft_free_all(t_scene *scene)
         free(lt);
         lt = lt_next;
     }
-
-    // Free ambient light
     if (scene->alight)
     {
         free(scene->alight->color);
