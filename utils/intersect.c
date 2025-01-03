@@ -14,16 +14,13 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     double b = 2.0 * vec3_dot(oc, ray->direction);
     double c = vec3_dot(oc, oc) - r * r;
     double discriminant = b * b - 4 * a * c;
-    
     hit->t = 0;
     if (discriminant < 0)
     {
         hit->hit = 0;
         return hit;
     }
-    
     hit->shaddow = discriminant ? 1.0 : 0.0;
-    
     double sqrt_discriminant = sqrt(discriminant);
     double t1 = (-b - sqrt_discriminant) / (2.0 * a);
     double t2 = (-b + sqrt_discriminant) / (2.0 * a);
@@ -36,20 +33,19 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
         return (hit);
     
     hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
-    t_vctr original_normal = vec3_normalize(vec3_sub(*sphere->cntr, hit->point));
+    t_vctr original_normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
+    
     if (sphere->fl == 1)
     {
         double bump_intensity = 0.1;
         double noise_x = fmod(sin(hit->point.x * 10), 1.0);
         double noise_y = fmod(cos(hit->point.y * 10), 1.0);
-        double noise_z = fmod(tan(hit->point.z * 10), 1.0);
-        
+        double noise_z = fmod(tan(hit->point.z * 10), 1.0); 
         t_vctr noise_offset = {
             noise_x * bump_intensity,
             noise_y * bump_intensity,
             noise_z * bump_intensity
         };
-        
         hit->normal = vec3_normalize(vec3_add(original_normal, noise_offset));
     }
     else
