@@ -61,23 +61,38 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
         return NULL;
 
     hit->hit = 0;
-    double denom = vec3_dot(vec3_normalize(*plane->normal), ray->direction);
     
+    // Normalize the plane normal
+    t_vctr normalized_normal = vec3_normalize(*plane->normal);
+    
+    // Calculate denominator
+    double denom = vec3_dot(normalized_normal, ray->direction);
+    
+    // Check if ray is parallel to plane
     if (fabs(denom) < 1e-6)
         return hit;
 
+    // Calculate vector from ray origin to point on plane
     t_vctr oc = vec3_sub(*plane->point, ray->origin);
-    double t = vec3_dot(oc, *plane->normal) / denom;
+    
+    // Calculate intersection distance
+    double t = vec3_dot(oc, normalized_normal) / denom;
+    
+    // Check if intersection is in front of ray
     if (t > 1e-6)
     {
         hit->t = t;
-        t_vctr intersection_point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
-        intersection_point.x /= (intersection_point.z);
-        intersection_point.y /= (intersection_point.z);
+        // Calculate intersection point without division by z
+        hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
         hit->hit = 1;
-        hit->point = intersection_point;
-        hit->normal = vec3_normalize(*plane->normal);
+        // Use the normalized normal
+        hit->normal = normalized_normal;
+        
+        // If the ray hits from behind, flip the normal
+        if (denom > 0)
+            hit->normal = vec3_scale(hit->normal, -1);
     }
+    
     return hit;
 }
 
