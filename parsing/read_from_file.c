@@ -132,7 +132,7 @@ t_sp   *ft_obj(char **lst, int fl)
         if (!ft_strcmp(tmp[0], "sp"))
         {
             int n = ft_lst_count(tmp);
-            if (n < 4 || n > 8 || (n == 5 && !fl))
+            if (n < 4 || n > 6 || (n == 5 && !fl))
             {
                 printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
                 exit(1);
@@ -143,15 +143,6 @@ t_sp   *ft_obj(char **lst, int fl)
             {
                 printf("%sSphere has wrong flag\n",ERROR_MESSAGE);
                 exit(1);
-            }
-            if (n == 8)
-            {
-                if (ft_strcmp(tmp[4], "-t") && ft_strcmp(tmp[5], "img/planet.xpm")
-                    && ft_strcmp(tmp[6], "-n") && ft_strcmp(tmp[7], "img/planet_normal.xpm"))
-                {
-                    printf("%sSphere has wrong flag\n", ERROR_MESSAGE);
-                    exit(1);
-                }
             }
             ptr = malloc(sizeof(t_sp));
             if (!ptr)
@@ -181,17 +172,7 @@ t_sp   *ft_obj(char **lst, int fl)
                     node->chess = 1;
                 }
             }
-            else if (n == 8)
-            {
-                if (!ft_strcmp(tmp[4], "-t") && !ft_strcmp(tmp[5], "img/planet.xpm")
-                    && !ft_strcmp(tmp[6], "-n") && !ft_strcmp(tmp[7], "img/planet_normal.xpm"))
-                    {
-                        node->earth = 1;
-                        node->texture_path = ft_strdup(tmp[5]);
-                        node->normal_map_path = ft_strdup(tmp[7]);
-                        load_texture_and_normal_map(node);
-                    }
-            }
+            
             ft_add_back(&lt, node);
             free(ptr);
         }
