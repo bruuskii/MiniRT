@@ -61,38 +61,32 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
         return NULL;
 
     hit->hit = 0;
-    
-    // Normalize the plane normal
-    t_vctr normalized_normal = vec3_normalize(*plane->normal);
-    
-    // Calculate denominator
-    double denom = vec3_dot(normalized_normal, ray->direction);
-    
-    // Check if ray is parallel to plane
-    if (fabs(denom) < 1e-6)
+    t_vctr D = vec3_normalize(ray->direction);
+    t_vctr V = vec3_normalize(*plane->normal);
+    double D_dot_V = vec3_dot(D, V);
+    if (fabs(D_dot_V) < 1e-6)
         return hit;
+    t_vctr ray_to_plane = vec3_sub(*plane->point, ray->origin);
+    double t = vec3_dot(ray_to_plane, V) / D_dot_V;
+    if (t < 0)
+        return hit;
+    t_vctr intersection = vec3_add(ray->origin, vec3_scale(ray->direction, t));
+    t_vctr plane_x, plane_y;
+    if (fabs(V.x) > 1e-6)
+        plane_x = vec3_normalize(vec3_cross(V, (t_vctr){0, 1, 0}));
+    else
+        plane_x = vec3_normalize(vec3_cross(V, (t_vctr){1, 0, 0}));
+    plane_y = vec3_cross(V, plane_x);
+    t_vctr local_point = vec3_sub(intersection, *plane->point);
+    double u = vec3_dot(local_point, plane_x);
+    double v = vec3_dot(local_point, plane_y);
+    if (fabs(u) > 200 || fabs(v) > INFINITY)
+        return hit;
+    hit->t = t;
+    hit->hit = 1;
+    hit->point = intersection;
+    hit->normal =  V ;
 
-    // Calculate vector from ray origin to point on plane
-    t_vctr oc = vec3_sub(*plane->point, ray->origin);
-    
-    // Calculate intersection distance
-    double t = vec3_dot(oc, normalized_normal) / denom;
-    
-    // Check if intersection is in front of ray
-    if (t > 1e-6)
-    {
-        hit->t = t;
-        // Calculate intersection point without division by z
-        hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
-        hit->hit = 1;
-        // Use the normalized normal
-        hit->normal = normalized_normal;
-        
-        // If the ray hits from behind, flip the normal
-        if (denom > 0)
-            hit->normal = vec3_scale(hit->normal, -1);
-    }
-    
     return hit;
 }
 
