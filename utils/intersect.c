@@ -59,34 +59,63 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
     t_hit *hit = malloc(sizeof(t_hit));
     if (!hit)
         return NULL;
-
+    
+    // Initialize hit structure
     hit->hit = 0;
+    hit->t = INFINITY;
+    
+    // Normalize direction vectors
     t_vctr D = vec3_normalize(ray->direction);
-    t_vctr V = vec3_normalize(*plane->normal);
-    double D_dot_V = vec3_dot(D, V);
-    if (fabs(D_dot_V) < 1e-6)
+    t_vctr N = vec3_normalize(*plane->normal);
+    
+    // Calculate denominator (D·N)
+    double denom = vec3_dot(D, N);
+    
+    // Check if ray is parallel to plane (or nearly parallel)
+    // Using a slightly larger epsilon for better numerical stability
+    const double EPSILON = 1e-7;
+    if (fabs(denom) < EPSILON)
         return hit;
+    
+    // Calculate vector from ray origin to plane point
     t_vctr ray_to_plane = vec3_sub(*plane->point, ray->origin);
-    double t = vec3_dot(ray_to_plane, V) / D_dot_V;
-    if (t < 0)
+    
+    // Calculate intersection distance
+    double t = vec3_dot(ray_to_plane, N) / denom;
+    
+    // Check if intersection is behind the ray
+    if (t < EPSILON)
         return hit;
-    t_vctr intersection = vec3_add(ray->origin, vec3_scale(ray->direction, t));
-    t_vctr plane_x, plane_y;
-    if (fabs(V.x) > 1e-6)
-        plane_x = vec3_normalize(vec3_cross(V, (t_vctr){0, 1, 0}));
-    else
-        plane_x = vec3_normalize(vec3_cross(V, (t_vctr){1, 0, 0}));
-    plane_y = vec3_cross(V, plane_x);
+    
+    // Calculate intersection point
+    t_vctr intersection = vec3_add(ray->origin, vec3_scale(D, t));
+    
+    // Calculate plane basis vectors for UV mapping
+    t_vctr plane_u, plane_v;
+    
+    // Choose most stable axis for cross product
+    t_vctr up = (fabs(N.y) < 0.9) ? (t_vctr){0, 1, 0} : (t_vctr){0, 0, 1};
+    plane_u = vec3_normalize(vec3_cross(N, up));
+    plane_v = vec3_normalize(vec3_cross(N, plane_u));
+    
+    // Calculate UV coordinates
     t_vctr local_point = vec3_sub(intersection, *plane->point);
-    double u = vec3_dot(local_point, plane_x);
-    double v = vec3_dot(local_point, plane_y);
-    if (fabs(u) > 200 || fabs(v) > INFINITY)
+    double u = vec3_dot(local_point, plane_u);
+    double v = vec3_dot(local_point, plane_v);
+    
+    // Check if point is within plane bounds
+    // Using fixed dimensions as in original code
+    const double MAX_WIDTH = 110.0;   // From original code
+    const double MAX_HEIGHT = 120.0;  // From original code
+    if (fabs(u) > MAX_WIDTH || fabs(v) > MAX_HEIGHT)
         return hit;
-    hit->t = t;
+    
+    // Fill hit information
     hit->hit = 1;
+    hit->t = t;
     hit->point = intersection;
-    hit->normal =  V ;
-
+    hit->normal = (denom < 0) ? N : vec3_scale(N, -1); // Ensure normal faces ray
+    
     return hit;
 }
 

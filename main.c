@@ -51,15 +51,6 @@ int main(int ac, char **av)
             scene->pl = scene->pl->next;
         }
     }
-    if (scene->sp)
-    {
-        while (scene->sp)
-        {
-            t_sp *sphere = scene->sp;
-            ft_render_sphere(&sphere, data->img, scene);
-            scene->sp = scene->sp->next; 
-        }
-    }
     if (scene->cy)
     {
         while (scene->cy)
@@ -81,6 +72,15 @@ int main(int ac, char **av)
             cyl->mtrl->shininess = 60;
             render_scene_cy(data->img, scene);
             scene->cy = scene->cy->next;
+        }
+    }
+    if (scene->sp)
+    {
+        while (scene->sp)
+        {
+            t_sp *sphere = scene->sp;
+            ft_render_sphere(&sphere, data->img, scene);
+            scene->sp = scene->sp->next; 
         }
     }
     if (scene->cn)

@@ -132,7 +132,7 @@ t_sp   *ft_obj(char **lst, int fl)
         if (!ft_strcmp(tmp[0], "sp"))
         {
             int n = ft_lst_count(tmp);
-            if (n < 4 || n > 6 || (n == 5 && !fl))
+            if (n < 4 || n > 6 || ((n == 5 || n == 6) && !fl))
             {
                 printf("%sSphere has incorrect parameters\n",ERROR_MESSAGE);
                 exit(1);
@@ -155,7 +155,7 @@ t_sp   *ft_obj(char **lst, int fl)
             node->chess = 0;
             
             // Handle n == 5 case
-            if (n == 5)
+            if (n == 5 && fl)
             {
                 if(!ft_strcmp(tmp[4], "B"))
                     node->fl = 1;
@@ -163,7 +163,7 @@ t_sp   *ft_obj(char **lst, int fl)
                     node->chess = 1;
             }
             // Handle n == 6 case with both flags
-            else if (n == 6)
+            else if (n == 6 && fl)
             {
                 if ((!ft_strcmp(tmp[4], "B") && !ft_strcmp(tmp[5], "C")) ||
                     (!ft_strcmp(tmp[4], "C") && !ft_strcmp(tmp[5], "B")))
