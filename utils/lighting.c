@@ -21,7 +21,7 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
     double nearest_t = INFINITY;
 
     t_sp *sp = scene->sp;
-    if (sp)
+    while (sp)
     {
         t_hit *hit = intersect_sphere(ray, sp);
         if (hit && hit->t < nearest_t)
@@ -35,9 +35,10 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
         {
             free(hit);
         }
+        sp = sp->next;
     }
     t_plane *pl = scene->pl;
-    if (pl)
+    while (pl)
     {
         t_hit *hit = intersect_plane(ray, pl);
         if (hit && hit->t < nearest_t)
@@ -54,7 +55,7 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
         pl = pl->next;
     }
     t_cylinder *cy = scene->cy;
-    if (cy)
+    while (cy)
     {
         t_hit *hit = intersect_cylinder(ray, cy);
         if (hit && hit->t < nearest_t)
@@ -68,6 +69,7 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
         {
             free(hit);
         }
+        cy = cy->next;
     }
 
     return nearest_hit;
@@ -101,9 +103,10 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     color = phong_lighting(light_dir, view_dir, normal, material, light);
     
     raysh.origin = hit.point;
-    raysh.direction = vec3_scale(vec3_sub(*scene->light->dir, hit.point), -1);
-
+    raysh.direction = vec3_scale(vec3_sub(*light->dir, hit.point), -1);
     t_hit *lol = intersect_scene(&raysh, scene);
+    //scene->sp->chess = 0;
+
     if (scene->sp && scene->sp->chess == 1)
     {
         u = 0.5 + atan2(normal.z, normal.x) / (2 * M_PI);
@@ -115,10 +118,10 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
         t_vctr black = {0.0, 0.0, 0.0};
         pattern_color = (square_u + square_v) % 2 == 0 ? white : black; 
 
-        if (lol && lol->hit && lol->t > 0)
+        if (lol->hit && !lol->t)
         {
             free(lol);
-            t_vctr shadowed = vec3_scale(color, 0.5);
+            t_vctr shadowed = vec3_scale(color, 1);
             return vec3_multiply(shadowed, pattern_color);
         }
         free(lol);
@@ -128,6 +131,12 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     }
     else
     {
+        printf("blue = %f\n", scene->sp->color->z);
+        if (lol->hit && !lol->t)
+        {
+            free(lol);
+            return (vec3_scale(color, 1));
+        }
         free(lol);
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
         color = vec3_add(color, ambient);
@@ -137,7 +146,6 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     color.z = fmin(fmax(color.z, 0.0), 255.0);
     return color;
 }
-
 
 
 
