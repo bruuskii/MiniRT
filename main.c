@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/03 03:13:47 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 01:29:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,21 @@ int main(int ac, char **av)
             scene->pl = scene->pl->next;
         }
     }
+    if (scene->sp)
+    {
+        while (scene->sp)
+        {
+            t_sp *sphere = scene->sp;
+            sphere->mtrl = malloc(sizeof(t_material));
+            sphere->mtrl->color = *sphere->color;
+            sphere->mtrl->ambient = scene->alight->ratio;
+            sphere->mtrl->diffuse = 0.5;
+            sphere->mtrl->specular = 0.5;
+            sphere->mtrl->shininess = 60;
+            render_scene(data->img, scene);
+            scene->sp = scene->sp->next; 
+        }
+    }
     if (scene->cy)
     {
         while (scene->cy)
@@ -72,15 +87,6 @@ int main(int ac, char **av)
             cyl->mtrl->shininess = 60;
             render_scene_cy(data->img, scene);
             scene->cy = scene->cy->next;
-        }
-    }
-    if (scene->sp)
-    {
-        while (scene->sp)
-        {
-            t_sp *sphere = scene->sp;
-            ft_render_sphere(&sphere, data->img, scene);
-            scene->sp = scene->sp->next; 
         }
     }
     if (scene->cn)

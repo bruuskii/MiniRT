@@ -183,6 +183,7 @@ void render_scene(void *img, t_scene *scene)
                 t_light *light = scene->light;
                 while (light)
                 {
+                    
                     t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, sp->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
@@ -251,6 +252,7 @@ void render_scene_cn(void *img, t_scene *scene)
         }
         y++;
     }
+    
 }
 
 void render_scene_plane(void *img, t_scene *scene) 
@@ -343,16 +345,4 @@ void render_scene_cy(void *img, t_scene *scene)
         }
         y++;
     }
-}
-
-void    ft_render_sphere(t_sp **sphere, void *img, t_scene *scene)
-{
-    *sphere = (t_sp *)(scene->sp);
-    (*sphere)->mtrl = malloc(sizeof(t_material));
-    (*sphere)->mtrl->color = *(*sphere)->color;
-    (*sphere)->mtrl->ambient = scene->alight->ratio;
-    (*sphere)->mtrl->diffuse = 0.5;
-    (*sphere)->mtrl->specular = 0.5;
-    (*sphere)->mtrl->shininess = 60;
-    render_scene(img, scene);
 }

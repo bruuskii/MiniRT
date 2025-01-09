@@ -19,71 +19,62 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
 {
     t_hit *nearest_hit = NULL;
     double nearest_t = INFINITY;
+
     t_sp *sp = scene->sp;
+    while (sp)
+    {
+        t_hit *hit = intersect_sphere(ray, sp);
+        if (hit && hit->t < nearest_t)
+        {
+            if (nearest_hit) 
+                free(nearest_hit);
+            nearest_hit = hit;
+            nearest_t = hit->t;
+        }
+        else if (hit)
+        {
+            free(hit);
+        }
+        sp = sp->next;
+    }
     t_plane *pl = scene->pl;
+    while (pl)
+    {
+        t_hit *hit = intersect_plane(ray, pl);
+        if (hit && hit->t < nearest_t)
+        {
+            if (nearest_hit) 
+                free(nearest_hit);
+            nearest_hit = hit;
+            nearest_t = hit->t;
+        }
+        else if (hit)
+        {
+            free(hit);
+        }
+        pl = pl->next;
+    }
     t_cylinder *cy = scene->cy;
-
-    if (sp)
+    while (cy)
     {
-        while (sp)
+        t_hit *hit = intersect_cylinder(ray, cy);
+        if (hit && hit->t < nearest_t)
         {
-            t_hit *hit = intersect_sphere(ray, sp);
-            if (hit && hit->t < nearest_t)
-            {
-                if (nearest_hit) 
-                    free(nearest_hit);
-                nearest_hit = hit;
-                nearest_t = hit->t;
-            }
-            else if (hit)
-            {
-                free(hit);
-            }
-            sp = sp->next;
+            if (nearest_hit) 
+                free(nearest_hit);
+            nearest_hit = hit;
+            nearest_t = hit->t;
         }
+        else if (hit)
+        {
+            free(hit);
+        }
+        cy = cy->next;
     }
-    if (pl)
-    {
-        while (pl)
-        {
-            t_hit *hit = intersect_plane(ray, pl);
-            if (hit && hit->t < nearest_t)
-            {
-                if (nearest_hit) 
-                    free(nearest_hit);
-                nearest_hit = hit;
-                nearest_t = hit->t;
-            }
-            else if (hit)
-            {
-                free(hit);
-            }
-            pl = pl->next;
-        }
 
-    }
-    if (cy)
-    {
-        while (cy)
-        {
-            t_hit *hit = intersect_cylinder(ray,cy);
-            if (hit && hit->t < nearest_t)
-            {
-                if (nearest_hit) 
-                    free(nearest_hit);
-                nearest_hit = hit;
-                nearest_t = hit->t;
-            }
-            else if (hit)
-            {
-                free(hit);
-            }
-            cy = cy->next;
-        }
-
-    }
     return nearest_hit;
 }
+
 
 
 double vec3_length(t_vctr vec) 
@@ -138,21 +129,21 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
         color = vec3_add(color, ambient);
         color = vec3_multiply(color, pattern_color);
     }
-    else
-    {
-        if (lol && lol->hit && !lol->t)
-        {
-            free(lol);
-            return vec3_scale(color, 0.75);
-        }
-        free(lol);
+    // else
+    // {
+    //     printf("blue = %f\n", scene->sp->color->z);
+    //     if (lol->hit && !lol->t)
+    //     {
+    //         free(lol);
+    //         return (vec3_scale(color, -1));
+    //     }
+         free(lol);
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
         color = vec3_add(color, ambient);
-    }
+    // }
     color.x = fmin(fmax(color.x, 0.0), 255.0);
     color.y = fmin(fmax(color.y, 0.0), 255.0);
     color.z = fmin(fmax(color.z, 0.0), 255.0);
-
     return color;
 }
 
