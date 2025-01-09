@@ -6,7 +6,7 @@ int create_trgb(int t, int r, int g, int b)
 }
 
 
-void ft_free_all(t_scene *scene)
+void ft_free_all(t_scene **scene)
 {
     t_sp        *sp;
     t_sp        *sp_next;
@@ -19,15 +19,15 @@ void ft_free_all(t_scene *scene)
     t_cone      *cn;
     t_cone      *cn_next;
 
-    if (!scene)
+    if (!scene || !*scene)
         return;
-    if (scene->cam)
+    if ((*scene)->cam)
     {
-        free(scene->cam->dir);
-        free(scene->cam->pos);
-        free(scene->cam);
+        free((*scene)->cam->dir);
+        free((*scene)->cam->pos);
+        free((*scene)->cam);
     }
-    sp = scene->sp;
+    sp = (*scene)->sp;
     while (sp)
     {
         sp_next = sp->next;
@@ -35,10 +35,9 @@ void ft_free_all(t_scene *scene)
         free(sp->color);
         if (sp->mtrl)
             free(sp->mtrl);
-        free(sp);
         sp = sp_next;
     }
-    pl = scene->pl;
+    pl = (*scene)->pl;
     while (pl)
     {
         pl_next = pl->next;
@@ -50,7 +49,7 @@ void ft_free_all(t_scene *scene)
         free(pl);
         pl = pl_next;
     }
-    cy = scene->cy;
+    cy = (*scene)->cy;
     while (cy)
     {
         cy_next = cy->next;
@@ -62,7 +61,7 @@ void ft_free_all(t_scene *scene)
         free(cy);
         cy = cy_next;
     }
-    lt = scene->light;
+    lt = (*scene)->light;
     while (lt)
     {
         lt_next = lt->next;
@@ -71,12 +70,12 @@ void ft_free_all(t_scene *scene)
         free(lt);
         lt = lt_next;
     }
-    if (scene->alight)
+    if ((*scene)->alight)
     {
-        free(scene->alight->color);
-        free(scene->alight);
+        free((*scene)->alight->color);
+        free((*scene)->alight);
     }
-    cn = scene->cn;
+    cn = (*scene)->cn;
     while (cn)
     {
         cn_next = cn->next;
@@ -88,7 +87,6 @@ void ft_free_all(t_scene *scene)
         free(cn);
         cn = cn_next;
     }
-    free(scene);
 }
 
 
@@ -183,18 +181,25 @@ void render_scene(void *img, t_scene *scene)
                 t_light *light = scene->light;
                 while (light)
                 {
-                    
                     t_vctr light_color = calculate_lighting(ray, *hit, hit->normal, scene, sp->mtrl, light, u, v);
                     final_color.x += light_color.x;
                     final_color.y += light_color.y;
                     final_color.z += light_color.z;
                     if (light)
                         light = light->next;
+                    
                 }
                 final_color.x = fmin(fmax(final_color.x, 0), 255);
                 final_color.y = fmin(fmax(final_color.y, 0), 255);
                 final_color.z = fmin(fmax(final_color.z, 0), 255);
-                put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+                if (hit->is_t2)
+                {
+                    printf("x == %d\n", x);
+                    put_pixel_to_image(img_data, x, y, create_trgb(0, 255, 255, 255));
+                }
+                else
+                    put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+                //put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(hit);
             free(ray);
@@ -337,7 +342,13 @@ void render_scene_cy(void *img, t_scene *scene)
                 final_color.x = fmin(fmax(final_color.x, 0), 255);
                 final_color.y = fmin(fmax(final_color.y, 0), 255);
                 final_color.z = fmin(fmax(final_color.z, 0), 255);
-                 put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+                if (hit->is_t2)
+                {
+                    printf("x == %d\n", x);
+                    put_pixel_to_image(img_data, x, y, create_trgb(0, 255, 255, 255));
+                }
+                else
+                    put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(ray);
             free(hit);

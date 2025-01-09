@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/09 01:29:28 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 06:39:03 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int main(int ac, char **av)
         while (scene->pl)
         {
            t_plane *plane = (t_plane *)(scene->pl);
+           t_plane *pl_next = plane->next;
+
             plane->mtrl = malloc(sizeof(t_material));
             plane->mtrl->color = *plane->color;
             plane->mtrl->ambient = scene->alight->ratio;
@@ -48,7 +50,13 @@ int main(int ac, char **av)
             plane->mtrl->specular = 0.5;
             plane->mtrl->shininess = 60;
             render_scene_plane(data->img, scene);
-            scene->pl = scene->pl->next;
+            free(plane->point);
+            free(plane->normal);
+            free(plane->color);
+            if (plane->mtrl)
+                free(plane->mtrl);
+            free(plane);
+            scene->pl = pl_next;
         }
     }
     if (scene->sp)
@@ -56,6 +64,8 @@ int main(int ac, char **av)
         while (scene->sp)
         {
             t_sp *sphere = scene->sp;
+            t_sp *sp_next = sphere->next;
+            
             sphere->mtrl = malloc(sizeof(t_material));
             sphere->mtrl->color = *sphere->color;
             sphere->mtrl->ambient = scene->alight->ratio;
@@ -63,7 +73,12 @@ int main(int ac, char **av)
             sphere->mtrl->specular = 0.5;
             sphere->mtrl->shininess = 60;
             render_scene(data->img, scene);
-            scene->sp = scene->sp->next; 
+            free(sphere->cntr);
+            free(sphere->color);
+            if (sphere->mtrl)
+                free(sphere->mtrl);
+            free(sphere);
+            scene->sp = sp_next; 
         }
     }
     if (scene->cy)
@@ -72,6 +87,8 @@ int main(int ac, char **av)
         {
             t_cylinder  *cyl;
             cyl = (t_cylinder *)(scene->cy);
+            t_cylinder *cy_next = cyl->next;
+            
             cyl->mtrl = malloc(sizeof(t_material));
             if (!cyl->mtrl)
             {
@@ -86,7 +103,13 @@ int main(int ac, char **av)
             cyl->mtrl->specular = 0.5;
             cyl->mtrl->shininess = 60;
             render_scene_cy(data->img, scene);
-            scene->cy = scene->cy->next;
+            free(cyl->c_axis);
+            free(cyl->c_cntr);
+            free(cyl->color);
+            if (cyl->mtrl)
+                free(cyl->mtrl);
+            free(cyl);
+            scene->cy = cy_next;
         }
     }
     if (scene->cn)
@@ -113,8 +136,9 @@ int main(int ac, char **av)
             scene->cn = scene->cn->next;
         }
     }
+    ft_free_all(&scene);
+    free(scene);
     mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
-    ft_free_all(scene);
     mlx_key_hook(data->win, ft_escape_key, data);
     mlx_hook(data->win, 17, 0, ft_close, data);
     mlx_loop(data->ptr);

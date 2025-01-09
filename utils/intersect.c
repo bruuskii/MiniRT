@@ -15,6 +15,7 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     double c = vec3_dot(oc, oc) - r * r;
     double discriminant = b * b - 4 * a * c;
     hit->t = 0;
+    hit->is_t2 = 0;
     if (discriminant < 0)
     {
         hit->hit = 0;
@@ -27,7 +28,10 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     if (t1 > 1e-6)
         hit->t = t1;
     else if (t2 > 1e-6)
+    {
         hit->t = t2;
+        hit->is_t2 = 1;
+    }
     else 
         return (hit);
     
@@ -105,8 +109,10 @@ t_hit *intersect_plane(t_ray *ray, t_plane *plane)
     hit->hit = 1;
     hit->t = t;
     hit->point = intersection;
-    hit->normal = (denom < 0) ? N : vec3_scale(N, -1);
-
+    if (denom < 0)
+        hit->normal =  N;
+    else 
+        hit->normal = vec3_scale(N, -1);
     return hit;
 }
 

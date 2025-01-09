@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/09 04:02:44 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 06:26:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ typedef struct s_hit
     double  t;
     t_vctr  point;
     t_vctr  normal;
+    int     is_t2;
 } t_hit;
 
 
@@ -187,7 +188,7 @@ typedef struct  s_data
 
 int         create_trgb(int t, int r, int g, int b);
 t_vctr      amb_color(t_vctr ambiant, t_material *mtrl);
-void        ft_free_all(t_scene *scene);
+
 void        put_pixel_to_image(char *img_data, int x, int y, int color);
 double      dgrs_to_rdn(double angle);
 void        convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2, double fov);
@@ -223,7 +224,7 @@ t_hit       *intersect_plane(t_ray *ray, t_plane *plane);
 t_hit       *intersect_cylinder(t_ray *ray, t_cylinder *cy);
 t_hit       *intersect_scene(t_ray *ray, t_scene *scene);
 t_ray       *reflected_ray(t_hit *hit, t_ray *ray);
-void        ft_free_all(t_scene *scene);
+void        ft_free_all(t_scene **scene);
 t_win       *ft_window(int height, int width);
 void        ft_free_win(t_win *win);
 int         ft_escape_key(int key, void *param);

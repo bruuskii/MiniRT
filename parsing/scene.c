@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:52:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/03 03:31:19 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 06:25:25 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ t_scene *ft_scene(char **lst, int fl)
     scene->sp = ft_obj(lst, fl);
     scene->pl = ft_obj_pl(lst, fl);
     scene->cy = ft_obj_cy(lst);
-    // if (!scene->sp && !scene->pl && !scene->cy && !scene->cn)
-    // {
-    //     printf("%s At least one object is needed!\n",ERROR_MESSAGE);
-    //     exit(1);
-    // }
+    if (!scene->sp && !scene->pl && !scene->cy && !scene->cn)
+    {
+        printf("%s At least one object is needed!\n",ERROR_MESSAGE);
+        exit(1);
+    }
     scene->cn = ft_cone(lst, fl);
     scene->light = ft_light(lst);
     scene->alight = ft_alight(lst);
