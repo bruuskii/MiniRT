@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:22:42 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/02 19:14:52 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 17:19:15 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_sp   *ft_new(t_sp *content)
     obj->color = content->color;
     obj->d = content->d;
     obj->chess = 0;
+    obj->id = 0;
     obj->next = NULL;
     return (obj);
 }

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:42:28 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/01 00:10:47 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/09 17:21:01 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,12 @@ t_sp   *ft_obj(char **lst, int fl)
     char    **tmp;
     t_sp   *node;
     t_sp   *lt;
+    int     j;
 
     if (!lst || !*lst)
         return (NULL);
     i = 0;
+    j = 0;
     lt = NULL;
     while (lst[i])
     {
@@ -149,12 +151,9 @@ t_sp   *ft_obj(char **lst, int fl)
                 return (NULL);
             ft_assign_sp(ptr, tmp + 1);
             node = ft_new(ptr);
-            
-            // Initialize flags
             node->fl = 0;
             node->chess = 0;
-            
-            // Handle n == 5 case
+            node->id = j + 1;
             if (n == 5 && fl)
             {
                 if(!ft_strcmp(tmp[4], "B"))
@@ -162,7 +161,6 @@ t_sp   *ft_obj(char **lst, int fl)
                 else if (!ft_strcmp(tmp[4], "C"))
                     node->chess = 1;
             }
-            // Handle n == 6 case with both flags
             else if (n == 6 && fl)
             {
                 if ((!ft_strcmp(tmp[4], "B") && !ft_strcmp(tmp[5], "C")) ||
@@ -172,8 +170,8 @@ t_sp   *ft_obj(char **lst, int fl)
                     node->chess = 1;
                 }
             }
-            
             ft_add_back(&lt, node);
+            j++;
             free(ptr);
         }
         ft_lstfree(tmp);

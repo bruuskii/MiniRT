@@ -187,19 +187,11 @@ void render_scene(void *img, t_scene *scene)
                     final_color.z += light_color.z;
                     if (light)
                         light = light->next;
-                    
-                }
+                    }
                 final_color.x = fmin(fmax(final_color.x, 0), 255);
                 final_color.y = fmin(fmax(final_color.y, 0), 255);
                 final_color.z = fmin(fmax(final_color.z, 0), 255);
-                if (hit->is_t2)
-                {
-                    printf("x == %d\n", x);
-                    put_pixel_to_image(img_data, x, y, create_trgb(0, 255, 255, 255));
-                }
-                else
-                    put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
-                //put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+                put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(hit);
             free(ray);
@@ -342,13 +334,7 @@ void render_scene_cy(void *img, t_scene *scene)
                 final_color.x = fmin(fmax(final_color.x, 0), 255);
                 final_color.y = fmin(fmax(final_color.y, 0), 255);
                 final_color.z = fmin(fmax(final_color.z, 0), 255);
-                if (hit->is_t2)
-                {
-                    printf("x == %d\n", x);
-                    put_pixel_to_image(img_data, x, y, create_trgb(0, 255, 255, 255));
-                }
-                else
-                    put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
+                put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x, (int)final_color.y, (int)final_color.z));
             }
             free(ray);
             free(hit);

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/09 06:26:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:59:36 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@ typedef struct s_win
     void    *win;
     void    *img;
 }               t_win;
-
-typedef struct s_pnt
-{
-    float   x;
-    float   y;
-}               t_pnt;
 
 typedef struct s_vctr
 {
@@ -90,6 +84,7 @@ typedef struct s_sp
     t_vctr      *color;
     int         fl;
     int         chess;
+    int         id;
     struct s_sp *next;
     
 }               t_sp;
@@ -115,7 +110,6 @@ typedef struct s_cylinder
     t_vctr  *color;
     struct s_cylinder  *next;
 }               t_cylinder;
-
 
 typedef struct s_obj
 {
@@ -177,6 +171,7 @@ typedef struct s_hit
     t_vctr  point;
     t_vctr  normal;
     int     is_t2;
+    struct  s_hit *next;
 } t_hit;
 
 

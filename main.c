@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/09 06:39:03 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/11 03:20:23 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int main(int ac, char **av)
         {
             t_sp *sphere = scene->sp;
             t_sp *sp_next = sphere->next;
-            
             sphere->mtrl = malloc(sizeof(t_material));
             sphere->mtrl->color = *sphere->color;
             sphere->mtrl->ambient = scene->alight->ratio;

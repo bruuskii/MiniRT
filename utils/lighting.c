@@ -19,12 +19,12 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
 {
     t_hit *nearest_hit = NULL;
     double nearest_t = INFINITY;
-
+    //t_scene *scene;
     t_sp *sp = scene->sp;
     while (sp)
     {
         t_hit *hit = intersect_sphere(ray, sp);
-        if (hit && hit->t < nearest_t)
+        if (hit && hit->t <= nearest_t )
         {
             if (nearest_hit) 
                 free(nearest_hit);
@@ -76,13 +76,11 @@ t_hit *intersect_scene(t_ray *ray, t_scene *scene)
 }
 
 
-
 double vec3_length(t_vctr vec) 
 {
     return sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-// Add this at the top of your file or in a header file
 t_vctr vec3_multiply(t_vctr v1, t_vctr v2)
 {
     t_vctr result;
@@ -91,21 +89,91 @@ t_vctr vec3_multiply(t_vctr v1, t_vctr v2)
     result.z = (v1.z * v2.z) / 255.0;
     return result;
 }
-
 t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, t_material *material, t_light *light, double u, double v)
 {
     t_vctr color;
     t_ray raysh;
-    
+
     t_vctr light_dir = vec3_normalize(*light->dir); 
     t_vctr view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point)); 
-    
+
     color = phong_lighting(light_dir, view_dir, normal, material, light);
-    
-    raysh.origin = hit.point;
+
+    raysh.origin = vec3_add(hit.point, vec3_scale(normal, 1e-6));
     raysh.direction = vec3_scale(vec3_sub(*light->dir, hit.point), -1);
-    t_hit *lol = intersect_scene(&raysh, scene);
-    //scene->sp->chess = 0;
+
+    
+    int in_shadow = 0;
+    t_hit *shadow_hit = NULL;
+
+    t_sp *current_sphere = scene->sp;
+    if (current_sphere)
+    {
+        while (current_sphere)
+        {
+            shadow_hit = intersect_sphere(&raysh, current_sphere);
+            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
+            {
+                in_shadow = 1;
+                free(shadow_hit);
+                break;
+            }
+            if (shadow_hit)
+                free(shadow_hit);
+            current_sphere = current_sphere->next;
+        }
+    }
+    t_plane *current_plane = scene->pl;
+    if (current_plane)
+    {
+        while (current_plane)
+        {
+            shadow_hit = intersect_plane(&raysh, current_plane);
+            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
+            {
+                in_shadow = 1;
+                free(shadow_hit);
+                break;
+            }
+            if (shadow_hit)
+                free(shadow_hit);
+            current_plane = current_plane->next;
+        }
+    }
+    t_cone *current_cone = scene->cn;
+    if (current_cone)
+    {
+        while (current_cone)
+        {
+            shadow_hit = intersect_cone(&raysh, current_cone);
+            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
+            {
+                in_shadow = 1;
+                free(shadow_hit);
+                break;
+            }
+            if (shadow_hit)
+                free(shadow_hit);
+            current_cone = current_cone->next;
+        }
+    }
+    t_cylinder *current_cy = scene->cy;
+if (current_cy)
+{
+    while (current_cy)
+    {
+        shadow_hit = intersect_cylinder(&raysh, current_cy);
+        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 0) // Check for a valid hit and positive t
+        {
+            in_shadow = 1;
+            free(shadow_hit);
+            break;
+        }
+        if (shadow_hit)
+            free(shadow_hit);
+        current_cy = current_cy->next;
+    }
+}
 
     if (scene->sp && scene->sp->chess == 1)
     {
@@ -118,35 +186,26 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
         t_vctr black = {0.0, 0.0, 0.0};
         pattern_color = (square_u + square_v) % 2 == 0 ? white : black; 
 
-        if (lol->hit && !lol->t)
+        if (in_shadow)
         {
-            free(lol);
             t_vctr shadowed = vec3_scale(color, 1);
             return vec3_multiply(shadowed, pattern_color);
         }
-        free(lol);
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
         color = vec3_add(color, ambient);
         color = vec3_multiply(color, pattern_color);
     }
+    else if (in_shadow)
+    {
+        color = vec3_scale(color, 0.1);
+        t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
+        color =  vec3_scale(vec3_add(color, ambient), 0.5);
+    }
     else
     {
-        printf("blue = %f\n", scene->sp->color->z);
-        if (lol->hit && !lol->t)
-        {
-            free(lol);
-            return (vec3_scale(color, 1));
-        }
-        free(lol);
-        t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
-        color = vec3_add(color, ambient);
+        color.x = fmin(fmax(color.x, 0.0), 255.0);
+        color.y = fmin(fmax(color.y, 0.0), 255.0);
+        color.z = fmin(fmax(color.z, 0.0), 255.0);
     }
-    color.x = fmin(fmax(color.x, 0.0), 255.0);
-    color.y = fmin(fmax(color.y, 0.0), 255.0);
-    color.z = fmin(fmax(color.z, 0.0), 255.0);
     return color;
 }
-
-
-
-
