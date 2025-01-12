@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/10 18:59:36 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/12 00:29:16 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef enum    s_type
     CYLINDRE,
     LIGHT,
     ALIGHT,
+    CONE,
     CAM,
 }               t_type;
 
@@ -161,18 +162,18 @@ typedef struct s_cone
     double  maxm;
     t_material *mtrl;
     struct s_cone   *next;
-} t_cone;
+}               t_cone;
 
 typedef struct s_hit
 {
-    int     hit;
-    double  shaddow;
-    double  t;
-    t_vctr  point;
-    t_vctr  normal;
-    int     is_t2;
+    int         hit;
+    double      shaddow;
+    double      t;
+    t_vctr      point;
+    t_vctr      normal;
+    enum s_type type;
     struct  s_hit *next;
-} t_hit;
+}               t_hit;
 
 
 typedef struct  s_data 

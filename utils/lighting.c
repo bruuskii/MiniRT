@@ -91,115 +91,75 @@ t_vctr vec3_multiply(t_vctr v1, t_vctr v2)
 }
 t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, t_material *material, t_light *light, double u, double v)
 {
+    (void)u;
+    (void)v;
     t_vctr color;
     t_ray raysh;
 
-    t_vctr light_dir = vec3_normalize(*light->dir); 
+    t_vctr light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
     t_vctr view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point)); 
 
     color = phong_lighting(light_dir, view_dir, normal, material, light);
-
-    raysh.origin = vec3_add(hit.point, vec3_scale(normal, 1e-6));
-    raysh.direction = vec3_scale(vec3_sub(*light->dir, hit.point), -1);
-
-    
+    raysh.direction = light_dir;
+    raysh.origin = vec3_add(hit.point, normal);
     int in_shadow = 0;
     t_hit *shadow_hit = NULL;
-
     t_sp *current_sphere = scene->sp;
-    if (current_sphere)
+    while (current_sphere)
     {
-        while (current_sphere)
-        {
-            shadow_hit = intersect_sphere(&raysh, current_sphere);
-            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
-            {
-                in_shadow = 1;
-                free(shadow_hit);
-                break;
-            }
-            if (shadow_hit)
-                free(shadow_hit);
-            current_sphere = current_sphere->next;
-        }
-    }
-    t_plane *current_plane = scene->pl;
-    if (current_plane)
-    {
-        while (current_plane)
-        {
-            shadow_hit = intersect_plane(&raysh, current_plane);
-            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
-            {
-                in_shadow = 1;
-                free(shadow_hit);
-                break;
-            }
-            if (shadow_hit)
-                free(shadow_hit);
-            current_plane = current_plane->next;
-        }
-    }
-    t_cone *current_cone = scene->cn;
-    if (current_cone)
-    {
-        while (current_cone)
-        {
-            shadow_hit = intersect_cone(&raysh, current_cone);
-            if (shadow_hit && shadow_hit->hit && !shadow_hit->t)
-            {
-                in_shadow = 1;
-                free(shadow_hit);
-                break;
-            }
-            if (shadow_hit)
-                free(shadow_hit);
-            current_cone = current_cone->next;
-        }
-    }
-    t_cylinder *current_cy = scene->cy;
-if (current_cy)
-{
-    while (current_cy)
-    {
-        shadow_hit = intersect_cylinder(&raysh, current_cy);
-        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 0) // Check for a valid hit and positive t
+        shadow_hit = intersect_sphere(&raysh, current_sphere);
+        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 1e-4)
         {
             in_shadow = 1;
             free(shadow_hit);
             break;
         }
-        if (shadow_hit)
+        if (shadow_hit) free(shadow_hit);
+        current_sphere = current_sphere->next;
+    }
+    t_plane *current_plane = scene->pl;
+    while (current_plane)
+    {
+        shadow_hit = intersect_plane(&raysh, current_plane);
+        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 1e-6)
+        {
+            in_shadow = 1;
             free(shadow_hit);
+            break;
+        }
+        if (shadow_hit) free(shadow_hit);
+        current_plane = current_plane->next;
+    }
+    t_cone *current_cone = scene->cn;
+    while (current_cone)
+    {
+        shadow_hit = intersect_cone(&raysh, current_cone);
+        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 1e-6)
+        {
+            in_shadow = 1;
+            free(shadow_hit);
+            break;
+        }
+        if (shadow_hit) free(shadow_hit);
+        current_cone = current_cone->next;
+    }
+    t_cylinder *current_cy = scene->cy;
+    while (current_cy)
+    {
+        shadow_hit = intersect_cylinder(&raysh, current_cy);
+        if (shadow_hit && shadow_hit->hit && shadow_hit->t > 1e-6)
+        {
+            in_shadow = 1;
+            free(shadow_hit);
+            break;
+        }
+        if (shadow_hit) free(shadow_hit);
         current_cy = current_cy->next;
     }
-}
-
-    if (scene->sp && scene->sp->chess == 1)
+    if (in_shadow)
     {
-        u = 0.5 + atan2(normal.z, normal.x) / (2 * M_PI);
-        v = 0.5 - asin(normal.y) / M_PI;
-        int square_u = floor(u * 16);
-        int square_v = floor(v * 16);
-        t_vctr pattern_color;
-        t_vctr white = {255.0, 255.0, 255.0}; 
-        t_vctr black = {0.0, 0.0, 0.0};
-        pattern_color = (square_u + square_v) % 2 == 0 ? white : black; 
-
-        if (in_shadow)
-        {
-            t_vctr shadowed = vec3_scale(color, 1);
-            return vec3_multiply(shadowed, pattern_color);
-        }
         t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
-        color = vec3_add(color, ambient);
-        color = vec3_multiply(color, pattern_color);
-    }
-    else if (in_shadow)
-    {
-        color = vec3_scale(color, 0.1);
-        t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
-        color =  vec3_scale(vec3_add(color, ambient), 0.5);
+        color = vec3_add(ambient, vec3_scale(color, 0.25));
     }
     else
     {

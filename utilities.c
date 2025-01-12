@@ -120,8 +120,6 @@ void convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2, 
     *y2 = (int)(proj_y + (HEIGHT / 2));
 }
 
-
-
 double calculate_distance(double fov)
 {
     double d;
@@ -131,9 +129,6 @@ double calculate_distance(double fov)
     d = WIDTH / (2 * tan(fv / 2.0));
     return (d);
 }
-
-
-
 
 t_vctr amb_color(t_vctr ambiant, t_material *mtrl)
 {
@@ -173,6 +168,7 @@ void render_scene(void *img, t_scene *scene)
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
             hit = intersect_sphere(ray, scene->sp);
+            hit->type = SPHERE;
             if (!ray)
                 return ;
             if (hit && hit->hit)
@@ -225,6 +221,7 @@ void render_scene_cn(void *img, t_scene *scene)
             double v = ((double)y / (HEIGHT - 1));
             ray = create_ray(scene->cam, u, v);
             hit = intersect_cone(ray, scene->cn);
+            //hit->type = CONE;
             if (hit && hit->hit)
             {
                 t_vctr final_color = {0, 0, 0};
@@ -273,6 +270,7 @@ void render_scene_plane(void *img, t_scene *scene)
             if (!ray)
                 return ;
             hit = intersect_plane(ray, scene->pl);
+            hit->type = PLANE;
             if (hit && hit->hit) 
             {
                 t_vctr final_color = {0, 0, 0};
@@ -319,6 +317,7 @@ void render_scene_cy(void *img, t_scene *scene)
             if (ray == 0)
                 return ;
             hit = intersect_cylinder(ray, scene->cy);
+            hit->type = CYLINDRE;
             if (hit && hit->hit) 
             {
                 t_vctr final_color = {0, 0, 0};

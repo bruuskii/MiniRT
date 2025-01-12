@@ -15,7 +15,6 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     double c = vec3_dot(oc, oc) - r * r;
     double discriminant = b * b - 4 * a * c;
     hit->t = 0;
-    hit->is_t2 = 0;
     if (discriminant < 0)
     {
         hit->hit = 0;
@@ -30,7 +29,6 @@ t_hit *intersect_sphere(t_ray *ray, t_sp *sphere)
     else if (t2 > 1e-6)
     {
         hit->t = t2;
-        hit->is_t2 = 1;
     }
     else 
         return (hit);
