@@ -158,8 +158,8 @@ t_vctr calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene, 
     }
     if (in_shadow)
     {
-        t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
-        color = vec3_add(ambient, vec3_scale(color, 0.25));
+        t_vctr ambient = vec3_scale((t_vctr){10,10,10}, material->ambient);
+        color = vec3_scale(vec3_add(ambient, color), 0.5);
     }
     else
     {
