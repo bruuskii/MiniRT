@@ -12,88 +12,87 @@
 
 #include "../miniRT.h"
 
-void    ft_assign_plane(t_plane *pl, char **lst)
+void	ft_assign_plane(t_plane *pl, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-        ft_assign_plane_utils(&pl, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_plane_utils(&pl, lst, i);
+		i++;
+	}
 }
 
-void    ft_assign_cy(t_cylinder *cy, char **lst)
+void	ft_assign_cy(t_cylinder *cy, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-        ft_assign_cy_utils(&cy, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_cy_utils(&cy, lst, i);
+		i++;
+	}
 }
 
-void    ft_assign_sp(t_sp *sp, char **lst)
+void	ft_assign_sp(t_sp *sp, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-       
-        ft_assign_sp_utils(&sp, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_sp_utils(&sp, lst, i);
+		i++;
+	}
 }
 
-void    ft_assign_camera(t_cam *cam, char **tmp)
+void	ft_assign_camera(t_cam *cam, char **tmp)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (tmp[i])
-    {
-        if (i)
-            ft_assign_cam_utils(&cam, tmp, i);
-        i++;
-    }
+	i = 0;
+	while (tmp[i])
+	{
+		if (i)
+			ft_assign_cam_utils(&cam, tmp, i);
+		i++;
+	}
 }
 
-void    ft_assign_light(t_light *lt, char **lst)
+void	ft_assign_light(t_light *lt, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-        ft_assign_light_utils(&lt, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_light_utils(&lt, lst, i);
+		i++;
+	}
 }
 
-void    ft_assign_alight(t_alight *lt, char **lst)
+void	ft_assign_alight(t_alight *lt, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-        ft_assign_alight_utils(&lt, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_alight_utils(&lt, lst, i);
+		i++;
+	}
 }
 
-void    ft_assign_cone(t_cone *cn, char **lst)
+void	ft_assign_cone(t_cone *cn, char **lst)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (lst[i])
-    {
-        ft_assign_cn_utils(&cn, lst, i);
-        i++;
-    }
+	i = 0;
+	while (lst[i])
+	{
+		ft_assign_cn_utils(&cn, lst, i);
+		i++;
+	}
 }

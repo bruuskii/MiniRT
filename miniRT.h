@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/12 05:47:31 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/14 02:00:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "libft/get_next_line/get_next_line.h"
@@ -171,8 +172,6 @@ typedef struct s_hit
     double      t;
     t_vctr      point;
     t_vctr      normal;
-    enum s_type type;
-    struct  s_hit *next;
 }               t_hit;
 
 
@@ -181,10 +180,14 @@ typedef struct  s_data
     void *mlx;
     void *win;
 }               t_data;
-
+t_material	*ft_material(t_scene *scene, double dif, double spec, double sh);
+void	ft_scene_cone(t_scene *scene, t_win *data);
+void	ft_scene_cylinder(t_scene *scene, t_win *data);
+void	ft_scene_plane(t_scene *scene, t_win *data);
+void	ft_scene_sphere(t_scene *scene, t_win *data);
 int         create_trgb(int t, int r, int g, int b);
 t_vctr      amb_color(t_vctr ambiant, t_material *mtrl);
-
+void	ft_display_scene(t_scene *scene, t_win *data);
 void        put_pixel_to_image(char *img_data, int x, int y, int color);
 double      dgrs_to_rdn(double angle);
 void        convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2, double fov);

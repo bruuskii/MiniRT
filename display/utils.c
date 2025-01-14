@@ -12,22 +12,19 @@
 
 #include "../miniRT.h"
 
-
-void convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2)
+void	convert_3d_to_2d(double x, double y, double z, double d, int *x2,
+		int *y2)
 {
-    *x2 = (int)((x * d) / (z + d)) + (WIDTH / 2);
-    *y2 = (int)((y * d) / (z + d)) + (HEIGHT / 2);
+	*x2 = (int)((x * d) / (z + d)) + (WIDTH / 2);
+	*y2 = (int)((y * d) / (z + d)) + (HEIGHT / 2);
 }
 
-int is_in_sphere(t_vctr *pnt, t_sp *sp)
+int	is_in_sphere(t_vctr *pnt, t_sp *sp)
 {
-    t_vctr  *v;
-    double  m;
+	t_vctr	*v;
+	double	m;
 
-    v = vct_sub(pnt, sp->cntr);
-    m = ft_magnitude(v);
-    return (m == (sp->d) / 2);
+	v = vct_sub(pnt, sp->cntr);
+	m = ft_magnitude(v);
+	return (m == (sp->d) / 2);
 }
-
-
-

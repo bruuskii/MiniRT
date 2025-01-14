@@ -23,7 +23,7 @@ static int	ft_countwords(char const *s, char c)
 	{
 		if (s[i] != c)
 		{
-			count ++;
+			count++;
 			while (s[i] && s[i] != c)
 				i++;
 		}
@@ -33,13 +33,13 @@ static int	ft_countwords(char const *s, char c)
 	return (count);
 }
 
-static char	*ft_malloc_words(char const	*s, int st, int f)
+static char	*ft_malloc_words(char const *s, int st, int f)
 {
 	int		i;
 	char	*word;
 
 	i = 0;
-	word = (char *) malloc ((f - st + 1) * sizeof(char));
+	word = (char *)malloc((f - st + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
 	while (st < f)
@@ -55,10 +55,10 @@ static void	*ft_memfree(char **list, int index)
 	i = index - 1;
 	while (i >= 0)
 	{
-		free (list[i]);
+		free(list[i]);
 		i--;
 	}
-	free (list);
+	free(list);
 	return (NULL);
 }
 
@@ -85,7 +85,7 @@ static char	**ft_memalloc_list(char **list, char c, char const *s, int i)
 		}
 		else
 			i++;
-	}		
+	}
 	list[j] = NULL;
 	return (list);
 }
@@ -98,7 +98,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	i = 0;
-	list = (char **) malloc ((ft_countwords(s, c) + 1) * sizeof(char *));
+	list = (char **)malloc((ft_countwords(s, c) + 1) * sizeof(char *));
 	if (!s || !list)
 		return (NULL);
 	return (ft_memalloc_list(list, c, s, i));
