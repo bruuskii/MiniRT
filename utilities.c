@@ -7,8 +7,8 @@ int	create_trgb(int t, int r, int g, int b)
 
 void	ft_free_all(t_scene **scene)
 {
-	t_light		*lt;
-	t_light		*lt_next;
+	t_light	*lt;
+	t_light	*lt_next;
 
 	if (!scene || !*scene)
 		return ;
@@ -121,7 +121,7 @@ void	render_scene(void *img, t_scene *scene)
 			v = ((double)y / (HEIGHT - 1));
 			ray = create_ray(scene->cam, u, v);
 			hit = intersect_sphere(ray, scene->sp);
-			//hit->type = SPHERE;
+			// hit->type = SPHERE;
 			if (!ray)
 				return ;
 			if (hit && hit->hit)
@@ -170,7 +170,7 @@ void	render_scene_cn(void *img, t_scene *scene)
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	sp = (t_cone *)scene->cn;
 	y = 0;
-	hit  = NULL;
+	hit = NULL;
 	if (!scene)
 		return ;
 	while (y < HEIGHT)
@@ -245,7 +245,7 @@ void	render_scene_plane(void *img, t_scene *scene)
 			}
 			if (hit && hit->hit)
 			{
-				//hit->type = PLANE;
+				// hit->type = PLANE;
 				final_color = (t_vctr){0, 0, 0};
 				light = scene->light;
 				while (light)
@@ -347,14 +347,14 @@ t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
 
 void	ft_scene_cone(t_scene *scene, t_win *data)
 {
-	t_cone		*con;
-	t_cone		*next_cone;
+	t_cone	*con;
+	t_cone	*next_cone;
 
 	while (scene->cn)
 	{
 		con = (t_cone *)(scene->cn);
 		next_cone = con->next;
-		con->mtrl = ft_material(scene, 0.5, 0.5,60);
+		con->mtrl = ft_material(scene, 0.5, 0.5, 60);
 		if (!con->mtrl)
 		{
 			printf("Failed to allocate sphere material\n");
@@ -376,13 +376,13 @@ void	ft_scene_cone(t_scene *scene, t_win *data)
 void	ft_scene_cylinder(t_scene *scene, t_win *data)
 {
 	t_cylinder	*cyl;
-	t_cylinder  *cy_next;
+	t_cylinder	*cy_next;
 
 	while (scene->cy)
 	{
 		cyl = (t_cylinder *)(scene->cy);
 		cy_next = cyl->next;
-		cyl->mtrl = ft_material(scene, 0.5, 0.5,60);
+		cyl->mtrl = ft_material(scene, 0.5, 0.5, 60);
 		if (!cyl->mtrl)
 		{
 			printf("Failed to allocate cylinder material\n");
@@ -404,8 +404,8 @@ void	ft_scene_cylinder(t_scene *scene, t_win *data)
 
 void	ft_scene_plane(t_scene *scene, t_win *data)
 {
-	t_plane		*plane;
-	t_plane		*pl_next;
+	t_plane	*plane;
+	t_plane	*pl_next;
 
 	while (scene->pl)
 	{
@@ -433,8 +433,8 @@ void	ft_scene_plane(t_scene *scene, t_win *data)
 
 void	ft_scene_sphere(t_scene *scene, t_win *data)
 {
-	t_sp		*sphere;
-	t_sp		*sp_next;
+	t_sp	*sphere;
+	t_sp	*sp_next;
 
 	while (scene->sp)
 	{

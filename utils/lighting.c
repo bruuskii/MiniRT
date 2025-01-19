@@ -1,13 +1,15 @@
 #include "../miniRT.h"
 
+
+
 t_vctr	phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal,
 		t_material *material, t_light *light)
 {
-	t_vctr	reflect_dir;
 	double	ambient;
 	double	diffuse;
 	double	specular;
 	t_vctr	color;
+	t_vctr	reflect_dir;
 
 	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal, light_dir)),
 			light_dir);
@@ -21,74 +23,6 @@ t_vctr	phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal,
 	return (vec3_create(fmin(color.x, 255.0), fmin(color.y, 255.0),
 			fmin(color.z, 255.0)));
 }
-
-// t_hit	*intersect_scene(t_ray *ray, t_scene *scene)
-// {
-// 	t_hit		*nearest_hit;
-// 	double		nearest_t;
-// 	t_sp		*sp;
-// 	t_hit		*hit;
-// 	t_plane		*pl;
-// 	t_hit		*hit;
-// 	t_cylinder	*cy;
-// 	t_hit		*hit;
-
-// 	nearest_hit = NULL;
-// 	nearest_t = INFINITY;
-// 	// t_scene *scene;
-// 	sp = scene->sp;
-// 	while (sp)
-// 	{
-// 		hit = intersect_sphere(ray, sp);
-// 		if (hit && hit->t <= nearest_t)
-// 		{
-// 			if (nearest_hit)
-// 				free(nearest_hit);
-// 			nearest_hit = hit;
-// 			nearest_t = hit->t;
-// 		}
-// 		else if (hit)
-// 		{
-// 			free(hit);
-// 		}
-// 		sp = sp->next;
-// 	}
-// 	pl = scene->pl;
-// 	while (pl)
-// 	{
-// 		hit = intersect_plane(ray, pl);
-// 		if (hit && hit->t < nearest_t)
-// 		{
-// 			if (nearest_hit)
-// 				free(nearest_hit);
-// 			nearest_hit = hit;
-// 			nearest_t = hit->t;
-// 		}
-// 		else if (hit)
-// 		{
-// 			free(hit);
-// 		}
-// 		pl = pl->next;
-// 	}
-// 	cy = scene->cy;
-// 	while (cy)
-// 	{
-// 		hit = intersect_cylinder(ray, cy);
-// 		if (hit && hit->t < nearest_t)
-// 		{
-// 			if (nearest_hit)
-// 				free(nearest_hit);
-// 			nearest_hit = hit;
-// 			nearest_t = hit->t;
-// 		}
-// 		else if (hit)
-// 		{
-// 			free(hit);
-// 		}
-// 		cy = cy->next;
-// 	}
-// 	return (nearest_hit);
-// }
 
 double	vec3_length(t_vctr vec)
 {
@@ -131,29 +65,6 @@ t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_vctr normal, t_scene *scene,
 	current_sphere = scene->sp;
 	while (current_sphere)
 	{
-		if (scene->sp && scene->sp->chess == 1)
-		{
-			t_hit *lol = intersect_sphere(&raysh, current_sphere);
-			u = 0.5 + atan2(normal.z, normal.x) / (2 * M_PI);
-			v = 0.5 - asin(normal.y) / M_PI;
-			int square_u = floor(u * 16);
-			int square_v = floor(v * 16);
-			t_vctr pattern_color;
-			t_vctr white = {255.0, 255.0, 255.0}; 
-			t_vctr black = {0.0, 0.0, 0.0};
-			pattern_color = (square_u + square_v) % 2 == 0 ? white : black; 
-
-			if (lol->hit && !lol->t)
-			{
-				free(lol);
-				t_vctr shadowed = vec3_scale(color, -1);
-				return vec3_multiply(shadowed, pattern_color);
-			}
-			free(lol);
-			t_vctr ambient = vec3_scale(*scene->alight->color, material->ambient);
-			color = vec3_add(color, ambient);
-			color = vec3_multiply(color, pattern_color);
-		}
 		shadow_hit = intersect_sphere(&raysh, current_sphere);
 		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
 		{

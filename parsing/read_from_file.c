@@ -19,14 +19,15 @@ int	ft_check_first_param(char *s)
 		|| !ft_strcmp(s, "cn"));
 }
 
-int	 ft_count_line(char *filename, int fd)
+int	ft_count_line(char *filename, int fd)
 {
 	int		i;
 	char	*line;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (printf("%sError when openning file\n", ERROR_MESSAGE), exit (1), -1);
+		return (printf("%sError when openning file\n", ERROR_MESSAGE), exit(1),
+			-1);
 	i = 0;
 	while ((line = get_next_line(fd)))
 	{
@@ -44,7 +45,8 @@ int	 ft_count_line(char *filename, int fd)
 	}
 	close(fd);
 	if (i > 2147483647)
-		return (printf("%sNumber of lines has exceeded INT_MAX\n", ERROR_MESSAGE), exit(1), -1);
+		return (printf("%sNumber of lines has exceeded INT_MAX\n",
+				ERROR_MESSAGE), exit(1), -1);
 	return (i);
 }
 

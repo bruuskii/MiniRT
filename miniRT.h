@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/14 02:00:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/19 22:39:39 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 #define HEIGHT 800
 #define WIDTH 800
 #define ERROR_MESSAGE "Error\n"
+#define M_W 200
+#define M_H 200
+#define M_H_00 50
 
 typedef enum    s_type
 {
@@ -181,13 +184,13 @@ typedef struct  s_data
     void *win;
 }               t_data;
 t_material	*ft_material(t_scene *scene, double dif, double spec, double sh);
-void	ft_scene_cone(t_scene *scene, t_win *data);
-void	ft_scene_cylinder(t_scene *scene, t_win *data);
-void	ft_scene_plane(t_scene *scene, t_win *data);
-void	ft_scene_sphere(t_scene *scene, t_win *data);
+void	    ft_scene_cone(t_scene *scene, t_win *data);
+void	    ft_scene_cylinder(t_scene *scene, t_win *data);
+void	    ft_scene_plane(t_scene *scene, t_win *data);
+void	    ft_scene_sphere(t_scene *scene, t_win *data);
 int         create_trgb(int t, int r, int g, int b);
 t_vctr      amb_color(t_vctr ambiant, t_material *mtrl);
-void	ft_display_scene(t_scene *scene, t_win *data);
+void	    ft_display_scene(t_scene *scene, t_win *data);
 void        put_pixel_to_image(char *img_data, int x, int y, int color);
 double      dgrs_to_rdn(double angle);
 void        convert_3d_to_2d(double x, double y, double z, double d, int *x2, int *y2, double fov);
@@ -278,5 +281,6 @@ t_cone      *ft_new_cone(t_cone *content);
 double      ft_magnitude(t_vctr *vec);
 void        ft_free_cylinder(t_cylinder *c);
 void        ft_free_scene(t_scene *scene);
-int ft_check_first_param(char *s);
+int         ft_check_first_param(char *s);
+void    ft_checker(t_hit *hit, t_vctr original_normal);
 #endif

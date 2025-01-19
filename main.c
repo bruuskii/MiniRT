@@ -12,13 +12,11 @@
 
 #include "miniRT.h"
 
-
-
 int	main(int ac, char **av)
 {
-	t_win		*data;
-	t_scene		*scene;
-	
+	t_win	*data;
+	t_scene	*scene;
+
 	if (ft_check_args(ac) || ft_check_extention(av[1]))
 		return (1);
 	scene = data_input(av[1], 0);
