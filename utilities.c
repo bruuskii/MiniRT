@@ -130,8 +130,8 @@ void	render_scene(void *img, t_scene *scene)
 				light = scene->light;
 				while (light)
 				{
-					light_color = calculate_lighting(ray, *hit, hit->normal,
-							scene, sp->mtrl, light, u, v);
+					light_color = calculate_lighting(ray, *hit, scene, sp->mtrl,
+							light);
 					final_color.x += light_color.x;
 					final_color.y += light_color.y;
 					final_color.z += light_color.z;
@@ -188,8 +188,8 @@ void	render_scene_cn(void *img, t_scene *scene)
 				light = scene->light;
 				while (light)
 				{
-					light_color = calculate_lighting(ray, *hit, hit->normal,
-							scene, sp->mtrl, light, u, v);
+					light_color = calculate_lighting(ray, *hit, scene, sp->mtrl,
+							light);
 					final_color.x += light_color.x;
 					final_color.y += light_color.y;
 					final_color.z += light_color.z;
@@ -245,13 +245,12 @@ void	render_scene_plane(void *img, t_scene *scene)
 			}
 			if (hit && hit->hit)
 			{
-				// hit->type = PLANE;
 				final_color = (t_vctr){0, 0, 0};
 				light = scene->light;
 				while (light)
 				{
-					light_color = calculate_lighting(ray, *hit, hit->normal,
-							scene, scene->pl->mtrl, light, u, v);
+					light_color = calculate_lighting(ray, *hit, scene,
+							scene->pl->mtrl, light);
 					final_color.x += light_color.x;
 					final_color.y += light_color.y;
 					final_color.z += light_color.z;
@@ -299,15 +298,14 @@ void	render_scene_cy(void *img, t_scene *scene)
 			if (ray == 0)
 				return ;
 			hit = intersect_cylinder(ray, scene->cy);
-			// hit->type = CYLINDRE;
 			if (hit && hit->hit)
 			{
 				final_color = (t_vctr){0, 0, 0};
 				light = scene->light;
 				while (light)
 				{
-					light_color = calculate_lighting(ray, *hit, hit->normal,
-							scene, scene->cy->mtrl, light, u, v);
+					light_color = calculate_lighting(ray, *hit, scene,
+							scene->cy->mtrl, light);
 					final_color.x += light_color.x;
 					final_color.y += light_color.y;
 					final_color.z += light_color.z;

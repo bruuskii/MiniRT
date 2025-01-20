@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:37:17 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/14 18:40:35 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/20 01:49:46 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_assign_plane_point(t_plane **pl, char *lst)
 {
 	char	**tmp;
 	int		n;
-	
+
 	tmp = ft_split(lst, ',');
 	if (!tmp)
 		return ;
@@ -72,7 +72,7 @@ void	ft_assign_plane_color(t_plane **pl, char *lst)
 {
 	char	**tmp;
 	int		n;
-	
+
 	tmp = ft_split(lst, ',');
 	if (!tmp)
 		return ;
@@ -98,7 +98,7 @@ void	ft_assign_plane_normal(t_plane **pl, char *lst)
 {
 	char	**tmp;
 	int		n;
-	
+
 	tmp = ft_split(lst, ',');
 	if (!tmp)
 		return ;
@@ -114,11 +114,11 @@ void	ft_assign_plane_normal(t_plane **pl, char *lst)
 	(*pl)->normal->y = ft_atodbl(tmp[1]);
 	(*pl)->normal->z = ft_atodbl(tmp[2]);
 	if ((*pl)->normal->x < -1 || (*pl)->normal->x > 1)
-    ft_print_and_exit("Error: Plane normal x component out of range [-1, 1]", 1);
+		ft_print_and_exit("Error: Plane normal x out of range [-1, 1]", 1);
 	if ((*pl)->normal->y < -1 || (*pl)->normal->y > 1)
-		ft_print_and_exit("Error: Plane normal y component out of range [-1, 1]", 1);
+		ft_print_and_exit("Error: Plane normal y out of range [-1, 1]", 1);
 	if ((*pl)->normal->z < -1 || (*pl)->normal->z > 1)
-		ft_print_and_exit("Error: Plane normal z component out of range [-1, 1]", 1);
+		ft_print_and_exit("Error: Plane normal z out of range [-1, 1]", 1);
 	ft_lstfree(tmp);
 }
 
@@ -500,7 +500,7 @@ void	ft_assign_cn_axis(t_cone **cn, char *lst)
 void	ft_assign_cn_tang(t_cone **cn, char *s)
 {
 	if (is_valid_str(s))
-			ft_print_and_exit("Cone tangent has non numerical", 1);
+		ft_print_and_exit("Cone tangent has non numerical", 1);
 	(*cn)->tang = ft_atodbl(s);
 }
 

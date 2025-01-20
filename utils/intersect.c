@@ -5,7 +5,7 @@ double	ft_magnitude(t_vctr *vec)
 	return (sqrt((vec->x * vec->x) + (vec->y * vec->y) + (vec->z * vec->z)));
 }
 
-t_hit	*ft_hit()
+t_hit	*ft_hit(void)
 {
 	t_hit	*hit_point;
 
@@ -50,7 +50,7 @@ int	ft_assign_t(t_hit *hit, t_ray *ray, double discriminant, t_sp *sphere)
 	{
 		hit->t = t1;
 		hit->hit = 1;
-		return(0);
+		return (0);
 	}
 	else if (t2 > 1e-6)
 	{
@@ -66,7 +66,7 @@ t_hit	*intersect_sphere(t_ray *ray, t_sp *sphere)
 	t_hit	*hit;
 	t_vctr	original_normal;
 	double	discriminant;
-	
+
 	hit = ft_hit();
 	discriminant = ft_calculate_discriminant_sphere(ray, sphere);
 	if (discriminant < 0)
@@ -83,44 +83,57 @@ t_hit	*intersect_sphere(t_ray *ray, t_sp *sphere)
 	else
 		hit->normal = original_normal;
 	return (hit);
+}
 
+void	ft_get_plane_axes(t_vctr *plane_u, t_vctr *plane_v, t_vctr *normal)
+{
+	t_vctr	up;
+
+	if (fabs(normal->z) > 0.9)
+	{
+		*plane_u = (t_vctr){1, 0, 0};
+		*plane_v = (t_vctr){0, 1, 0};
+	}
+	else
+	{
+		if (fabs(normal->y) < 0.9)
+			up = (t_vctr){0, 1, 0};
+		else
+			up = (t_vctr){0, 0, 1};
+		*plane_u = vec3_normalize(vec3_cross(*normal, up));
+		*plane_v = vec3_normalize(vec3_cross(*normal, *plane_u));
+	}
+}
+
+void	ft_calculate_local_point(
+	t_vctr intersection, t_plane *plane, t_vctr plane_u, t_vctr plane_v, double *u, double *v)
+{
+	t_vctr	local_point;
+
+	local_point = vec3_sub(intersection, *plane->point);
+	*u = vec3_dot(local_point, plane_u);
+	*v = vec3_dot(local_point, plane_v);
 }
 
 int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
 {
-	t_vctr 	plane_u;
-	t_vctr 	plane_v;
-	t_vctr	up;
-	t_vctr	local_point;
+	t_vctr	plane_u;
+	t_vctr	plane_v;
 	double	u;
 	double	v;
 
-	if (fabs(plane->normal->z) > 0.9)
-	{
-		plane_u = (t_vctr){1, 0, 0};
-		plane_v = (t_vctr){0, 1, 0};
-	}
-	else
-	{
-		if (fabs(plane->normal->y) < 0.9)
-			up = (t_vctr){0, 1, 0};
-		else
-			up = (t_vctr){0, 0, 1};
-		plane_u = vec3_normalize(vec3_cross(*plane->normal, up));
-		plane_v = vec3_normalize(vec3_cross(*plane->normal, plane_u));
-	}
-	local_point = vec3_sub(intersection, *plane->point);
-	u = vec3_dot(local_point, plane_u);
-	v = vec3_dot(local_point, plane_v);
-	if (fabs(u) > M_W || (fabs(v) >= M_H
-			|| fabs(v) <= M_H_00))
+	ft_get_plane_axes(&plane_u, &plane_v, plane->normal);
+	ft_calculate_local_point(intersection, plane, plane_u, plane_v, &u, &v);
+	if (fabs(u) > M_W || (fabs(v) >= M_H || fabs(v) <= M_H_00))
 		return (1);
 	return (0);
 }
 
-t_vctr		ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t, t_ray *ray)
+
+t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
+		t_ray *ray)
 {
-	t_vctr			intersection;
+	t_vctr	intersection;
 
 	intersection = vec3_add(ray->origin, vec3_scale(denom, t));
 	if (!plane->normal->z)
@@ -131,8 +144,8 @@ t_vctr		ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t, 
 
 void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 {
-	double			den;
-	t_vctr			denom;
+	double	den;
+	t_vctr	denom;
 
 	denom = vec3_normalize(ray->direction);
 	den = vec3_dot(denom, *plane->normal);
@@ -147,24 +160,24 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 
 int	is_zero_vector(t_vctr v)
 {
-    return (v.x == 0 && v.y == 0 && v.z == 0);
+	return (v.x == 0 && v.y == 0 && v.z == 0);
 }
 
 t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 {
-	t_hit			*hit;
-	t_vctr			denom;
-	double			den;
-	t_vctr			ray_to_plane;
-	double			t;
-	
+	t_hit	*hit;
+	t_vctr	denom;
+	double	den;
+	t_vctr	ray_to_plane;
+	double	t;
+
 	hit = ft_hit();
 	if (!hit)
 		return (NULL);
 	hit->hit = 0;
 	hit->t = 0;
 	denom = vec3_normalize(ray->direction);
-	den= vec3_dot(denom, *plane->normal);
+	den = vec3_dot(denom, *plane->normal);
 	if (fabs(den) < 1e-6)
 		return (hit);
 	ray_to_plane = vec3_sub(*plane->point, ray->origin);
@@ -223,7 +236,7 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	return (1);
 }
 
-double ft_distance_cylinder(t_hit *hit, t_cylinder *cy)
+double	ft_distance_cylinder(t_hit *hit, t_cylinder *cy)
 {
 	t_vctr	projection;
 	t_vctr	proj_point;
@@ -275,14 +288,16 @@ double	ft_discriminant_cone(t_vctr d, t_vctr co, t_cone *cone, t_vctr v)
 	double	k;
 
 	k = tan(cone->tang * M_PI / 180.0);
-	a = vec3_dot(d, d) - (1.0 + k * k) *  vec3_dot(d, v) *  vec3_dot(d, v);
-	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) *  vec3_dot(d, v) * vec3_dot(co, v));
+	a = vec3_dot(d, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(d, v);
+	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(co,
+				v));
 	c = vec3_dot(co, co) - (1.0 + k * k) * vec3_dot(co, v) * vec3_dot(co, v);
 	discriminant = b * b - 4.0 * a * c;
 	return (discriminant);
 }
 
-int	ft_assign_t_cone(double discriminant, double *t, t_vctr d, t_cone *cone, t_vctr co, t_vctr v)
+int	ft_assign_t_cone(double discriminant, double *t, t_vctr d, t_cone *cone,
+		t_vctr co, t_vctr v)
 {
 	double	t0;
 	double	t1;
@@ -291,8 +306,9 @@ int	ft_assign_t_cone(double discriminant, double *t, t_vctr d, t_cone *cone, t_v
 	double	k;
 
 	k = tan(cone->tang * M_PI / 180.0);
-	a = vec3_dot(d, d) - (1.0 + k * k) *  vec3_dot(d, v) *  vec3_dot(d, v);
-	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) *  vec3_dot(d, v) * vec3_dot(co, v));
+	a = vec3_dot(d, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(d, v);
+	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(co,
+				v));
 	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
 	if (t0 > 1e-6 && t1 > 1e-6)
@@ -304,42 +320,58 @@ int	ft_assign_t_cone(double discriminant, double *t, t_vctr d, t_cone *cone, t_v
 	return (1);
 }
 
-t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
+double	ft_compute_discriminant(t_ray *ray, t_cone *cone, t_vctr *co, t_vctr *v)
 {
-	t_hit	*hit;
-	t_vctr	co;
-	t_vctr	d;
-	t_vctr	v;
-	double	discriminant;
-	double	t;
-	t_vctr	intersection_point;
+	*co = vec3_sub(ray->origin, *(cone->vertex));
+	*v = vec3_normalize(*(cone->axis));
+	return ft_discriminant_cone(ray->direction, *co, cone, *v);
+}
+
+int	ft_validate_t_and_update(double discriminant, double *t, t_ray *ray, t_cone *cone, t_vctr co, t_vctr v)
+{
+	if (discriminant < 0)
+		return (1);
+	return ft_assign_t_cone(discriminant, t, ray->direction, cone, co, v);
+}
+
+int	ft_check_m_and_compute_normal(t_vctr intersection_point, t_cone *cone, t_vctr v, t_hit *hit)
+{
 	t_vctr	hit_to_vertex;
 	double	m;
 	t_vctr	normal;
 
-	if (!ray || !cone)
-		return (NULL);
-	hit = malloc(sizeof(t_hit));
-	if (!hit)
-		return (NULL);
-	co = vec3_sub(ray->origin, *(cone->vertex));
-	d = ray->direction;
-	v = vec3_normalize(*(cone->axis));
-	discriminant = ft_discriminant_cone(d, co, cone, v);
-	if (discriminant < 0)
-		return (free(hit), NULL);
-	if (ft_assign_t_cone(discriminant, &t, d, cone, co , v))
-		return (free(hit), NULL);
-	intersection_point = vec3_add(ray->origin, vec3_scale(d, t));
 	hit_to_vertex = vec3_sub(intersection_point, *(cone->vertex));
 	m = vec3_dot(hit_to_vertex, v);
 	if (m < cone->minm || m > cone->maxm)
-		return (free(hit), NULL);
+		return (1);
 	normal = vec3_sub(hit_to_vertex, vec3_scale(v, m));
-	normal = vec3_normalize(normal);
+	hit->normal = vec3_normalize(normal);
+	return (0);
+}
+
+t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
+{
+	t_hit	*hit;
+	t_vctr	co;
+	t_vctr	v;
+	double	discriminant;
+	double	t;
+	t_vctr	intersection_point;
+
+	if (!ray || !cone)
+		return (NULL);
+	hit = ft_hit();
+	if (!hit)
+		return (NULL);
+	discriminant = ft_compute_discriminant(ray, cone, &co, &v);
+	if (ft_validate_t_and_update(discriminant, &t, ray, cone, co, v))
+		return (free(hit), NULL);
+	intersection_point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
+	if (ft_check_m_and_compute_normal(intersection_point, cone, v, hit))
+		return (free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
 	hit->point = intersection_point;
-	hit->normal = normal;
 	return (hit);
 }
+

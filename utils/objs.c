@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:22:42 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/09 17:19:15 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/20 01:33:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ t_alight	*ft_a_light(void)
 void	ft_add_back_lt(t_light **objs, t_light *node)
 {
 	t_light	*tmp;
-
+	
 	if (!*objs)
 	{
 		*objs = node;
