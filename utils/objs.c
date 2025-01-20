@@ -153,7 +153,7 @@ t_alight	*ft_a_light(void)
 void	ft_add_back_lt(t_light **objs, t_light *node)
 {
 	t_light	*tmp;
-	
+
 	if (!*objs)
 	{
 		*objs = node;

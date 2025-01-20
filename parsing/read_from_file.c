@@ -36,7 +36,7 @@ int	ft_read_lines_from_file(char *filename)
 		{
 			free(line);
 			line = get_next_line(fd);
-			continue;
+			continue ;
 		}
 		free(line);
 		i++;
@@ -48,8 +48,8 @@ int	ft_read_lines_from_file(char *filename)
 
 int	ft_count_line(char *filename)
 {
-	int		i;
-	
+	int	i;
+
 	i = ft_read_lines_from_file(filename);
 	if (i == -1)
 		return (-1);

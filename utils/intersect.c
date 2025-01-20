@@ -105,30 +105,22 @@ void	ft_get_plane_axes(t_vctr *plane_u, t_vctr *plane_v, t_vctr *normal)
 	}
 }
 
-void	ft_calculate_local_point(
-	t_vctr intersection, t_plane *plane, t_vctr plane_u, t_vctr plane_v, double *u, double *v)
-{
-	t_vctr	local_point;
-
-	local_point = vec3_sub(intersection, *plane->point);
-	*u = vec3_dot(local_point, plane_u);
-	*v = vec3_dot(local_point, plane_v);
-}
-
 int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
 {
 	t_vctr	plane_u;
 	t_vctr	plane_v;
 	double	u;
 	double	v;
+	t_vctr	local_point;
 
 	ft_get_plane_axes(&plane_u, &plane_v, plane->normal);
-	ft_calculate_local_point(intersection, plane, plane_u, plane_v, &u, &v);
+	local_point = vec3_sub(intersection, *plane->point);
+	u = vec3_dot(local_point, plane_u);
+	v = vec3_dot(local_point, plane_v);
 	if (fabs(u) > M_W || (fabs(v) >= M_H || fabs(v) <= M_H_00))
 		return (1);
 	return (0);
 }
-
 
 t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 		t_ray *ray)
@@ -324,17 +316,19 @@ double	ft_compute_discriminant(t_ray *ray, t_cone *cone, t_vctr *co, t_vctr *v)
 {
 	*co = vec3_sub(ray->origin, *(cone->vertex));
 	*v = vec3_normalize(*(cone->axis));
-	return ft_discriminant_cone(ray->direction, *co, cone, *v);
+	return (ft_discriminant_cone(ray->direction, *co, cone, *v));
 }
 
-int	ft_validate_t_and_update(double discriminant, double *t, t_ray *ray, t_cone *cone, t_vctr co, t_vctr v)
+int	ft_validate_t_and_update(double discriminant, double *t, t_ray *ray,
+		t_cone *cone, t_vctr co, t_vctr v)
 {
 	if (discriminant < 0)
 		return (1);
-	return ft_assign_t_cone(discriminant, t, ray->direction, cone, co, v);
+	return (ft_assign_t_cone(discriminant, t, ray->direction, cone, co, v));
 }
 
-int	ft_check_m_and_compute_normal(t_vctr intersection_point, t_cone *cone, t_vctr v, t_hit *hit)
+int	ft_check_m_and_compute_normal(t_vctr intersection_point, t_cone *cone,
+		t_vctr v, t_hit *hit)
 {
 	t_vctr	hit_to_vertex;
 	double	m;
@@ -374,4 +368,3 @@ t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
 	hit->point = intersection_point;
 	return (hit);
 }
-

@@ -47,27 +47,6 @@ double	dgrs_to_rdn(double angle)
 	return (angle * (M_PI / 180.0));
 }
 
-void	convert_3d_to_2d(double x, double y, double z, double d, int *x2,
-		int *y2, double fov)
-{
-	double	aspect_ratio;
-	double	scale;
-	double	proj_x;
-	double	proj_y;
-
-	aspect_ratio = (double)WIDTH / HEIGHT;
-	scale = tan(fov / 2.0) * 2.0;
-	if (z <= 0)
-	{
-		*x2 = *y2 = -1;
-		return ;
-	}
-	proj_x = (x / z) * d * scale * aspect_ratio;
-	proj_y = (y / z) * d * scale;
-	*x2 = (int)(proj_x + (WIDTH / 2));
-	*y2 = (int)(proj_y + (HEIGHT / 2));
-}
-
 double	calculate_distance(double fov)
 {
 	double	d;
@@ -131,7 +110,7 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 
 void	ft_render(t_scene *scene, char *img_data, int y, t_material *mtrl)
 {
-	int 	x;
+	int		x;
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
@@ -159,10 +138,10 @@ void	ft_render(t_scene *scene, char *img_data, int y, t_material *mtrl)
 void	render_scene(void *img, t_scene *scene)
 {
 	char	*img_data;
-	int 	y;
-	int 	bits_per_pixel;
-	int 	size_line;
-	int 	endian;
+	int		y;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
 	t_sp	*sp;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
@@ -177,9 +156,10 @@ void	render_scene(void *img, t_scene *scene)
 	}
 }
 
-void	render_scene_cn_rows(t_scene *scene, char *img_data, int y, t_material *mtrl)
+void	render_scene_cn_rows(t_scene *scene, char *img_data, int y,
+		t_material *mtrl)
 {
-	int 	x;
+	int		x;
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
@@ -207,11 +187,11 @@ void	render_scene_cn_rows(t_scene *scene, char *img_data, int y, t_material *mtr
 void	render_scene_cn(void *img, t_scene *scene)
 {
 	char	*img_data;
-	int 	y;
-	int 	bits_per_pixel;
-	int 	size_line;
-	int 	endian;
-	t_cone  *sp;
+	int		y;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+	t_cone	*sp;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	sp = scene->cn;
@@ -225,9 +205,10 @@ void	render_scene_cn(void *img, t_scene *scene)
 	}
 }
 
-void	render_scene_plane_rows(t_scene *scene, char *img_data, int y, t_material *mtrl)
+void	render_scene_plane_rows(t_scene *scene, char *img_data, int y,
+		t_material *mtrl)
 {
-	int 	x;
+	int		x;
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
@@ -255,23 +236,24 @@ void	render_scene_plane_rows(t_scene *scene, char *img_data, int y, t_material *
 void	render_scene_plane(void *img, t_scene *scene)
 {
 	char	*img_data;
-	int 	y;
-	int 	bits_per_pixel;
-	int 	size_line;
-	int 	endian;
+	int		y;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	y = 0;
 	while (y < HEIGHT)
 	{
-		render_scene_plane_rows(scene, img_data, y,scene->pl->mtrl);
+		render_scene_plane_rows(scene, img_data, y, scene->pl->mtrl);
 		y++;
 	}
 }
 
-void	render_scene_cy_rows(t_scene *scene, char *img_data, int y, t_material *mtrl)
+void	render_scene_cy_rows(t_scene *scene, char *img_data, int y,
+		t_material *mtrl)
 {
-	int 	x;
+	int		x;
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
@@ -299,16 +281,16 @@ void	render_scene_cy_rows(t_scene *scene, char *img_data, int y, t_material *mtr
 void	render_scene_cy(void *img, t_scene *scene)
 {
 	char	*img_data;
-	int 	y;
-	int 	bits_per_pixel;
-	int 	size_line;
-	int 	endian;
+	int		y;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	y = 0;
 	while (y < HEIGHT)
 	{
-		render_scene_cy_rows(scene, img_data, y,scene->cy->mtrl);
+		render_scene_cy_rows(scene, img_data, y, scene->cy->mtrl);
 		y++;
 	}
 }

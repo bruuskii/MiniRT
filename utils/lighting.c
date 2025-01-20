@@ -21,8 +21,8 @@ t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 	t_vctr	color;
 	t_vctr	reflect_dir;
 
-	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal, view->light_dir)),
-			view->light_dir);
+	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal,
+					view->light_dir)), view->light_dir);
 	ambient = material->ambient;
 	diffuse = fmax(vec3_dot(normal, view->light_dir), 0.0) * material->diffuse;
 	specular = pow(fmax(vec3_dot(view->view_dir, reflect_dir), 0.0),
@@ -51,8 +51,8 @@ t_vctr	vec3_multiply(t_vctr v1, t_vctr v2)
 
 int	ft_sphere_param(t_scene *scene, t_ray raysh)
 {
-	t_sp		*current_sphere;
-	t_hit		*shadow_hit;
+	t_sp	*current_sphere;
+	t_hit	*shadow_hit;
 
 	current_sphere = scene->sp;
 	while (current_sphere)
@@ -71,8 +71,8 @@ int	ft_sphere_param(t_scene *scene, t_ray raysh)
 }
 int	ft_hit_plane(t_scene *scene, t_ray raysh)
 {
-	t_plane		*current_plane;
-	t_hit		*shadow_hit;
+	t_plane	*current_plane;
+	t_hit	*shadow_hit;
 
 	current_plane = scene->pl;
 	while (current_plane)
@@ -92,9 +92,9 @@ int	ft_hit_plane(t_scene *scene, t_ray raysh)
 
 int	ft_hit_cone(t_scene *scene, t_ray raysh)
 {
-	t_cone		*current_cone;
-	t_hit		*shadow_hit;
-	
+	t_cone	*current_cone;
+	t_hit	*shadow_hit;
+
 	current_cone = scene->cn;
 	while (current_cone)
 	{
@@ -132,12 +132,13 @@ int	ft_hit_cy(t_scene *scene, t_ray raysh)
 	return (0);
 }
 
-t_vctr	light_colors(t_light *light, t_hit hit, t_material *material, t_ray *ray)
+t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,
+		t_ray *ray)
 {
-	t_vctr		color;
-	t_vctr		light_dir;
-	t_vctr		view_dir;
-	t_view		*view;
+	t_vctr	color;
+	t_vctr	light_dir;
+	t_vctr	view_dir;
+	t_view	*view;
 
 	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
 	view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point));
@@ -158,19 +159,20 @@ int	is_in_shaddow(t_scene *scene, t_ray raysh)
 		in_shadow = 1;
 	if (ft_hit_cy(scene, raysh))
 		in_shadow = 1;
-	if (ft_hit_cone(scene, raysh))	
+	if (ft_hit_cone(scene, raysh))
 		in_shadow = 1;
 	return (in_shadow);
 }
 
-t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene, t_material *material, t_light *light)
+t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene,
+		t_material *material, t_light *light)
 {
-	t_vctr		color;
-	t_ray		raysh;
-	int			in_shadow;
-	t_vctr		ambient;
-	t_vctr		light_dir;
-	
+	t_vctr	color;
+	t_ray	raysh;
+	int		in_shadow;
+	t_vctr	ambient;
+	t_vctr	light_dir;
+
 	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
 	raysh.direction = light_dir;
 	raysh.origin = vec3_add(hit.point, hit.normal);

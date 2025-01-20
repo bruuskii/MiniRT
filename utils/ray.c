@@ -36,7 +36,7 @@ t_vctr	*ft_u_and_v(t_cam *cam)
 	t_vctr	v_vec;
 
 	u_v = malloc(2 * sizeof(t_vctr));
-	if (!u_v)	
+	if (!u_v)
 		return (NULL);
 	u_vec = vec3_create(0, 1, 0);
 	v_vec = vec3_cross(vec3_normalize(vec3_scale(*(cam->dir), -1)), u_vec);
@@ -63,7 +63,7 @@ t_vctr	*get_horiz_vert(t_cam *cam)
 	viewport = get_view_ports(cam);
 	if (!viewport)
 		return (NULL);
-	horizontal = vec3_scale(u_v[1], (viewport[2]) *  (viewport[0]));
+	horizontal = vec3_scale(u_v[1], (viewport[2]) * (viewport[0]));
 	vertical = vec3_scale(u_v[0], viewport[0]);
 	h_v[0] = horizontal;
 	h_v[1] = vertical;
@@ -91,7 +91,8 @@ t_ray	*create_ray(t_cam *cam, double u, double v)
 	horizontal = h_v[0];
 	vertical = h_v[1];
 	lower_left_corner = vec3_sub(*(cam->pos), vec3_add(vec3_scale(horizontal,
-					0.5), vec3_add(vec3_scale(vertical, 0.5), vec3_normalize(vec3_scale(*(cam->dir), -1)))));
+					0.5), vec3_add(vec3_scale(vertical, 0.5),
+					vec3_normalize(vec3_scale(*(cam->dir), -1)))));
 	ray->origin = *(cam->pos);
 	ray->direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner,
 					vec3_add(vec3_scale(horizontal, u), vec3_scale(vertical,
