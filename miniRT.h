@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/19 23:51:54 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:29:50 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,15 @@ typedef struct s_data
 	void				*mlx;
 	void				*win;
 }						t_data;
+
+typedef struct s_view
+{
+	t_vctr		light_dir;
+	t_vctr		view_dir;
+	t_light		*light;
+
+}				t_view;
+
 t_material				*ft_material(t_scene *scene, double dif, double spec,
 							double sh);
 void					ft_scene_cone(t_scene *scene, t_win *data);
@@ -219,9 +228,7 @@ void					ft_assign_cn_utils(t_cone **cn, char **lst, int i);
 t_vctr					calculate_lighting(t_ray *ray, t_hit hit,
 							t_scene *scene, t_material *material,
 							t_light *light);
-t_vctr					phong_lighting(t_vctr light_dir, t_vctr view_dir,
-							t_vctr normal, t_material *material,
-							t_light *light);
+t_vctr					phong_lighting(t_view *view, t_vctr normal, t_material *material);
 t_ray					create_nray(t_vctr point, t_vctr dir, double u,
 							double v);
 int						ft_is_shadowed(t_scene *scene, t_vctr *point, double u,

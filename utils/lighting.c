@@ -1,7 +1,19 @@
 #include "../miniRT.h"
 
-t_vctr	phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal,
-		t_material *material, t_light *light)
+t_view	*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light)
+{
+	t_view	*ptr;
+
+	ptr = malloc(sizeof(t_view));
+	if (!ptr)
+		return (NULL);
+	ptr->light_dir = light_dir;
+	ptr->view_dir = view_dir;
+	ptr->light = light;
+	return (ptr);
+}
+
+t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 {
 	double	ambient;
 	double	diffuse;
@@ -9,15 +21,15 @@ t_vctr	phong_lighting(t_vctr light_dir, t_vctr view_dir, t_vctr normal,
 	t_vctr	color;
 	t_vctr	reflect_dir;
 
-	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal, light_dir)),
-			light_dir);
+	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal, view->light_dir)),
+			view->light_dir);
 	ambient = material->ambient;
-	diffuse = fmax(vec3_dot(normal, light_dir), 0.0) * material->diffuse;
-	specular = pow(fmax(vec3_dot(view_dir, reflect_dir), 0.0),
+	diffuse = fmax(vec3_dot(normal, view->light_dir), 0.0) * material->diffuse;
+	specular = pow(fmax(vec3_dot(view->view_dir, reflect_dir), 0.0),
 			material->shininess) * material->specular;
 	color = vec3_scale(material->color, ambient + diffuse);
-	color = vec3_add(color, vec3_scale(*light->color, specular));
-	color = vec3_scale(color, light->brightness);
+	color = vec3_add(color, vec3_scale(*view->light->color, specular));
+	color = vec3_scale(color, view->light->brightness);
 	return (vec3_create(fmin(color.x, 255.0), fmin(color.y, 255.0),
 			fmin(color.z, 255.0)));
 }
@@ -120,20 +132,25 @@ int	ft_hit_cy(t_scene *scene, t_ray raysh)
 	return (0);
 }
 
-t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene, t_material *material, t_light *light)
+t_vctr	light_colors(t_light *light, t_hit hit, t_material *material, t_ray *ray)
 {
 	t_vctr		color;
-	t_ray		raysh;
 	t_vctr		light_dir;
 	t_vctr		view_dir;
-	int			in_shadow;
-	t_vctr		ambient;
+	t_view		*view;
 
 	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
 	view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point));
-	color = phong_lighting(light_dir, view_dir, hit.normal, material, light);
-	raysh.direction = light_dir;
-	raysh.origin = vec3_add(hit.point, hit.normal);
+	view = ft_view(light_dir, view_dir, light);
+	color = phong_lighting(view, hit.normal, material);
+	free(view);
+	return (color);
+}
+
+int	is_in_shaddow(t_scene *scene, t_ray raysh)
+{
+	int	in_shadow;
+
 	in_shadow = 0;
 	if (ft_sphere_param(scene, raysh))
 		in_shadow = 1;
@@ -143,6 +160,22 @@ t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene, t_material *mat
 		in_shadow = 1;
 	if (ft_hit_cone(scene, raysh))	
 		in_shadow = 1;
+	return (in_shadow);
+}
+
+t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene, t_material *material, t_light *light)
+{
+	t_vctr		color;
+	t_ray		raysh;
+	int			in_shadow;
+	t_vctr		ambient;
+	t_vctr		light_dir;
+	
+	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
+	raysh.direction = light_dir;
+	raysh.origin = vec3_add(hit.point, hit.normal);
+	color = light_colors(light, hit, material, ray);
+	in_shadow = is_in_shaddow(scene, raysh);
 	if (in_shadow)
 	{
 		ambient = vec3_scale((t_vctr){10, 10, 10}, material->ambient);
