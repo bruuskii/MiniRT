@@ -90,15 +90,20 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 	t_vctr	final_color;
 	t_light	*light;
 	t_vctr	light_color;
+	t_view	*view;
 
 	final_color = (t_vctr){0, 0, 0};
 	light = scene->light;
 	while (light)
 	{
-		light_color = calculate_lighting(ray, *hit, scene, mtrl, light);
+		view = ft_view(final_color, final_color, light, ray);
+		if (!view)
+			continue ;
+		light_color = calculate_lighting(view, *hit, scene, mtrl);
 		final_color.x += light_color.x;
 		final_color.y += light_color.y;
 		final_color.z += light_color.z;
+		free(view);
 		if (light)
 			light = light->next;
 	}
@@ -142,16 +147,14 @@ void	render_scene(void *img, t_scene *scene)
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;
-	t_sp	*sp;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	sp = scene->sp;
 	y = 0;
 	if (!scene)
 		return ;
 	while (y < HEIGHT)
 	{
-		ft_render(scene, img_data, y, sp->mtrl);
+		ft_render(scene, img_data, y, scene->sp->mtrl);
 		y++;
 	}
 }
@@ -191,16 +194,14 @@ void	render_scene_cn(void *img, t_scene *scene)
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;
-	t_cone	*sp;
 
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	sp = scene->cn;
 	y = 0;
 	if (!scene)
 		return ;
 	while (y < HEIGHT)
 	{
-		render_scene_cn_rows(scene, img_data, y, sp->mtrl);
+		render_scene_cn_rows(scene, img_data, y, scene->cn->mtrl);
 		y++;
 	}
 }

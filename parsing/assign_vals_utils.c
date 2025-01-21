@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:37:17 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/20 01:49:46 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/21 03:00:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -477,6 +477,7 @@ void	ft_assign_cn_color(t_cone **cn, char *s)
 		ft_print_and_exit("Cone has wrong color parameters", 1);
 	ft_lstfree(tmp);
 }
+
 void	ft_assign_cn_axis(t_cone **cn, char *lst)
 {
 	char	**tmp;

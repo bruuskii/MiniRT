@@ -1,6 +1,6 @@
 #include "../miniRT.h"
 
-t_view	*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light)
+t_view	*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light, t_ray *ray)
 {
 	t_view	*ptr;
 
@@ -10,6 +10,7 @@ t_view	*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light)
 	ptr->light_dir = light_dir;
 	ptr->view_dir = view_dir;
 	ptr->light = light;
+	ptr->ray = ray;
 	return (ptr);
 }
 
@@ -69,6 +70,7 @@ int	ft_sphere_param(t_scene *scene, t_ray raysh)
 	}
 	return (0);
 }
+
 int	ft_hit_plane(t_scene *scene, t_ray raysh)
 {
 	t_plane	*current_plane;
@@ -142,7 +144,7 @@ t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,
 
 	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
 	view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point));
-	view = ft_view(light_dir, view_dir, light);
+	view = ft_view(light_dir, view_dir, light, ray);
 	color = phong_lighting(view, hit.normal, material);
 	free(view);
 	return (color);
@@ -164,8 +166,8 @@ int	is_in_shaddow(t_scene *scene, t_ray raysh)
 	return (in_shadow);
 }
 
-t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene,
-		t_material *material, t_light *light)
+t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
+		t_material *material)
 {
 	t_vctr	color;
 	t_ray	raysh;
@@ -173,10 +175,10 @@ t_vctr	calculate_lighting(t_ray *ray, t_hit hit, t_scene *scene,
 	t_vctr	ambient;
 	t_vctr	light_dir;
 
-	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
+	light_dir = vec3_normalize(vec3_sub(*view->light->dir, hit.point));
 	raysh.direction = light_dir;
 	raysh.origin = vec3_add(hit.point, hit.normal);
-	color = light_colors(light, hit, material, ray);
+	color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, raysh);
 	if (in_shadow)
 	{

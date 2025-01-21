@@ -103,11 +103,11 @@ t_ray	*create_ray(t_cam *cam, double u, double v)
 
 t_ray	create_shadow_ray(t_hit hit, t_vctr point, t_light *light)
 {
-	t_vctr vec;
-	t_ray s_ray;
-	t_vctr normal;
-	t_vctr light_dir;
-	t_vctr biased;
+	t_vctr	vec;
+	t_ray	s_ray;
+	t_vctr	normal;
+	t_vctr	light_dir;
+	t_vctr	biased;
 
 	vec = vec3_sub(hit.point, point);
 	normal = vec3_normalize(vec);

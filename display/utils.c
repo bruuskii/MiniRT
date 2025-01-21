@@ -12,7 +12,6 @@
 
 #include "../miniRT.h"
 
-
 int	is_in_sphere(t_vctr *pnt, t_sp *sp)
 {
 	t_vctr	*v;

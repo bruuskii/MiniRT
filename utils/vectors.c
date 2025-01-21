@@ -34,7 +34,9 @@ double	vec3_dot(t_vctr v1, t_vctr v2)
 
 t_vctr	vec3_normalize(t_vctr v)
 {
-	double length = sqrt(vec3_dot(v, v));
+	double	length;
+
+	length = sqrt(vec3_dot(v, v));
 	if (length == 0)
 		return (vec3_create(0, 0, 0));
 	return (vec3_scale(v, 1 / length));

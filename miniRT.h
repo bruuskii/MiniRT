@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/20 17:29:40 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/21 02:56:01 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,22 @@ typedef struct s_view
 	t_vctr				light_dir;
 	t_vctr				view_dir;
 	t_light				*light;
+	t_ray				*ray;
 
 }						t_view;
 
+typedef struct s_cone_data
+{
+	t_vctr				co;
+	t_vctr				v;
+	double				k;
+	double				a;
+	double				b;
+	double				discriminant;
+}						t_cone_data;
+
+t_view					*ft_view(t_vctr light_dir, t_vctr view_dir,
+							t_light *light, t_ray *ray);
 t_material				*ft_material(t_scene *scene, double dif, double spec,
 							double sh);
 void					ft_scene_cone(t_scene *scene, t_win *data);
@@ -223,9 +236,8 @@ t_ray					create_shadow_ray(t_hit hit, t_vctr point,
 void					ft_assign_cone(t_cone *cn, char **lst);
 void					ft_add_back_cn(t_cone **cn, t_cone *node);
 void					ft_assign_cn_utils(t_cone **cn, char **lst, int i);
-t_vctr					calculate_lighting(t_ray *ray, t_hit hit,
-							t_scene *scene, t_material *material,
-							t_light *light);
+t_vctr					calculate_lighting(t_view *view, t_hit hit,
+							t_scene *scene, t_material *material);
 t_vctr					phong_lighting(t_view *view, t_vctr normal,
 							t_material *material);
 t_ray					create_nray(t_vctr point, t_vctr dir, double u,

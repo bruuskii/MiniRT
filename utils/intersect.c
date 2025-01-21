@@ -271,70 +271,79 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 	return (hit);
 }
 
-double	ft_discriminant_cone(t_vctr d, t_vctr co, t_cone *cone, t_vctr v)
+double	ft_calculate_k(double tang)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-	double	k;
-
-	k = tan(cone->tang * M_PI / 180.0);
-	a = vec3_dot(d, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(d, v);
-	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(co,
-				v));
-	c = vec3_dot(co, co) - (1.0 + k * k) * vec3_dot(co, v) * vec3_dot(co, v);
-	discriminant = b * b - 4.0 * a * c;
-	return (discriminant);
+	return (tan(tang * M_PI / 180.0));
 }
 
-int	ft_assign_t_cone(double discriminant, double *t, t_vctr d, t_cone *cone,
-		t_vctr co, t_vctr v)
+void	ft_initialize_cone_data(t_ray *ray, t_cone *cone, t_cone_data *data)
+{
+	data->co = vec3_sub(ray->origin, *(cone->vertex));
+	data->v = vec3_normalize(*(cone->axis));
+	data->k = ft_calculate_k(cone->tang);
+}
+
+void	ft_calculate_quadratic_coeffs(t_vctr d, t_cone_data *data)
+{
+	double	k_squared;
+
+	k_squared = 1.0 + data->k * data->k;
+	data->a = vec3_dot(d, d) - k_squared * vec3_dot(d, data->v) * vec3_dot(d,
+			data->v);
+	data->b = 2.0 * (vec3_dot(data->co, d) - k_squared * vec3_dot(d, data->v)
+			* vec3_dot(data->co, data->v));
+}
+
+double	ft_calculate_discriminant(t_cone_data *data)
+{
+	double	c;
+
+	c = vec3_dot(data->co, data->co) - (1.0 + data->k * data->k)
+		* vec3_dot(data->co, data->v) * vec3_dot(data->co, data->v);
+	data->discriminant = data->b * data->b - 4.0 * data->a * c;
+	return (data->discriminant);
+}
+
+int	ft_solve_quadratic(double a, double b, double discriminant, double *t)
 {
 	double	t0;
 	double	t1;
-	double	a;
-	double	b;
-	double	k;
 
-	k = tan(cone->tang * M_PI / 180.0);
-	a = vec3_dot(d, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(d, v);
-	b = 2.0 * (vec3_dot(co, d) - (1.0 + k * k) * vec3_dot(d, v) * vec3_dot(co,
-				v));
 	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
 	if (t0 > 1e-6 && t1 > 1e-6)
-		return (*t = fmin(t0, t1), 0);
+	{
+		*t = fmin(t0, t1);
+		return (0);
+	}
 	else if (t0 > 1e-6)
-		return (*t = t0, 0);
+	{
+		*t = t0;
+		return (0);
+	}
 	else if (t1 > 1e-6)
-		return (*t = t1, 0);
+	{
+		*t = t1;
+		return (0);
+	}
 	return (1);
 }
 
-double	ft_compute_discriminant(t_ray *ray, t_cone *cone, t_vctr *co, t_vctr *v)
+int	ft_validate_and_solve(t_cone_data *data, double *t)
 {
-	*co = vec3_sub(ray->origin, *(cone->vertex));
-	*v = vec3_normalize(*(cone->axis));
-	return (ft_discriminant_cone(ray->direction, *co, cone, *v));
-}
-
-int	ft_validate_t_and_update(double discriminant, double *t, t_ray *ray,
-		t_cone *cone, t_vctr co, t_vctr v)
-{
-	if (discriminant < 0)
+	if (data->discriminant < 0)
 		return (1);
-	return (ft_assign_t_cone(discriminant, t, ray->direction, cone, co, v));
+	return (ft_solve_quadratic(data->a, data->b, data->discriminant, t));
 }
 
-int	ft_check_m_and_compute_normal(t_vctr intersection_point, t_cone *cone,
+int	ft_check_intersection_constraints(t_vctr intersection, t_cone *cone,
 		t_vctr v, t_hit *hit)
 {
 	t_vctr	hit_to_vertex;
 	double	m;
 	t_vctr	normal;
 
-	hit_to_vertex = vec3_sub(intersection_point, *(cone->vertex));
+	hit_to_vertex = vec3_sub(intersection, *(cone->vertex));
 	m = vec3_dot(hit_to_vertex, v);
 	if (m < cone->minm || m > cone->maxm)
 		return (1);
@@ -345,26 +354,26 @@ int	ft_check_m_and_compute_normal(t_vctr intersection_point, t_cone *cone,
 
 t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
 {
-	t_hit	*hit;
-	t_vctr	co;
-	t_vctr	v;
-	double	discriminant;
-	double	t;
-	t_vctr	intersection_point;
+	t_hit		*hit;
+	t_cone_data	data;
+	double		t;
+	t_vctr		intersection;
 
 	if (!ray || !cone)
 		return (NULL);
 	hit = ft_hit();
 	if (!hit)
 		return (NULL);
-	discriminant = ft_compute_discriminant(ray, cone, &co, &v);
-	if (ft_validate_t_and_update(discriminant, &t, ray, cone, co, v))
+	ft_initialize_cone_data(ray, cone, &data);
+	ft_calculate_quadratic_coeffs(ray->direction, &data);
+	ft_calculate_discriminant(&data);
+	if (ft_validate_and_solve(&data, &t))
 		return (free(hit), NULL);
-	intersection_point = vec3_add(ray->origin, vec3_scale(ray->direction, t));
-	if (ft_check_m_and_compute_normal(intersection_point, cone, v, hit))
+	intersection = vec3_add(ray->origin, vec3_scale(ray->direction, t));
+	if (ft_check_intersection_constraints(intersection, cone, data.v, hit))
 		return (free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
-	hit->point = intersection_point;
+	hit->point = intersection;
 	return (hit);
 }
