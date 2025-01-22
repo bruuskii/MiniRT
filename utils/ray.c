@@ -1,14 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
+/*   Updated: 2025/01/22 22:22:32 by izouine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../miniRT.h"
-
-t_vctr	vec3_create(double x, double y, double z)
-{
-	t_vctr	vec;
-
-	vec.x = x;
-	vec.y = y;
-	vec.z = z;
-	return (vec);
-}
 
 double	*get_view_ports(t_cam *cam)
 {

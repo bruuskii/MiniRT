@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/21 02:56:01 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/22 22:53:30 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,24 @@ typedef struct s_cone_data
 	double				b;
 	double				discriminant;
 }						t_cone_data;
+
+typedef struct s_helpers
+{
+	double	u;
+	double	v;
+	int		square_u;
+	int		square_v;
+	double	angle;
+	double	height;
+	int		square_angle;
+	int		square_height;
+	double radius;
+	t_vctr	pattern_color;
+	t_vctr	white;
+	t_vctr	black;
+	t_vctr	ambient;
+	t_vctr	shadowed;
+}			t_helpers;
 
 t_view					*ft_view(t_vctr light_dir, t_vctr view_dir,
 							t_light *light, t_ray *ray);
