@@ -204,21 +204,21 @@ typedef struct s_cone_data
 
 typedef struct s_helpers
 {
-	double	u;
-	double	v;
-	int		square_u;
-	int		square_v;
-	double	angle;
-	double	height;
-	int		square_angle;
-	int		square_height;
-	double radius;
-	t_vctr	pattern_color;
-	t_vctr	white;
-	t_vctr	black;
-	t_vctr	ambient;
-	t_vctr	shadowed;
-}			t_helpers;
+	double				u;
+	double				v;
+	int					square_u;
+	int					square_v;
+	double				angle;
+	double				height;
+	int					square_angle;
+	int					square_height;
+	double				radius;
+	t_vctr				pattern_color;
+	t_vctr				white;
+	t_vctr				black;
+	t_vctr				ambient;
+	t_vctr				shadowed;
+}						t_helpers;
 
 t_view					*ft_view(t_vctr light_dir, t_vctr view_dir,
 							t_light *light, t_ray *ray);

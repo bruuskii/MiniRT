@@ -72,27 +72,3 @@ void	ft_assign_light(t_light *lt, char **lst)
 		i++;
 	}
 }
-
-void	ft_assign_alight(t_alight *lt, char **lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst[i])
-	{
-		ft_assign_alight_utils(&lt, lst, i);
-		i++;
-	}
-}
-
-void	ft_assign_cone(t_cone *cn, char **lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst[i])
-	{
-		ft_assign_cn_utils(&cn, lst, i);
-		i++;
-	}
-}
