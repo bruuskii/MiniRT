@@ -6,61 +6,108 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/14 18:42:35 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/23 22:13:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-// t_ray	create_nray(t_vctr point, t_vctr dir, double u, double v)
-// {
-// 	t_ray	ray;
-// 	double	aspect_ratio;
-// 	double	viewport_height;
-// 	double	viewport_width;
-// 	t_vctr	w;
-// 	t_vctr	u_vec;
-// 	t_vctr	v_vec;
-// 	t_vctr	horizontal;
-// 	t_vctr	vertical;
-// 	t_vctr	lower_left_corner;
+int	ft_sphere_param(t_scene *scene, t_ray raysh)
+{
+	t_sp	*current_sphere;
+	t_hit	*shadow_hit;
 
-// 	aspect_ratio = (double)WIDTH / HEIGHT;
-// 	viewport_height = 2.0 * tan(45.0 * 0.5 * M_PI / 180.0);
-// 	viewport_width = aspect_ratio * viewport_height;
-// 	w = vec3_normalize(vec3_scale(dir, -1));
-// 	u_vec = vec3_create(0, 1, 0);
-// 	v_vec = vec3_cross(w, u_vec);
-// 	u_vec = vec3_cross(v_vec, w);
-// 	horizontal = vec3_scale(v_vec, viewport_width);
-// 	vertical = vec3_scale(u_vec, viewport_height);
-// 	lower_left_corner = vec3_sub(point, vec3_add(vec3_scale(horizontal, 0.5),
-// 				vec3_add(vec3_scale(vertical, 0.5), w)));
-// 	ray.origin = point;
-// 	ray.direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner,
-// 					vec3_add(vec3_scale(horizontal, u), vec3_scale(vertical,
-// 							v))), point));
-// 	return (ray);
-// }
+	current_sphere = scene->sp;
+	while (current_sphere)
+	{
+		shadow_hit = intersect_sphere(&raysh, current_sphere);
+		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
+		{
+			free(shadow_hit);
+			return (1);
+		}
+		if (shadow_hit)
+			free(shadow_hit);
+		current_sphere = current_sphere->next;
+	}
+	return (0);
+}
 
-// int	ft_is_shadowed(t_scene *scene, t_vctr *point, double u, double v)
-// {
-// 	double	distance;
-// 	t_vctr	vc;
-// 	t_hit	*hit;
-// 	t_ray	ray;
-// 	t_vctr	dir;
+int	ft_hit_plane(t_scene *scene, t_ray raysh)
+{
+	t_plane	*current_plane;
+	t_hit	*shadow_hit;
 
-// 	vc = vec3_sub(*scene->light->dir, *point);
-// 	distance = ft_magnitude(&vc);
-// 	dir = vec3_normalize(vc);
-// 	ray = create_nray(*point, dir, u, v);
-// 	hit = intersect_sphere(&ray, scene->sp);
-// 	if (hit && hit->t < distance)
-// 	{
-// 		free(hit);
-// 		return (1);
-// 	}
-// 	free(hit);
-// 	return (0);
-// }
+	current_plane = scene->pl;
+	while (current_plane)
+	{
+		shadow_hit = intersect_plane(&raysh, current_plane);
+		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
+		{
+			free(shadow_hit);
+			return (1);
+		}
+		if (shadow_hit)
+			free(shadow_hit);
+		current_plane = current_plane->next;
+	}
+	return (0);
+}
+
+int	ft_hit_cone(t_scene *scene, t_ray raysh)
+{
+	t_cone	*current_cone;
+	t_hit	*shadow_hit;
+
+	current_cone = scene->cn;
+	while (current_cone)
+	{
+		shadow_hit = intersect_cone(&raysh, current_cone);
+		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
+		{
+			free(shadow_hit);
+			return (1);
+		}
+		if (shadow_hit)
+			free(shadow_hit);
+		current_cone = current_cone->next;
+	}
+	return (0);
+}
+
+int	ft_hit_cy(t_scene *scene, t_ray raysh)
+{
+	t_cylinder	*current_cy;
+	t_hit		*shadow_hit;
+
+	current_cy = scene->cy;
+	while (current_cy)
+	{
+		shadow_hit = intersect_cylinder(&raysh, current_cy);
+		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
+		{
+			free(shadow_hit);
+			return (1);
+		}
+		if (shadow_hit)
+			free(shadow_hit);
+		current_cy = current_cy->next;
+	}
+	return (0);
+}
+
+int	is_in_shaddow(t_scene *scene, t_ray raysh)
+{
+	int	in_shadow;
+
+	in_shadow = 0;
+	if (ft_sphere_param(scene, raysh))
+		in_shadow = 1;
+	if (ft_hit_plane(scene, raysh))
+		in_shadow = 1;
+	if (ft_hit_cy(scene, raysh))
+		in_shadow = 1;
+	if (ft_hit_cone(scene, raysh))
+		in_shadow = 1;
+	return (in_shadow);
+}
