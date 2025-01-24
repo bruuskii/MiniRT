@@ -6,7 +6,7 @@
 /*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:58 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:11:59 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:44:47 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,12 @@ double	ft_distance_cylinder(t_hit *hit, t_cylinder *cy)
 {
 	t_vctr	projection;
 	t_vctr	proj_point;
-	t_vctr	vctr;
 	double	distance;
 
+	distance = 0;
 	projection = vec3_scale(*cy->c_axis, vec3_dot(vec3_sub(hit->point,
 					*cy->c_cntr), *cy->c_axis));
 	proj_point = vec3_add(*cy->c_cntr, projection);
-	vctr = vec3_sub(proj_point, *cy->c_cntr);
-	distance = ft_magnitude(&vctr);
 	if (distance <= cy->height)
 		hit->normal = vec3_normalize(vec3_sub(hit->point, proj_point));
 	return (distance);

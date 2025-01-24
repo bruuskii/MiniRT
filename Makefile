@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
+#    By: izouine <izouine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/01/19 22:02:25 by kbassim          ###   ########.fr        #
+#    Updated: 2025/01/24 16:48:59 by izouine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,22 +24,43 @@ CFILES = libft/libft.c\
 		parsing/check_file.c\
 		parsing/scene.c\
 		parsing/read_from_file.c\
+		parsing/read_from_file_01.c\
+		parsing/read_from_file_02.c\
+		parsing/read_from_file_03.c\
+		parsing/read_from_file_04.c\
+		parsing/assign_vals_01.c\
 		parsing/assign_vals.c\
 		parsing/assign_vals_utils.c\
+		parsing/assign_vals_utils_01.c\
+		parsing/assign_vals_utils_02.c\
+		parsing/assign_vals_utils_03.c\
+		parsing/assign_vals_utils_04.c\
+		parsing/assign_vals_utils_05.c\
 		display/window.c\
 		display/win_events.c\
-		utils/objs.c\
+		utils/objs_00.c\
+		utils/objs_01.c\
+		utils/objs_02.c\
 		utils/shadow.c\
-		utils/intersect.c\
+		utils/intersect_00.c\
+		utils/intersect_01.c\
+		utils/intersect_02.c\
+		utils/intersect_03.c\
+		utils/intersect_04.c\
 		utils/reflection.c\
-		utils/lighting.c\
+		utils/lighting_00.c\
+		utils/lighting_01.c\
 		utils/ray.c\
 		utilities.c\
-		utils/vectors.c\
+		utilities_01.c\
+		utilities_02.c\
+		utilities_03.c\
+		utilities_04.c\
+		utils/vectors_00.c\
+		utils/vectors_01.c\
 		MiniRT_bonus/sphere_bonus.c\
 		
 CBFILES = MiniRT_bonus/main.c\
-		MiniRT_bonus/sphere_bonus.c\
 		
 MAIN = main.c\
 		

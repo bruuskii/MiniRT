@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_from_file_02.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:30 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/22 22:35:16 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:04:54 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void	ft_assign_flag_sphere(int n, char **tmp, t_sp *node, int fl)
 		if (!ft_strcmp(tmp[4], "B"))
 			node->fl = 1;
 		else if (!ft_strcmp(tmp[4], "C"))
+		{
 			node->chess = 1;
+		}
 	}
 	else if (n == 6 && fl)
 	{

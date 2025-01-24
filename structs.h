@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/23 21:45:44 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:25:34 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
-#define STRUCTS_H
+# define STRUCTS_H
 
 # define HEIGHT 800
 # define WIDTH 800
@@ -93,6 +93,7 @@ typedef struct s_plane
 	int					fl;
 	t_vctr				*color;
 	struct s_plane		*next;
+	int					chess;
 }						t_plane;
 
 typedef struct s_cylinder
@@ -105,6 +106,7 @@ typedef struct s_cylinder
 	double				height;
 	t_vctr				*color;
 	struct s_cylinder	*next;
+	int					chess;
 }						t_cylinder;
 
 typedef struct s_obj
@@ -199,6 +201,8 @@ typedef struct s_helpers
 	double				v;
 	int					square_u;
 	int					square_v;
+	int					square_x;
+	int					square_y;
 	double				angle;
 	double				height;
 	int					square_angle;
@@ -209,6 +213,13 @@ typedef struct s_helpers
 	t_vctr				black;
 	t_vctr				ambient;
 	t_vctr				shadowed;
+	t_hit				*lol;
+	t_hit				hit_point;
+	t_ray				raysh;
+	t_vctr				normal;
+	t_hit				hit;
+	int					in_shadow;
+	t_vctr				color;
 }						t_helpers;
 
 #endif
