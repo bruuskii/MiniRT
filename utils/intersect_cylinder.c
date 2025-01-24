@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersect_03.c                                     :+:      :+:    :+:   */
+/*   intersect_cylinder.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:58 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/25 00:17:18 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/24 23:08:31 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,18 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	return (1);
 }
 
-double ft_magnitude(t_vctr vct)
-{
-	return (sqrt(vct.x * vct.x + vct.y * vct.y + vct.z * vct.z));
-}
-
 double	ft_distance_cylinder(t_hit *hit, t_cylinder *cy)
 {
 	t_vctr	projection;
 	t_vctr	proj_point;
+	t_vctr	vctr;
 	double	distance;
 
 	projection = vec3_scale(*cy->c_axis, vec3_dot(vec3_sub(hit->point,
 					*cy->c_cntr), *cy->c_axis));
 	proj_point = vec3_add(*cy->c_cntr, projection);
-	distance = ft_magnitude(vec3_sub(proj_point, *cy->c_cntr));
+	vctr = vec3_sub(proj_point, *cy->c_cntr);
+	distance = ft_magnitude(vctr);
 	if (distance <= cy->height)
 		hit->normal = vec3_normalize(vec3_sub(hit->point, proj_point));
 	return (distance);
@@ -94,7 +91,7 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 	discriminant = ft_discriminant_cylinder(ray, cy, oc);
 	if (discriminant < 0)
 		return (hit);
-	if (ft_assign_t_cy(ray, &t, oc, cy))
+	if (!ft_assign_t_cy(ray, &t, oc, cy))
 		return (hit);
 	hit->t = t;
 	hit->hit = 1;

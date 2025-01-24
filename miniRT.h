@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/24 18:28:34 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/25 00:15:02 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void		ft_assign_plane_utils(t_plane **pl, char **tmp, int i);
 void		ft_assign_cy_utils(t_cylinder **cy, char **lst, int i);
 void		ft_assign_sp_utils(t_sp **sp, char **tmp, int i);
 t_vctr		*vct_sub(t_vctr *v1, t_vctr *v2);
-double		ft_magnitude(t_vctr *vec);
+double		ft_magnitude(t_vctr vec);
 void		ft_assign_camera(t_cam *cam, char **lst);
 void		ft_assign_cam_utils(t_cam **cam, char **tmp, int i);
 t_cam		*ft_cam(char **lst);
@@ -122,7 +122,7 @@ void		ft_add_back_cy(t_cylinder **objs, t_cylinder *node);
 t_cylinder	*ft_new_cy(t_cylinder *content);
 t_cylinder	*ft_obj_cy(char **lst);
 t_cone		*ft_new_cone(t_cone *content);
-double		ft_magnitude(t_vctr *vec);
+double		ft_magnitude(t_vctr vec);
 void		ft_free_cylinder(t_cylinder *c);
 void		ft_free_scene(t_scene *scene);
 int			ft_check_first_param(char *s);

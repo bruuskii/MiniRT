@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting_01.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/24 18:53:42 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/25 00:08:23 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 		h.color = calculate_ambient_lighting(scene, material, h.color,
 				in_shadow);
 	else
-	{
 		fill_dhiya(h);
-	}
 	return (h.color);
 }
