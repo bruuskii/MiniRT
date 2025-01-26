@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_02.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:11:56 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/25 15:22:32 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
 	local_point = vec3_sub(intersection, *plane->point);
 	u = vec3_dot(local_point, plane_u);
 	v = vec3_dot(local_point, plane_v);
-	if (fabs(u) > M_W || (fabs(v) >= M_H || fabs(v) <= M_H_00))
+	if (fabs(u) > M_W / 2 || (fabs(v) >= M_H / 2))
 		return (1);
 	return (0);
 }

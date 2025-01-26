@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/24 17:27:10 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/26 12:46:00 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,8 @@ t_vctr		vec3_cross(t_vctr v1, t_vctr v2);
 double		vec3_dot(t_vctr v1, t_vctr v2);
 t_vctr		vec3_normalize(t_vctr v);
 t_vctr		vec3_create(double x, double y, double z);
+t_world     *new_node(void *ptr, t_type type);
+void    	ft_add_back_world(t_world **head, t_world *node);
+int 		get_farther_object(t_sp *sp, t_cylinder *cy, t_plane *pl, t_cone *cn);
+t_world 	*ft_new_world(t_sp *sp, t_plane *pl, t_cone *cn , t_cylinder *cy);
 #endif

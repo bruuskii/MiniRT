@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities_02.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/24 17:24:12 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/26 13:39:36 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 	return (final_color);
 }
 
-void	ft_render(t_scene *scene, char *img_data, int y, t_material *mtrl)
+void	ft_render(t_scene *scene, char *img_data, int y, t_sp *sp)
 {
 	int		x;
 	t_ray	*ray;
@@ -79,12 +79,12 @@ void	ft_render(t_scene *scene, char *img_data, int y, t_material *mtrl)
 	while (x < WIDTH)
 	{
 		ray = get_ray(scene, x, y);
-		hit = intersect_sphere(ray, scene->sp);
+		hit = intersect_sphere(ray, sp);
 		if (!ray)
 			return ;
 		if (hit && hit->hit)
 		{
-			final_color = ft_final_color(ray, hit, scene, mtrl);
+			final_color = ft_final_color(ray, hit, scene, sp->mtrl);
 			put_pixel_to_image(img_data, x, y, create_trgb(0,
 					(int)final_color.x, (int)final_color.y,
 					(int)final_color.z));
@@ -95,7 +95,7 @@ void	ft_render(t_scene *scene, char *img_data, int y, t_material *mtrl)
 	}
 }
 
-void	render_scene(void *img, t_scene *scene)
+void	render_scene(void *img, t_scene *scene, t_sp *sp)
 {
 	char	*img_data;
 	int		y;
@@ -109,7 +109,7 @@ void	render_scene(void *img, t_scene *scene)
 		return ;
 	while (y < HEIGHT)
 	{
-		ft_render(scene, img_data, y, scene->sp->mtrl);
+		ft_render(scene, img_data, y, sp);
 		y++;
 	}
 }

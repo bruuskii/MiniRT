@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "minirt.h": "c"
+        "minirt.h": "c",
+        "minirt": "c",
+        "math.h": "c",
+        "fcntl.h": "c",
+        "utils.h": "c",
+        "structs.h": "c",
+        "parsing.h": "c"
     }
 }

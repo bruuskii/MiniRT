@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/24 18:25:34 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/26 12:37:00 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 # define HEIGHT 800
 # define WIDTH 800
 # define ERROR_MESSAGE "Error\n"
-# define M_W 200
-# define M_H 200
-# define M_H_00 50
+# define M_W 100
+# define M_H 100
 
 typedef enum s_type
 {
@@ -71,6 +70,14 @@ typedef struct s_alight
 	t_type				type;
 	t_vctr				*color;
 }						t_alight;
+
+typedef struct s_world
+{
+	void			*ptr;
+	double			z;
+	t_type			type;
+	struct	s_world *next;
+}				t_world;
 
 typedef struct s_sp
 {
@@ -134,6 +141,7 @@ typedef struct s_scene
 	struct s_light		*light;
 	struct s_alight		*alight;
 	struct s_cone		*cn;
+	struct s_world		*world;
 }						t_scene;
 
 typedef struct s_ray
