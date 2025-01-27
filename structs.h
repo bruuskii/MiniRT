@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/26 12:37:00 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/27 12:57:09 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,8 @@ typedef struct s_cam
 typedef struct s_scene
 {
 	struct s_cam		*cam;
-	struct s_sp			*sp;
-	struct s_plane		*pl;
-	struct s_cylinder	*cy;
 	struct s_light		*light;
 	struct s_alight		*alight;
-	struct s_cone		*cn;
 	struct s_world		*world;
 }						t_scene;
 

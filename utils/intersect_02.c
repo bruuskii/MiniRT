@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/25 15:22:32 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:25:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,10 @@ t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 		t_ray *ray)
 {
 	t_vctr	intersection;
-
+	
 	intersection = vec3_add(ray->origin, vec3_scale(denom, t));
-	if (!plane->normal->z)
-		if (ft_resize_plane_00(intersection, plane))
-			return ((t_vctr){0, 0, 0});
+	if (ft_resize_plane_00(intersection, plane))
+		return ((t_vctr){0, 0, 0});
 	return (intersection);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:52:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/26 23:45:00 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:17:29 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void sort_plane(t_plane* head)
         ptr = head;
         while (ptr->next != last) 
 		{
-            if (!ptr->normal->z && ptr->next->normal->z) 
+            if (!ptr->normal->z && (ptr->point->z )) 
 			{
                 swap_planes(ptr, ptr->next);
                 swapped = 1;
@@ -192,7 +192,7 @@ void sort_cone(t_cone* head)
         ptr = head;
         while (ptr->next != last) 
 		{
-            if (!ptr->vertex->z && ptr->next->vertex->z) 
+            if (ptr->vertex->z > ptr->next->vertex->z) 
 			{
                 swap_cones(ptr, ptr->next);
                 swapped = 1;
@@ -203,32 +203,37 @@ void sort_cone(t_cone* head)
     }
 }
 
+
 t_scene	*ft_scene(char **lst, int fl)
 {
-	t_scene	*scene;
-
+	t_scene	    *scene;
+    t_sp        *sphere;
+    t_plane     *plane;
+    t_cylinder  *cylinder;
+    t_cone      *cone;
+    
 	scene = malloc(sizeof(t_scene));
 	if (!scene)
 		return (NULL);
 	scene->cam = ft_cam(lst);
-	scene->sp = ft_obj(lst, fl);
-    if (scene->sp)
-	    sort_sphere(scene->sp);
-	scene->pl = ft_obj_pl(lst, fl);
-    if (scene->pl)
-	    sort_plane(scene->pl);
-	scene->cy = ft_obj_cy(lst);
-    if (scene->cy)
-	    sort_cylinder(scene->cy);
-	if (!scene->sp && !scene->pl && !scene->cy && !scene->cn)
+	sphere = ft_obj(lst, fl);
+    if (sphere)
+	    sort_sphere(sphere);
+	plane = ft_obj_pl(lst, fl);
+    if (plane)
+	    sort_plane(plane);
+	cylinder = ft_obj_cy(lst);
+    if (cylinder)
+	    sort_cylinder(cylinder);
+	cone = ft_cone(lst, fl);
+    if (cone)
+	    sort_cone(cone);
+	if (!sphere && !plane && !cylinder && !cone)
 	{
 		printf("%s At least one object is needed!\n", ERROR_MESSAGE);
 		exit(1);
 	}
-	scene->cn = ft_cone(lst, fl);
-    if (scene->cn)
-	    sort_cone(scene->cn);
-	scene->world = ft_new_world(scene->sp, scene->pl, scene->cn, scene->cy);
+	scene->world = ft_new_world(sphere, plane, cone, cylinder);
 	scene->light = ft_light(lst);
 	scene->alight = ft_alight(lst);
 	ft_lstfree(lst);
