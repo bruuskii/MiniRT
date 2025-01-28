@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 11:57:53 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/28 10:44:53 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,23 @@ void	ft_render(t_scene *scene, char *img_data, int y, t_sp *sp)
 	}
 }
 
-void	render_scene(void *img, t_scene *scene, t_sp *sp)
+t_hit	*ft_get_hit(t_ray *ray, t_world *world)
 {
-	char	*img_data;
-	int		y;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
+	t_hit	*hit;
 
-	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	y = 0;
-	if (!scene)
-		return ;
-	while (y < HEIGHT)
+	hit = NULL;
+	if (world->type == 0)
+		hit = intersect_sphere(ray, (t_sp *)(world->ptr));
+	else if (world->type == 1)
+		hit = intersect_plane(ray, (t_plane *)(world->ptr));
+	else if (world->type == 2)
+		hit = intersect_cylinder(ray, (t_cylinder *)(world->ptr));
+	else if (world->type == 5)
+		hit = intersect_cone(ray, (t_cone *)(world->ptr));
+	else
 	{
-		ft_render(scene, img_data, y, sp);
-		y++;
+		free(ray);
+		return (hit);
 	}
+	return (hit);
 }

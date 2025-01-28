@@ -6,28 +6,11 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:11 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/26 14:39:52 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/28 10:18:15 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-void	render_scene_cy(void *img, t_scene *scene, t_cylinder *cy)
-{
-	char	*img_data;
-	int		y;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-
-	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	y = 0;
-	while (y < HEIGHT)
-	{
-		render_scene_cy_rows(scene, img_data, y, cy);
-		y++;
-	}
-}
 
 t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
 {
@@ -46,70 +29,45 @@ t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
 	return (mtrl);
 }
 
-void	ft_scene_cone(t_scene *scene, t_win *data, void *ptr)
+void	render_scene(void *img, t_scene *scene, t_world *world)
 {
-	t_cone	*con;
+	char	*img_data;
+	int		y;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
 
-	con = (t_cone *)(ptr);
-	con->mtrl = ft_material(scene, 0.5, 0.5, 60);
-	if (!con->mtrl)
-	{
-		printf("Failed to allocate sphere material\n");
-		free(con);
-		free(scene);
+	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
+	y = 0;
+	if (!scene)
 		return ;
+	while (y < HEIGHT)
+	{
+		render_scene_rows(scene, img_data, y, world);
+		y++;
 	}
-	con->mtrl->color = *con->color;
-	render_scene_cn(data->img, scene, con);
-	// free(con->mtrl);
-	// free(con->axis);
-	// free(con->color);
-	// free(con->vertex);
-	// free(con);
 }
 
-void	ft_scene_cylinder(t_scene *scene, t_win *data, void *ptr)
+void	ft_display_scene(t_scene *scene, t_win *data)
 {
-	t_cylinder	*cyl;
+	t_world	*tp;
 
-	cyl = (t_cylinder *)(ptr);
-	cyl->mtrl = ft_material(scene, 0.5, 0.5, 60);
-	if (!cyl->mtrl)
+	tp = scene->world;
+	while (tp)
 	{
-		printf("Failed to allocate cylinder material\n");
-		free(cyl);
-		free(scene);
-		return ;
+		if (tp->type == 0)
+			render_scene(data->img, scene, tp);
+		else if (tp->type == 1)
+			render_scene(data->img, scene, tp);
+		else if (tp->type == 2)
+			render_scene(data->img, scene, tp);
+		else if (tp->type == 5)
+			render_scene(data->img, scene, tp);
+		tp = tp->next;
 	}
-	cyl->mtrl->color = *cyl->color;
-	render_scene_cy(data->img, scene, cyl);
-	// free(cyl->c_axis);
-	// free(cyl->c_cntr);
-	// free(cyl->color);
-	// if (cyl->mtrl)
-	// 	free(cyl->mtrl);
-	// free(cyl);
-}
-
-void	ft_scene_plane(t_scene *scene, void *ptr, t_win *data)
-{
-	t_plane	*plane;
-
-	plane = (t_plane *)(ptr);
-	plane->mtrl = ft_material(scene, 0.6, 0.6, 60);
-	if (!plane->mtrl)
-	{
-		printf("Failed to allocate plane material\n");
-		free(plane);
-		free(scene);
-		return ;
-	}
-	plane->mtrl->color = *plane->color;
-	render_scene_plane(data->img, scene, plane);
-	// free(plane->point);
-	// free(plane->normal);
-	// free(plane->color);
-	// if (plane->mtrl)
-	// 	free(plane->mtrl);
-	// free(plane);
+	ft_free_world(&scene->world);
+	mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
+	mlx_key_hook(data->win, ft_escape_key, data);
+	mlx_hook(data->win, 17, 0, ft_close, data);
+	mlx_loop(data->ptr);
 }

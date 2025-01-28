@@ -53,7 +53,7 @@ t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 		t_ray *ray)
 {
 	t_vctr	intersection;
-	
+
 	intersection = vec3_add(ray->origin, vec3_scale(denom, t));
 	if (ft_resize_plane_00(intersection, plane))
 		return ((t_vctr){0, 0, 0});

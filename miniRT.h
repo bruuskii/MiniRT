@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/26 14:38:57 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/28 10:45:00 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_view		*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light,
 void		render_scene_cn(void *img, t_scene *scene, t_cone *cone);
 t_material	*ft_material(t_scene *scene, double dif, double spec, double sh);
 void		ft_scene_cone(t_scene *scene, t_win *data, void *ptr);
-void	ft_scene_cylinder(t_scene *scene, t_win *data, void *ptr);
-void		ft_scene_plane(t_scene *scene,void *ptr, t_win *data);
+void		ft_scene_cylinder(t_scene *scene, t_win *data, void *ptr);
+void		ft_scene_plane(t_scene *scene, void *ptr, t_win *data);
 void		ft_scene_sphere(t_scene *scene, void *ptr, t_win *data);
 int			create_trgb(int t, int r, int g, int b);
 t_vctr		amb_color(t_vctr ambiant, t_material *mtrl);
@@ -41,10 +41,10 @@ double		dgrs_to_rdn(double angle);
 double		calculate_distance(double fov);
 void		render_scene_plane(void *img, t_scene *scene, t_plane *pl);
 void		render_scene_cy(void *img, t_scene *scene, t_cylinder *cy);
-void		render_scene(void *img, t_scene *scene, t_sp *sp);
+void		render_scene(void *img, t_scene *scene, t_world *world);
 void		ft_render_sphere(t_sp **sphere, void *img, t_scene *scene);
-void	render_scene_cn_rows(t_scene *scene, char *img_data, int y,
-		t_cone *cone);
+void		render_scene_cn_rows(t_scene *scene, char *img_data, int y,
+				t_cone *cone);
 t_hit		*intersect_cone(t_ray *ray, t_cone *cone);
 void		ft_print_and_exit(char *s, int stat);
 int			ft_lst_count(char **lst);
@@ -132,8 +132,15 @@ void		ft_checker(t_hit *hit, t_vctr original_normal);
 t_ray		*get_ray(t_scene *scene, int x, int y);
 t_vctr		ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene,
 				t_material *mtrl);
-void	render_scene_cy_rows(t_scene *scene, char *img_data, int y,
-		t_cylinder *cy);
+void		render_scene_cy_rows(t_scene *scene, char *img_data, int y,
+				t_cylinder *cy);
 void		ft_chess_sphere(t_scene *scene, t_vctr color, t_vctr normal,
 				t_material *material);
+void		render_scene_rows(t_scene *scene, char *img_data, int y,
+				t_world *world);
+void		ft_assign_plane_mtrl(t_material *mtrl, t_plane **pl);
+void		ft_assign_cylinder_mtrl(t_material *mtrl, t_cylinder **cy);
+void		ft_assign_cone_mtrl(t_material *mtrl, t_cone **cn);
+void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
+t_hit		*ft_get_hit(t_ray *ray, t_world *world);
 #endif

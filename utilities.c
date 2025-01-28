@@ -6,49 +6,102 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 13:08:10 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/28 10:44:42 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ft_scene_sphere(t_scene *scene, void *ptr, t_win *data)
+t_vctr	ft_assign_cylinder_color(t_ray *ray, t_hit *hit, t_world *world,
+		t_scene *scene)
 {
-	t_sp	*sphere;
+	t_cylinder	*cy;
+	t_material	*mtrl;
+	t_vctr		final_color;
 
-	sphere = (t_sp *)(ptr);
-	sphere->mtrl = ft_material(scene, 0.5, 0.5, 60);
-	if (!sphere->mtrl)
-	{
-		printf("Failed to allocate sphere material\n");
-		free(sphere);
-		free(scene);
-		return ;
-	}
-	sphere->mtrl->color = *sphere->color;
-	render_scene(data->img, scene, sphere);
+	mtrl = ft_material(scene, 0.6, 0.6, 60);
+	cy = (t_cylinder *)(world->ptr);
+	ft_assign_cylinder_mtrl(mtrl, &cy);
+	final_color = ft_final_color(ray, hit, scene, cy->mtrl);
+	free(mtrl);
+	return (final_color);
 }
 
-void	ft_display_scene(t_scene *scene, t_win *data)
+t_vctr	ft_check_elemts(t_ray *ray, t_hit *hit, t_world *world, t_scene *scene)
 {
-	t_world *tp;
+	t_sp		*sp;
+	t_plane		*pl;
+	t_vctr		final_color;
+	t_material	*mtrl;
 
-	tp = scene->world;
-	while (tp)
+	mtrl = ft_material(scene, 0.6, 0.6, 60);
+	if (world->type == 0)
 	{
-		if (tp->type == 0)
-			ft_scene_sphere(scene,tp->ptr ,data);
-		else if (tp->type == 1)
-			ft_scene_plane(scene,tp->ptr , data);
-		else if (tp->type == 2)
-			ft_scene_cylinder(scene, data, tp->ptr);
-		else if (tp->type == 5)
-			ft_scene_cone(scene, data, tp->ptr);
-		tp = tp->next;
+		sp = (t_sp *)(world->ptr);
+		ft_assign_sphere_mtrl(mtrl, &sp);
+		final_color = ft_final_color(ray, hit, scene, sp->mtrl);
 	}
-	ft_free_world(&scene->world);
-	mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
-	mlx_key_hook(data->win, ft_escape_key, data);
-	mlx_hook(data->win, 17, 0, ft_close, data);
-	mlx_loop(data->ptr);
+	else if (world->type == 1)
+	{
+		pl = (t_plane *)(world->ptr);
+		ft_assign_plane_mtrl(mtrl, &pl);
+		final_color = ft_final_color(ray, hit, scene, pl->mtrl);
+	}
+	else if (world->type == 2)
+		return (ft_assign_cylinder_color(ray, hit, world, scene));
+	free(mtrl);
+	return (final_color);
+}
+
+t_vctr	ft_check_elemts_bonus(t_ray *ray, t_hit *hit, t_world *world,
+		t_scene *scene)
+{
+	t_cone		*cn;
+	t_vctr		final_color;
+	t_material	*mtrl;
+
+	mtrl = ft_material(scene, 0.6, 0.6, 60);
+	if (world->type == 5)
+	{
+		cn = (t_cone *)(world->ptr);
+		ft_assign_cone_mtrl(mtrl, &cn);
+		final_color = ft_final_color(ray, hit, scene, cn->mtrl);
+	}
+	free(mtrl);
+	return (final_color);
+}
+
+void	ft_apply_color(char *img_data, int x, int y, t_vctr final_color)
+{
+	put_pixel_to_image(img_data, x, y, create_trgb(0, (int)final_color.x,
+			(int)final_color.y, (int)final_color.z));
+}
+
+void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
+{
+	int		x;
+	t_ray	*ray;
+	t_hit	*hit;
+	t_vctr	final_color;
+
+	x = -1;
+	while (++x < WIDTH)
+	{
+		ray = get_ray(scene, x, y);
+		if (!ray)
+			return ;
+		hit = ft_get_hit(ray, world);
+		if (!hit)
+			return ;
+		if (hit && hit->hit)
+		{
+			if (world->type == 5)
+				ft_check_elemts_bonus(ray, hit, world, scene);
+			else
+				final_color = ft_check_elemts(ray, hit, world, scene);
+			ft_apply_color(img_data, x, y, final_color);
+		}
+		free(ray);
+		free(hit);
+	}
 }

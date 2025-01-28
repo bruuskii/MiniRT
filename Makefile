@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/01/27 12:48:45 by kbassim          ###   ########.fr        #
+#    Updated: 2025/01/27 23:24:19 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ CFILES = libft/libft.c\
 		libft/get_next_line/get_next_line_utils.c\
 		parsing/check_file.c\
 		parsing/scene.c\
+		parsing/scene_utils_00.c\
+		parsing/scene_utils_01.c\
 		parsing/read_from_file.c\
 		parsing/read_from_file_01.c\
 		parsing/read_from_file_02.c\
@@ -43,11 +45,14 @@ CFILES = libft/libft.c\
 		utils/objs_02.c\
 		utils/shadow.c\
 		utils/world.c\
+		utils/world_utils_01.c\
+		utils/world_utils_02.c\
 		utils/intersect_00.c\
 		utils/intersect_01.c\
 		utils/intersect_02.c\
 		utils/intersect_03.c\
 		utils/intersect_04.c\
+		utils/intersect_05.c\
 		utils/reflection.c\
 		utils/lighting_00.c\
 		utils/lighting_01.c\

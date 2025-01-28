@@ -98,8 +98,8 @@
 
 int	ft_hit_world(t_world *world, t_ray raysh)
 {
-	t_world		*current_wrld;
-	t_hit		*shadow_hit;
+	t_world	*current_wrld;
+	t_hit	*shadow_hit;
 
 	current_wrld = world;
 	while (current_wrld)
@@ -107,7 +107,8 @@ int	ft_hit_world(t_world *world, t_ray raysh)
 		if (current_wrld->type == SPHERE)
 			shadow_hit = intersect_sphere(&raysh, (t_sp *)current_wrld->ptr);
 		else if (current_wrld->type == CYLINDRE)
-			shadow_hit = intersect_cylinder(&raysh, (t_cylinder *)current_wrld->ptr);
+			shadow_hit = intersect_cylinder(&raysh,
+					(t_cylinder *)current_wrld->ptr);
 		else if (current_wrld->type == PLANE)
 			shadow_hit = intersect_plane(&raysh, (t_plane *)current_wrld->ptr);
 		else if (current_wrld->type == CONE)

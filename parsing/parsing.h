@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:01:32 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/23 22:10:54 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/27 23:22:52 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,12 @@ t_alight	*ft_alight(char **lst);
 t_scene		*ft_scene(char **lst, int fl);
 t_scene		*data_input(char *s, int fl);
 void		ft_free_scene(t_scene *scene);
+void		ft_swap_circle(t_sp *a, t_sp *b);
+
+void		swap_planes(t_plane *a, t_plane *b);
+
+void		swap_cylinders(t_cylinder *a, t_cylinder *b);
+
+void		swap_cones(t_cone *a, t_cone *b);
+void		ft_assign_world_to_scene(t_world **world, char **lst, int fl);
 #endif

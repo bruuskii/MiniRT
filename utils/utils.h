@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 13:06:12 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/27 22:49:20 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define UTILS_H
 # include "../structs.h"
 
-void	ft_free_objects(t_scene *scene);
+void		ft_free_objects(t_scene *scene);
 int			is_zero_vector(t_vctr v);
 void		ft_initialize_cone_data(t_ray *ray, t_cone *cone,
 				t_cone_data *data);
@@ -81,10 +81,11 @@ t_vctr		vec3_cross(t_vctr v1, t_vctr v2);
 double		vec3_dot(t_vctr v1, t_vctr v2);
 t_vctr		vec3_normalize(t_vctr v);
 t_vctr		vec3_create(double x, double y, double z);
-t_world     *new_node(void *ptr, t_type type);
-void    	ft_add_back_world(t_world **head, t_world *node);
-int 		get_farther_object(t_sp *sp, t_cylinder *cy, t_plane *pl, t_cone *cn);
-t_world 	*ft_new_world(t_sp *sp, t_plane *pl, t_cone *cn , t_cylinder *cy);
+t_world		*new_node(void *ptr, t_type type);
+void		ft_add_back_world(t_world **head, t_world *node);
+int			get_farther_object(t_sp *sp, t_cylinder *cy, t_plane *pl,
+				t_cone *cn);
+t_world		*ft_new_world(t_sp *sp, t_plane *pl, t_cone *cn, t_cylinder *cy);
 void		ft_free_world(t_world **world);
-void    	ft_free_spheres(t_sp *sp);
+void		ft_free_spheres(t_sp *sp);
 #endif
