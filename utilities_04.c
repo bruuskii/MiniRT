@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:11 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 10:18:15 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 19:19:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,7 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 
 void	ft_display_scene(t_scene *scene, t_win *data)
 {
-	t_world	*tp;
-
-	tp = scene->world;
-	while (tp)
-	{
-		if (tp->type == 0)
-			render_scene(data->img, scene, tp);
-		else if (tp->type == 1)
-			render_scene(data->img, scene, tp);
-		else if (tp->type == 2)
-			render_scene(data->img, scene, tp);
-		else if (tp->type == 5)
-			render_scene(data->img, scene, tp);
-		tp = tp->next;
-	}
+	render_scene(data->img, scene, scene->world);
 	ft_free_world(&scene->world);
 	mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
 	mlx_key_hook(data->win, ft_escape_key, data);

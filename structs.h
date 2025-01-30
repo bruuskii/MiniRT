@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 08:52:49 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 19:58:25 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_alight
 typedef struct s_world
 {
 	void				*ptr;
+	double				t;
 	t_material			*mtrl;
 	t_type				type;
 	struct s_world		*next;

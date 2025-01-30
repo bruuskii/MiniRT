@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 10:44:53 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 20:58:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,50 +68,46 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 	return (final_color);
 }
 
-void	ft_render(t_scene *scene, char *img_data, int y, t_sp *sp)
+t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 {
-	int		x;
-	t_ray	*ray;
 	t_hit	*hit;
-	t_vctr	final_color;
 
-	x = 0;
-	while (x < WIDTH)
-	{
-		ray = get_ray(scene, x, y);
-		hit = intersect_sphere(ray, sp);
-		if (!ray)
-			return ;
-		if (hit && hit->hit)
-		{
-			final_color = ft_final_color(ray, hit, scene, sp->mtrl);
-			put_pixel_to_image(img_data, x, y, create_trgb(0,
-					(int)final_color.x, (int)final_color.y,
-					(int)final_color.z));
-		}
-		free(hit);
-		free(ray);
-		x++;
-	}
+	hit = NULL;
+	if (tp->type == 0)
+		hit = intersect_sphere(ray, (t_sp *)tp->ptr);
+	else if (tp->type == 1)
+		hit = intersect_plane(ray, (t_plane *)tp->ptr);
+	else if (tp->type == 2)
+		hit = intersect_cylinder(ray, (t_cylinder *)tp->ptr);
+	else if (tp->type == 5)
+		hit = intersect_cone(ray, (t_cone *)tp->ptr);
+	return (hit);
 }
 
 t_hit	*ft_get_hit(t_ray *ray, t_world *world)
 {
 	t_hit	*hit;
+	t_hit	*c_hit;
+	t_world	*tp;
 
 	hit = NULL;
-	if (world->type == 0)
-		hit = intersect_sphere(ray, (t_sp *)(world->ptr));
-	else if (world->type == 1)
-		hit = intersect_plane(ray, (t_plane *)(world->ptr));
-	else if (world->type == 2)
-		hit = intersect_cylinder(ray, (t_cylinder *)(world->ptr));
-	else if (world->type == 5)
-		hit = intersect_cone(ray, (t_cone *)(world->ptr));
-	else
+	tp = world;
+	c_hit = NULL;
+	while (tp)
 	{
-		free(ray);
-		return (hit);
+		hit = ft_innit_hit(ray, tp);
+		if (hit && hit->hit)
+		{
+			if (!c_hit || hit->t < c_hit->t)
+			{
+				if (c_hit)
+					free(c_hit);
+				c_hit = hit;
+			}
+			else
+				free(hit);
+		}
+		tp = tp->next;
 	}
-	return (hit);
+	return (c_hit);
 }

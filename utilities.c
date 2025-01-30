@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 10:44:42 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 20:52:01 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	{
 		ray = get_ray(scene, x, y);
 		if (!ray)
-			return ;
+			continue ;
 		hit = ft_get_hit(ray, world);
 		if (!hit)
-			return ;
-		if (hit && hit->hit)
+			continue ;
+		if (hit->hit)
 		{
 			if (world->type == 5)
 				ft_check_elemts_bonus(ray, hit, world, scene);
