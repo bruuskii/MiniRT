@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 20:52:01 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:18:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,59 +15,39 @@
 t_vctr	ft_assign_cylinder_color(t_ray *ray, t_hit *hit, t_world *world,
 		t_scene *scene)
 {
-	t_cylinder	*cy;
-	t_material	*mtrl;
-	t_vctr		final_color;
+	t_vctr	final_color;
 
-	mtrl = ft_material(scene, 0.6, 0.6, 60);
-	cy = (t_cylinder *)(world->ptr);
-	ft_assign_cylinder_mtrl(mtrl, &cy);
-	final_color = ft_final_color(ray, hit, scene, cy->mtrl);
-	free(mtrl);
+	(void)world;
+	final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	return (final_color);
 }
 
 t_vctr	ft_check_elemts(t_ray *ray, t_hit *hit, t_world *world, t_scene *scene)
 {
-	t_sp		*sp;
-	t_plane		*pl;
-	t_vctr		final_color;
-	t_material	*mtrl;
+	t_vctr	final_color;
 
-	mtrl = ft_material(scene, 0.6, 0.6, 60);
 	if (world->type == 0)
 	{
-		sp = (t_sp *)(world->ptr);
-		ft_assign_sphere_mtrl(mtrl, &sp);
-		final_color = ft_final_color(ray, hit, scene, sp->mtrl);
+		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	}
 	else if (world->type == 1)
 	{
-		pl = (t_plane *)(world->ptr);
-		ft_assign_plane_mtrl(mtrl, &pl);
-		final_color = ft_final_color(ray, hit, scene, pl->mtrl);
+		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	}
 	else if (world->type == 2)
 		return (ft_assign_cylinder_color(ray, hit, world, scene));
-	free(mtrl);
 	return (final_color);
 }
 
 t_vctr	ft_check_elemts_bonus(t_ray *ray, t_hit *hit, t_world *world,
 		t_scene *scene)
 {
-	t_cone		*cn;
-	t_vctr		final_color;
-	t_material	*mtrl;
+	t_vctr	final_color;
 
-	mtrl = ft_material(scene, 0.6, 0.6, 60);
 	if (world->type == 5)
 	{
-		cn = (t_cone *)(world->ptr);
-		ft_assign_cone_mtrl(mtrl, &cn);
-		final_color = ft_final_color(ray, hit, scene, cn->mtrl);
+		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	}
-	free(mtrl);
 	return (final_color);
 }
 
@@ -90,10 +70,8 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 		ray = get_ray(scene, x, y);
 		if (!ray)
 			continue ;
-		hit = ft_get_hit(ray, world);
-		if (!hit)
-			continue ;
-		if (hit->hit)
+		hit = ft_get_hit(ray, world, scene);
+		if (hit && hit->hit)
 		{
 			if (world->type == 5)
 				ft_check_elemts_bonus(ray, hit, world, scene);
@@ -102,6 +80,8 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 			ft_apply_color(img_data, x, y, final_color);
 		}
 		free(ray);
+		if (hit)
+			free(hit->mtrl);
 		free(hit);
 	}
 }

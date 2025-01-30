@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/30 20:58:58 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:28:16 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 	denom = vec3_normalize(ray->direction);
 	den = vec3_dot(denom, *plane->normal);
 	if (fabs(den) < 1e-6)
-		return (hit);
+		return (free(hit->mtrl), free(hit), hit);
 	ray_to_plane = vec3_sub(*plane->point, ray->origin);
 	t = vec3_dot(ray_to_plane, *plane->normal) / den;
 	if (t < 1e-6)
-		return (hit);
+		return (free(hit->mtrl), hit);
 	if (is_zero_vector(ft_calculate_intersection_plane(denom, plane, t, ray)))
-		return (hit);
+		return (free(hit->mtrl), free(hit), NULL);
 	ft_assign_hit_plane(hit, ray, plane, t);
 	return (hit);
 }

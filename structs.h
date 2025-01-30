@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 19:58:25 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:05:58 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ typedef struct s_hit
 	int					hit;
 	double				shaddow;
 	double				t;
+	t_type				type;
+	t_material			*mtrl;
 	t_vctr				point;
 	t_vctr				normal;
 }						t_hit;

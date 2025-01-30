@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 05:56:44 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/30 22:21:45 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void		ft_assign_plane_mtrl(t_material *mtrl, t_plane **pl);
 void		ft_assign_cylinder_mtrl(t_material *mtrl, t_cylinder **cy);
 void		ft_assign_cone_mtrl(t_material *mtrl, t_cone **cn);
 void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
-t_hit		*ft_get_hit(t_ray *ray, t_world *world);
+t_hit		*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene);
 void		fill_dhiya(t_helpers h);
 t_vctr		calculate_chess_pattern(t_hit hit);
 #endif

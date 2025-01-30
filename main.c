@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 13:09:05 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:41:47 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ int	main(int ac, char **av)
 		return (mlx_destroy_display(data->ptr), 1);
 	data->img = mlx_new_image(data->ptr, WIDTH, HEIGHT);
 	ft_display_scene(scene, data);
-	ft_free_all(&scene);
-	free(scene);
 	return (0);
 }

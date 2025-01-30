@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:18:12 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 23:19:13 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:33:11 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 	hit->t = 0;
 	discriminant = ft_discriminant_cylinder(ray, cy, oc);
 	if (discriminant < 0)
-		return (hit);
+		return (free(hit->mtrl), free(hit), NULL);
 	if (ft_assign_t_cy(ray, &t, oc, cy))
-		return (hit);
+		return (free(hit->mtrl), free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
 	hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
 	if (ft_distance_cylinder(hit, cy) > cy->height)
-		return (hit->hit = 0, hit);
+		return (free(hit->mtrl), free(hit), NULL);
 	return (hit);
 }

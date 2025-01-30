@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_04.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:12:01 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:12:02 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:33:46 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
 	ft_calculate_quadratic_coeffs(ray->direction, &data);
 	ft_calculate_discriminant(&data);
 	if (ft_validate_and_solve(&data, &t))
-		return (free(hit), NULL);
+		return (free(hit->mtrl), free(hit), NULL);
 	intersection = vec3_add(ray->origin, vec3_scale(ray->direction, t));
 	if (ft_check_intersection_constraints(intersection, cone, data.v, hit))
-		return (free(hit), NULL);
+		return (free(hit->mtrl), free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
 	hit->point = intersection;

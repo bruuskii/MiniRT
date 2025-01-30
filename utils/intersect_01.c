@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:05:25 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/28 08:28:27 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:25:43 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ t_hit	*ft_hit(void)
 		return (printf("hit point non-allocated"), NULL);
 	hit_point->hit = 0;
 	hit_point->t = 0;
+	hit_point->mtrl = malloc(sizeof(t_material));
+	if (!hit_point->mtrl)
+		return (free(hit_point), printf("hit point non-allocated"), NULL);
+	hit_point->mtrl->diffuse = 0.6;
+	hit_point->mtrl->specular = 0.6;
+	hit_point->mtrl->shininess = 60;
 	return (hit_point);
 }
 
@@ -79,10 +85,12 @@ t_hit	*intersect_sphere(t_ray *ray, t_sp *sphere)
 	if (discriminant < 0)
 	{
 		hit->hit = 0;
-		return (hit);
+		free(hit->mtrl);
+		free(hit);
+		return (NULL);
 	}
 	if (ft_assign_t(hit, ray, discriminant, sphere))
-		return (hit);
+		return (free(hit->mtrl), free(hit), NULL);
 	hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
 	original_normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
 	if (sphere->fl == 1)

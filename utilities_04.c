@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:11 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 19:19:22 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 23:41:54 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	ft_display_scene(t_scene *scene, t_win *data)
 {
 	render_scene(data->img, scene, scene->world);
 	ft_free_world(&scene->world);
+	ft_free_all(&scene);
+	free(scene);
 	mlx_put_image_to_window(data->ptr, data->win, data->img, 0, 0);
 	mlx_key_hook(data->win, ft_escape_key, data);
 	mlx_hook(data->win, 17, 0, ft_close, data);
