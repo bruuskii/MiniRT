@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 10:45:00 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/30 05:56:44 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ t_vctr		ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene,
 				t_material *mtrl);
 void		render_scene_cy_rows(t_scene *scene, char *img_data, int y,
 				t_cylinder *cy);
+void		ft_checker_plane(t_hit *hit, t_vctr original_normal);
 void		ft_chess_sphere(t_scene *scene, t_vctr color, t_vctr normal,
 				t_material *material);
 void		render_scene_rows(t_scene *scene, char *img_data, int y,
@@ -143,4 +144,6 @@ void		ft_assign_cylinder_mtrl(t_material *mtrl, t_cylinder **cy);
 void		ft_assign_cone_mtrl(t_material *mtrl, t_cone **cn);
 void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
 t_hit		*ft_get_hit(t_ray *ray, t_world *world);
+void		fill_dhiya(t_helpers h);
+t_vctr		calculate_chess_pattern(t_hit hit);
 #endif

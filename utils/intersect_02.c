@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_02.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/27 13:25:28 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/01/28 23:00:15 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,12 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 	hit->t = t;
 	hit->point = ft_calculate_intersection_plane(denom, plane, hit->t, ray);
 	if (den < 0)
-		hit->normal = *plane->normal;
+	{
+		if (1)
+			ft_checker_plane(hit, *plane->normal);
+		else
+			hit->normal = *plane->normal;
+	}
 	else
 		hit->normal = vec3_scale(*plane->normal, -1);
 }
