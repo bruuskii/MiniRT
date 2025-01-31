@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting_01.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/30 05:54:07 by izouine          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:39:01 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_vctr	calculate_ambient_lighting(t_scene *scene, t_material *material,
 
 	if (in_shadow)
 	{
-		ambient = vec3_scale((t_vctr){10, 10, 10}, material->ambient);
+		ambient = vec3_scale((t_vctr){50, 50, 50}, material->ambient);
 		color = vec3_scale(vec3_add(ambient, color), 0.5);
 	}
 	else
