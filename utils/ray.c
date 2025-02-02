@@ -12,110 +12,62 @@
 
 #include "../miniRT.h"
 
-double	*get_view_ports(t_cam *cam)
+void	ft_u_and_v(t_cam *cam)
 {
-	double	viewport_height;
-	double	aspect_ratio;
-	double	viewport_width;
-	double	*viewport;
-
-	viewport = malloc(3 * sizeof(double));
-	if (!viewport)
-		return (NULL);
-	aspect_ratio = (double)WIDTH / HEIGHT;
-	viewport_height = 2.0 * tan(cam->fov * 0.5 * M_PI / 180.0);
-	viewport_width = aspect_ratio * viewport_height;
-	viewport[0] = viewport_height;
-	viewport[1] = viewport_width;
-	viewport[2] = aspect_ratio;
-	return (viewport);
-}
-
-t_vctr	*ft_u_and_v(t_cam *cam)
-{
-	t_vctr	*u_v;
 	t_vctr	u_vec;
 	t_vctr	v_vec;
 
-	u_v = malloc(2 * sizeof(t_vctr));
-	if (!u_v)
-		return (NULL);
-	u_vec = vec3_create(0, 1, 0);
+	u_vec = (t_vctr){0, 1, 0};
 	v_vec = vec3_cross(vec3_normalize(vec3_scale(*(cam->dir), -1)), u_vec);
 	u_vec = vec3_cross(v_vec, vec3_normalize(vec3_scale(*(cam->dir), -1)));
-	u_v[0] = u_vec;
-	u_v[1] = v_vec;
-	return (u_v);
+	cam->u_vec = u_vec;
+	cam->v_vec = v_vec;
 }
 
-t_vctr	*get_horiz_vert(t_cam *cam)
+void	get_view_ports(t_cam *cam)
 {
-	t_vctr	horizontal;
-	t_vctr	vertical;
-	t_vctr	*h_v;
-	t_vctr	*u_v;
-	double	*viewport;
+	cam->aspect_ratio = (double)WIDTH / HEIGHT;
+	cam->viewport_height = 2.0 * tan(cam->fov * 0.5 * M_PI / 180.0);
+	cam->viewport_width = cam->aspect_ratio * cam->viewport_height;
+}
 
-	h_v = malloc(2 * sizeof(t_vctr));
-	if (!h_v)
-		return (NULL);
-	u_v = ft_u_and_v(cam);
-	if (!u_v)
-		return (NULL);
-	viewport = get_view_ports(cam);
-	if (!viewport)
-		return (NULL);
-	horizontal = vec3_scale(u_v[1], (viewport[2]) * (viewport[0]));
-	vertical = vec3_scale(u_v[0], viewport[0]);
-	h_v[0] = horizontal;
-	h_v[1] = vertical;
-	free(viewport);
-	free(u_v);
-	return (h_v);
+void	get_horiz_vert(t_cam *cam)
+{
+	ft_u_and_v(cam);
+	get_view_ports(cam);
+	cam->hor = vec3_scale(cam->u_vec, cam->aspect_ratio * cam->viewport_height);
+	cam->ver = vec3_scale(cam->v_vec, cam->viewport_height);
+}
+
+void	upper_left(t_cam *cam)
+{
+	t_vctr	s_hor;
+	t_vctr	s_ver;
+	t_vctr	s_cam_dir;
+
+	s_hor = vec3_scale(cam->hor, 0.5);
+	s_ver = vec3_scale(cam->ver, 0.5);
+	s_cam_dir = vec3_normalize(vec3_scale(*(cam->dir), -1));
+	cam->upper_left = vec3_sub(*(cam->pos), vec3_add(s_hor, vec3_add(s_ver, s_cam_dir)));
 }
 
 t_ray	*create_ray(t_cam *cam, double u, double v)
 {
 	t_ray	*ray;
-	t_vctr	lower_left_corner;
-	t_vctr	horizontal;
-	t_vctr	vertical;
-	t_vctr	*h_v;
+	t_vctr	vctr;
+	t_vctr	s_h;
+	t_vctr	s_v;
 
 	if (!cam)
 		return (NULL);
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	h_v = get_horiz_vert(cam);
-	if (!h_v)
-		return (NULL);
-	horizontal = h_v[0];
-	vertical = h_v[1];
-	lower_left_corner = vec3_sub(*(cam->pos), vec3_add(vec3_scale(horizontal,
-					0.5), vec3_add(vec3_scale(vertical, 0.5),
-					vec3_normalize(vec3_scale(*(cam->dir), -1)))));
+	get_horiz_vert(cam);
+	s_h = vec3_scale(cam->hor, u);
+	s_v = vec3_scale(cam->ver, v);
 	ray->origin = *(cam->pos);
-	ray->direction = vec3_normalize(vec3_sub(vec3_add(lower_left_corner,
-					vec3_add(vec3_scale(horizontal, u), vec3_scale(vertical,
-							v))), *(cam->pos)));
-	free(h_v);
+	vctr = vec3_sub(vec3_add(cam->upper_left, vec3_add(s_h, s_v)), *(cam->pos));
+	ray->direction = vec3_normalize(vctr);
 	return (ray);
-}
-
-t_ray	create_shadow_ray(t_hit hit, t_vctr point, t_light *light)
-{
-	t_vctr	vec;
-	t_ray	s_ray;
-	t_vctr	normal;
-	t_vctr	light_dir;
-	t_vctr	biased;
-
-	vec = vec3_sub(hit.point, point);
-	normal = vec3_normalize(vec);
-	biased = vec3_add(vec3_scale(normal, 1e-6), hit.point);
-	light_dir = vec3_sub(*light->dir, biased);
-	s_ray.origin = biased;
-	s_ray.direction = vec3_normalize(light_dir);
-	return (s_ray);
 }

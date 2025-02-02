@@ -127,10 +127,18 @@ typedef struct s_obj
 
 typedef struct s_cam
 {
+	double				aspect_ratio;
+	double				viewport_height;
+	double				viewport_width;
+	double				fov;
 	t_vctr				*pos;
 	t_vctr				*dir;
+	t_vctr				u_vec;
+	t_vctr				v_vec;
+	t_vctr				hor;
+	t_vctr				ver;
+	t_vctr				upper_left;
 	t_type				type;
-	double				fov;
 }						t_cam;
 
 typedef struct s_scene
