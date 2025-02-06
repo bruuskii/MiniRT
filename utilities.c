@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 07:31:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 22:37:23 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,11 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 				final_color = ft_check_elemts(ray, hit, world, scene);
 			ft_apply_color(img_data, x, y, final_color);
 		}
+		free(ray->direction);
 		free(ray);
 		if (hit)
 			free(hit->mtrl);
+		ft_free_cam(scene->cam);
 		free(hit);
 	}
 }

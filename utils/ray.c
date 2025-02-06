@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/06 07:20:43 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 22:35:33 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void	ft_innit_cam(t_cam *cam)
 
 void	ft_free_cam(t_cam *cam)
 {
+
 	if (cam->pixel_delta_u)
 		free(cam->pixel_delta_u);
 	if (cam->pixel_delta_v)
