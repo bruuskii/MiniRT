@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/31 15:39:01 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 08:11:25 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,18 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 {
 	t_helpers	h;
 	int			in_shadow;
+	t_ray       *raysh;
 	t_vctr		light_dir;
 	t_vctr		pattern_color;
 	t_sp		*sphere;
 
 	light_dir = vec3_normalize(vec3_sub(*view->light->dir, hit.point));
-	h.raysh.direction = light_dir;
-	h.raysh.origin = vec3_add(hit.point, hit.normal);
+	raysh = malloc(sizeof(t_ray));
+	raysh->direction = &light_dir;
+	t_vctr tmp = vec3_add(hit.point, hit.normal);
+	raysh->origin = &tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
-	in_shadow = is_in_shaddow(scene, h.raysh);
+	in_shadow = is_in_shaddow(scene, *raysh);
 	sphere = (t_sp *)(scene->world->ptr);
 	if (sphere && sphere->chess == 1)
 	{

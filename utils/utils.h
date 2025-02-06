@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 22:49:20 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:27:35 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		ft_add_back_cn(t_cone **cn, t_cone *node);
 double		*get_view_ports(t_cam *cam);
 t_vctr		*ft_u_and_v(t_cam *cam);
 t_vctr		*get_horiz_vert(t_cam *cam);
-t_ray		*create_ray(t_cam *cam, double u, double v);
+t_ray		*create_ray(t_cam *cam, int x, int y);
 t_ray		create_shadow_ray(t_hit hit, t_vctr point, t_light *light);
 t_vctr		vec3_add(t_vctr v1, t_vctr v2);
 t_vctr		vec3_sub(t_vctr v1, t_vctr v2);
@@ -88,4 +88,20 @@ int			get_farther_object(t_sp *sp, t_cylinder *cy, t_plane *pl,
 t_world		*ft_new_world(t_sp *sp, t_plane *pl, t_cone *cn, t_cylinder *cy);
 void		ft_free_world(t_world **world);
 void		ft_free_spheres(t_sp *sp);
+t_vctr	*new_vec(double x, double y, double z);
+t_vctr	*vec_add(t_vctr v1, t_vctr v2);
+t_vctr *vec_sub(t_vctr v1, t_vctr v2);
+t_vctr *vec_scale(t_vctr v, double d);
+
+void	ft_innit_viewports(t_cam *cam);
+
+void	ft_viewport_vectors(t_cam *cam);
+void	ft_delta_pixels(t_cam *cam);
+void	ft_viewport_upper_left(t_cam *cam);
+
+void	ft_pixel_offset(t_cam *cam);
+
+void	ft_innit_cam(t_cam *cam);
+void	ft_free_cam(t_cam *cam);
+t_ray	*create_ray(t_cam *cam, int x, int y);
 #endif

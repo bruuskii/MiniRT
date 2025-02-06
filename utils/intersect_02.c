@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/31 15:29:52 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:28:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 {
 	t_vctr	intersection;
 
-	intersection = vec3_add(ray->origin, vec3_scale(denom, t));
+	intersection = vec3_add(*ray->origin, vec3_scale(denom, t));
 	if (ft_resize_plane_00(intersection, plane))
 		return ((t_vctr){0, 0, 0});
 	return (intersection);
@@ -65,7 +65,7 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 	double	den;
 	t_vctr	denom;
 
-	denom = vec3_normalize(ray->direction);
+	denom = vec3_normalize(*ray->direction);
 	den = vec3_dot(denom, *plane->normal);
 	hit->hit = 1;
 	hit->t = t;
@@ -91,11 +91,11 @@ t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 		return (NULL);
 	hit->hit = 0;
 	hit->t = 0;
-	denom = vec3_normalize(ray->direction);
+	denom = vec3_normalize(*ray->direction);
 	den = vec3_dot(denom, *plane->normal);
 	if (fabs(den) < 1e-6)
 		return (free(hit->mtrl), free(hit), NULL);
-	ray_to_plane = vec3_sub(*plane->point, ray->origin);
+	ray_to_plane = vec3_sub(*plane->point, *ray->origin);
 	t = vec3_dot(ray_to_plane, *plane->normal) / den;
 	if (t < 1e-6)
 		return (free(hit->mtrl), free(hit), NULL);

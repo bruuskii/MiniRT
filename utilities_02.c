@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/31 15:18:59 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:25:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,9 @@ t_vctr	amb_color(t_vctr ambiant, t_material *mtrl)
 
 t_ray	*get_ray(t_scene *scene, int x, int y)
 {
-	double	u;
-	double	v;
 	t_ray	*ray;
 
-	u = ((double)x / (WIDTH - 1));
-	v = ((double)y / (HEIGHT - 1));
-	ray = create_ray(scene->cam, u, v);
+	ray = create_ray(scene->cam, x, y);
 	if (!ray)
 		return (NULL);
 	return (ray);

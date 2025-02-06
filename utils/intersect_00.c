@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_00.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:12:04 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:12:05 by izouine          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:28:11 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_zero_vector(t_vctr v)
 
 void	ft_initialize_cone_data(t_ray *ray, t_cone *cone, t_cone_data *data)
 {
-	data->co = vec3_sub(ray->origin, *(cone->vertex));
+	data->co = vec3_sub(*ray->origin, *(cone->vertex));
 	data->v = vec3_normalize(*(cone->axis));
 	data->k = ft_calculate_k(cone->tang);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting_00.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:16:49 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:16:59 by izouine          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:28:11 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,
 	t_view	*view;
 
 	light_dir = vec3_normalize(vec3_sub(*light->dir, hit.point));
-	view_dir = vec3_normalize(vec3_sub(ray->origin, hit.point));
+	view_dir = vec3_normalize(vec3_sub(*ray->origin, hit.point));
 	view = ft_view(light_dir, view_dir, light, ray);
 	color = phong_lighting(view, hit.normal, material);
 	free(view);

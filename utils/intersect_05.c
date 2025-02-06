@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:18:12 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 23:33:11 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:28:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	valid_cyl_inter(t_ray *ray, double t1, double t2, t_cylinder *cy)
 	double	h_1;
 	double	h_2;
 
-	hit_point1 = vec3_add(ray->origin, vec3_scale(ray->direction, t1));
-	hit_point2 = vec3_add(ray->origin, vec3_scale(ray->direction, t2));
+	hit_point1 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t1));
+	hit_point2 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t2));
 	h_1 = vec3_dot(vec3_sub(hit_point1, *cy->c_cntr), *cy->c_axis);
 	h_2 = vec3_dot(vec3_sub(hit_point2, *cy->c_cntr), *cy->c_axis);
 	if ((t1 > 1e-6 && h_1 >= 0 && h_1 <= cy->height) && (t2 > 1e-6 && h_2 >= 0
@@ -51,9 +51,9 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	double	a;
 	double	b;
 
-	a = vec3_dot(ray->direction, ray->direction) - pow(vec3_dot(ray->direction,
+	a = vec3_dot(*ray->direction, *ray->direction) - pow(vec3_dot(*ray->direction,
 				*cy->c_axis), 2);
-	b = 2 * (vec3_dot(ray->direction, oc) - vec3_dot(ray->direction,
+	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
 				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
 	sqrt_discriminant = sqrt(ft_discriminant_cylinder(ray, cy, oc));
 	t1 = (-b - sqrt_discriminant) / (2 * a);
@@ -94,7 +94,7 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 	hit = ft_hit();
 	if (!hit)
 		return (NULL);
-	oc = vec3_sub(ray->origin, *cy->c_cntr);
+	oc = vec3_sub(*ray->origin, *cy->c_cntr);
 	hit->hit = 0;
 	hit->t = 0;
 	discriminant = ft_discriminant_cylinder(ray, cy, oc);
@@ -104,7 +104,7 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 		return (free(hit->mtrl), free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
-	hit->point = vec3_add(ray->origin, vec3_scale(ray->direction, hit->t));
+	hit->point = vec3_add(*ray->origin, vec3_scale(*ray->direction, hit->t));
 	if (ft_distance_cylinder(hit, cy) > cy->height)
 		return (free(hit->mtrl), free(hit), NULL);
 	return (hit);

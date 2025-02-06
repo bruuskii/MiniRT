@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 23:05:58 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:36:49 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100
-
 typedef enum s_type
 {
 	SPHERE,
@@ -36,6 +35,10 @@ typedef struct s_win
 	int					width;
 	void				*ptr;
 	void				*win;
+	int					bpp;
+	int					size_line;
+	int					endian;
+	char				*img_data;
 	void				*img;
 }						t_win;
 
@@ -127,17 +130,18 @@ typedef struct s_obj
 
 typedef struct s_cam
 {
+	t_vctr				*pos;
+	t_vctr				*dir;
+	t_vctr				viewport_u;
+	t_vctr				viewport_v;
+	t_vctr				*pixel_delta_u;
+	t_vctr				*pixel_delta_v;
+	t_vctr				*upper_left;
+	t_vctr				*pixel_offset;
 	double				aspect_ratio;
 	double				viewport_height;
 	double				viewport_width;
 	double				fov;
-	t_vctr				*pos;
-	t_vctr				*dir;
-	t_vctr				u_vec;
-	t_vctr				v_vec;
-	t_vctr				hor;
-	t_vctr				ver;
-	t_vctr				upper_left;
 	t_type				type;
 }						t_cam;
 
@@ -151,8 +155,8 @@ typedef struct s_scene
 
 typedef struct s_ray
 {
-	t_vctr				origin;
-	t_vctr				direction;
+	t_vctr				*origin;
+	t_vctr				*direction;
 }						t_ray;
 
 typedef struct s_camera
@@ -179,6 +183,8 @@ typedef struct s_hit
 	int					hit;
 	double				shaddow;
 	double				t;
+	int					checker;
+	int					bump;
 	t_type				type;
 	t_material			*mtrl;
 	t_vctr				point;
@@ -210,6 +216,7 @@ typedef struct s_cone_data
 	double				discriminant;
 }						t_cone_data;
 
+
 typedef struct s_helpers
 {
 	double				u;
@@ -236,5 +243,4 @@ typedef struct s_helpers
 	int					in_shadow;
 	t_vctr				color;
 }						t_helpers;
-
 #endif

@@ -3,71 +3,170 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:22:32 by izouine          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:20:43 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	ft_u_and_v(t_cam *cam)
+t_vctr	*new_vec(double x, double y, double z)
 {
-	t_vctr	u_vec;
-	t_vctr	v_vec;
-
-	u_vec = (t_vctr){0, 1, 0};
-	v_vec = vec3_cross(vec3_normalize(vec3_scale(*(cam->dir), -1)), u_vec);
-	u_vec = vec3_cross(v_vec, vec3_normalize(vec3_scale(*(cam->dir), -1)));
-	cam->u_vec = u_vec;
-	cam->v_vec = v_vec;
+	t_vctr	*vctr;
+	
+	vctr = malloc(sizeof(t_vctr));
+	if (!vctr)
+		return (NULL);
+	vctr->x = x;
+	vctr->y = y;
+	vctr->z = z;
+	return (vctr);		
 }
 
-void	get_view_ports(t_cam *cam)
+t_vctr	*vec_add(t_vctr v1, t_vctr v2)
 {
-	cam->aspect_ratio = (double)WIDTH / HEIGHT;
-	cam->viewport_height = 2.0 * tan(cam->fov * 0.5 * M_PI / 180.0);
-	cam->viewport_width = cam->aspect_ratio * cam->viewport_height;
+	t_vctr	*vctr;
+	
+	vctr = malloc(sizeof(t_vctr));
+	if (!vctr)
+		return (NULL);
+	vctr->x = v1.x + v2.x;
+	vctr->y = v1.y + v2.y;
+	vctr->z = v1.z + v2.z;
+	return (vctr);		
 }
 
-void	get_horiz_vert(t_cam *cam)
+t_vctr *vec_sub(t_vctr v1, t_vctr v2)
 {
-	ft_u_and_v(cam);
-	get_view_ports(cam);
-	cam->hor = vec3_scale(cam->u_vec, cam->aspect_ratio * cam->viewport_height);
-	cam->ver = vec3_scale(cam->v_vec, cam->viewport_height);
+	t_vctr	*vctr;
+	
+	vctr = malloc(sizeof(t_vctr));
+	if (!vctr)
+		return (NULL);
+	vctr->x = v1.x - v2.x;
+	vctr->y = v1.y - v2.y;
+	vctr->z = v1.z - v2.z;
+	return (vctr);		
 }
 
-void	upper_left(t_cam *cam)
+t_vctr *vec_scale(t_vctr v, double d)
 {
-	t_vctr	s_hor;
-	t_vctr	s_ver;
-	t_vctr	s_cam_dir;
-
-	s_hor = vec3_scale(cam->hor, 0.5);
-	s_ver = vec3_scale(cam->ver, 0.5);
-	s_cam_dir = vec3_normalize(vec3_scale(*(cam->dir), -1));
-	cam->upper_left = vec3_sub(*(cam->pos), vec3_add(s_hor, vec3_add(s_ver, s_cam_dir)));
+	t_vctr	*vctr;
+	
+	vctr = new_vec(v.x * d, v.y * d, v.z * d);
+	if (!vctr)
+		return (NULL);
+	return (vctr);		
 }
 
-t_ray	*create_ray(t_cam *cam, double u, double v)
+void	ft_innit_viewports(t_cam *cam)
+{
+	cam->aspect_ratio = (double)WIDTH/ (double)HEIGHT;
+	cam->viewport_width = 2.0 * tan(cam->fov * 0.5 * M_PI / 180);
+	cam->viewport_height = cam->viewport_width / cam->aspect_ratio;
+}
+
+void	ft_viewport_vectors(t_cam *cam)
+{
+	cam->viewport_u = vec3_create(cam->viewport_width, 0.0, 0.0);
+	cam->viewport_v = vec3_create(0.0, cam->viewport_height, 0.0);
+}
+
+void	ft_delta_pixels(t_cam *cam)
+{
+	cam->pixel_delta_u = vec_scale(cam->viewport_u, 1.0 / (double)WIDTH);
+	cam->pixel_delta_v = vec_scale(cam->viewport_v, 1.0 / (double)HEIGHT);
+}
+
+void	ft_viewport_upper_left(t_cam *cam)
+{
+	t_vctr	*focal;
+	t_vctr	*sum;
+	t_vctr	*tmp;
+	t_vctr	*scaled_u;
+	t_vctr	*scaled_v;
+	
+	focal = cam->dir;
+	if (!focal)
+	 	return ;
+	scaled_u = vec_scale(cam->viewport_u, 0.5);
+	scaled_v = vec_scale(cam->viewport_v, 0.5);
+	sum = vec_add(*scaled_u, *scaled_v);
+	if (!sum)
+		return ;
+	tmp = vec_add(*focal, *sum);
+	if (!tmp)
+		return ;
+	cam->upper_left = vec_sub(*cam->pos, *tmp);
+	if (!cam->upper_left)
+		return ;
+	free(scaled_u);
+	free(scaled_v);
+	free(tmp);
+	free(sum);
+}
+
+void	ft_pixel_offset(t_cam *cam)
+{
+	t_vctr	*result;
+	t_vctr	*scaled_result;
+
+	result = vec_add(*cam->pixel_delta_u, *cam->pixel_delta_v);
+	if (!result)
+		return ;
+	scaled_result = vec_scale(*result, 0.5);
+	if (!scaled_result)
+		return ;
+	cam->pixel_offset = vec_add(*cam->upper_left, *scaled_result);
+	free(result);
+	free(scaled_result);
+}
+
+void	ft_innit_cam(t_cam *cam)
+{
+	ft_innit_viewports(cam);
+	ft_viewport_vectors(cam);
+	ft_delta_pixels(cam);
+	ft_viewport_upper_left(cam);
+	ft_pixel_offset(cam);
+}
+
+void	ft_free_cam(t_cam *cam)
+{
+	if (cam->pixel_delta_u)
+		free(cam->pixel_delta_u);
+	if (cam->pixel_delta_v)
+		free(cam->pixel_delta_v);
+	if (cam->pixel_offset)
+		free(cam->pixel_offset);
+	if (cam->upper_left)
+		free(cam->upper_left);
+}
+
+t_ray	*create_ray(t_cam *cam, int x, int y)
 {
 	t_ray	*ray;
-	t_vctr	vctr;
-	t_vctr	s_h;
-	t_vctr	s_v;
-
+	t_vctr	*pixel_center;
+	t_vctr	*scaled_x;
+	t_vctr	*tmp;
+	t_vctr	*scaled_y;
+	
 	if (!cam)
 		return (NULL);
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	get_horiz_vert(cam);
-	s_h = vec3_scale(cam->hor, u);
-	s_v = vec3_scale(cam->ver, v);
-	ray->origin = *(cam->pos);
-	vctr = vec3_sub(vec3_add(cam->upper_left, vec3_add(s_h, s_v)), *(cam->pos));
-	ray->direction = vec3_normalize(vctr);
+	scaled_x = vec_scale(*cam->pixel_delta_u, x);
+	scaled_y = vec_scale(*cam->pixel_delta_v, y);
+	tmp = vec_add(*scaled_x, *scaled_y);
+	pixel_center = vec_add(*cam->pixel_offset, *tmp);
+	ray->origin = cam->pos;
+	ray->direction = vec_sub(*pixel_center, *cam->pos);
+	free(pixel_center);
+	free(scaled_x);
+	free(tmp);
+	free(scaled_y);
 	return (ray);
 }

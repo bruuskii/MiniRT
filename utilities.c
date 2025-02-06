@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 23:18:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:31:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	x = -1;
 	while (++x < WIDTH)
 	{
+		ft_innit_cam(scene->cam);
 		ray = get_ray(scene, x, y);
 		if (!ray)
 			continue ;

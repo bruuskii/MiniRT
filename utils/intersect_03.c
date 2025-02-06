@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:58 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/27 23:19:01 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:28:38 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ double	ft_discriminant_cylinder(t_ray *ray, t_cylinder *cy, t_vctr oc)
 	double	c;
 	double	discriminant;
 
-	a = vec3_dot(ray->direction, ray->direction) - pow(vec3_dot(ray->direction,
+	a = vec3_dot(*ray->direction, *ray->direction) - pow(vec3_dot(*ray->direction,
 				*cy->c_axis), 2);
-	b = 2 * (vec3_dot(ray->direction, oc) - vec3_dot(ray->direction,
+	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
 				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
 	c = vec3_dot(oc, oc) - pow(vec3_dot(oc, *cy->c_axis), 2) - pow(cy->d / 2,
 			2);

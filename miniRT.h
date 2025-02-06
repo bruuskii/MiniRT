@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/30 22:21:45 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:23:19 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void		ft_print_and_exit(char *s, int stat);
 int			ft_lst_count(char **lst);
 t_hit		*intersect_cone(t_ray *ray, t_cone *cone);
 t_vctr		vec3_create(double x, double y, double z);
-t_ray		*create_ray(t_cam *cam, double u, double v);
 t_cone		*ft_cone(char **lst, int fl);
 t_hit		*intersect_sphere(t_ray *ray, t_sp *sphere);
 t_ray		create_shadow_ray(t_hit hit, t_vctr point, t_light *light);

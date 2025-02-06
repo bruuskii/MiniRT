@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:49:08 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/30 05:56:21 by izouine          ###   ########.fr       */
+/*   Updated: 2025/02/06 07:26:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ t_vctr	calculate_chess_pattern(t_hit hit)
 	helper.v = 0.5 - asin(hit.normal.y) / M_PI;
 	helper.square_u = floor(helper.u * 16);
 	helper.square_v = floor(helper.v * 16);
-	helper.white.x = 255.0;
-	helper.white.y = 255.0;
-	helper.white.z = 255.0;
-	helper.black.x = 0.0;
-	helper.black.y = 0.0;
-	helper.black.z = 0.0;
-	if ((helper.square_u + helper.square_v) % 2 == 0)
-		return (helper.white);
-	else
-		return (helper.black);
+	// helper.white.x = 255.0;
+	// helper.white.y = 255.0;
+	// helper.white.z = 255.0;
+	// helper.black.x = 0.0;
+	// helper.black.y = 0.0;
+	// helper.black.z = 0.0;
+	// if ((helper.square_u + helper.square_v) % 2 == 0)
+	// 	return (helper.white);
+	// else
+		return ((t_vctr){0,0,0});
 }
 
 void	fill_dhiya(t_helpers h)
