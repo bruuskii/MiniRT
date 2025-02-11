@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 07:25:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/07 21:43:59 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_vctr	amb_color(t_vctr ambiant, t_material *mtrl)
 	return (amb);
 }
 
-t_ray	*get_ray(t_scene *scene, int x, int y)
+t_ray	*get_ray(t_scene *scene, double x, double y)
 {
 	t_ray	*ray;
 
@@ -120,6 +120,9 @@ void	ft_get_hit_color(t_world *world, t_hit *hit)
 	{
 		plane = (t_plane *)world->ptr;
 		hit->mtrl->color = *plane->color;
+		hit->mtrl->shininess = 60;
+		hit->mtrl->diffuse = 0.6;
+		hit->mtrl->specular = 0.3;
 	}
 	else if (hit->type == CYLINDRE)
 	{

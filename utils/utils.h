@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 07:27:35 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/07 21:45:16 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		ft_get_plane_axes(t_vctr *plane_u, t_vctr *plane_v, t_vctr *normal);
 int			ft_resize_plane_00(t_vctr intersection, t_plane *plane);
 t_vctr		ft_calculate_intersection_plane(t_vctr denom, t_plane *plane,
 				double t, t_ray *ray);
-void		ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane,
+void		ft_assigit_plane(t_hit *hit, t_ray *ray, t_plane *plane,
 				double t);
 t_hit		*intersect_plane(t_ray *ray, t_plane *plane);
 double		ft_discriminant_cylinder(t_ray *ray, t_cylinder *cy, t_vctr oc);
@@ -71,7 +71,6 @@ void		ft_add_back_cn(t_cone **cn, t_cone *node);
 double		*get_view_ports(t_cam *cam);
 t_vctr		*ft_u_and_v(t_cam *cam);
 t_vctr		*get_horiz_vert(t_cam *cam);
-t_ray		*create_ray(t_cam *cam, int x, int y);
 t_ray		create_shadow_ray(t_hit hit, t_vctr point, t_light *light);
 t_vctr		vec3_add(t_vctr v1, t_vctr v2);
 t_vctr		vec3_sub(t_vctr v1, t_vctr v2);
@@ -103,5 +102,5 @@ void	ft_pixel_offset(t_cam *cam);
 
 void	ft_innit_cam(t_cam *cam);
 void	ft_free_cam(t_cam *cam);
-t_ray	*create_ray(t_cam *cam, int x, int y);
+t_ray	*create_ray(t_cam *cam, double x, double y);
 #endif

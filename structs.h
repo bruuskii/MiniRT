@@ -89,6 +89,9 @@ typedef struct s_sp
 	t_material			*mtrl;
 	t_vctr				*cntr;
 	t_vctr				*color;
+	int					texture;
+	void				*txtr;
+	char				*txtr_ref;
 	int					fl;
 	int					chess;
 	int					id;
@@ -145,12 +148,20 @@ typedef struct s_cam
 	t_type				type;
 }						t_cam;
 
+typedef struct s_data
+{
+	void				*mlx;
+	void				*win;
+}						t_data;
+
 typedef struct s_scene
 {
 	struct s_cam		*cam;
 	struct s_light		*light;
 	struct s_alight		*alight;
 	struct s_world		*world;
+	struct s_win		*data;
+	
 }						t_scene;
 
 typedef struct s_ray
@@ -191,11 +202,6 @@ typedef struct s_hit
 	t_vctr				normal;
 }						t_hit;
 
-typedef struct s_data
-{
-	void				*mlx;
-	void				*win;
-}						t_data;
 
 typedef struct s_view
 {

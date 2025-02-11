@@ -36,14 +36,12 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	t_helpers	h;
 	int			in_shadow;
 	t_ray       *raysh;
-	t_vctr		light_dir;
 	t_vctr		pattern_color;
 	t_sp		*sphere;
 
-	light_dir = vec3_sub(*view->light->dir, hit.point);
 	raysh = malloc(sizeof(t_ray));
-	raysh->direction = &light_dir;
-	t_vctr tmp = vec3_add(hit.normal, hit.point);
+	raysh->direction = view->light->dir;
+	t_vctr tmp = vec3_add(hit.point, vec3_scale(hit.point, 1e-6));
 	raysh->origin = &tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, *raysh);

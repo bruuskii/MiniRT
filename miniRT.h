@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 07:23:19 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/07 21:44:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void		ft_free_cylinder(t_cylinder *c);
 void		ft_free_scene(t_scene *scene);
 int			ft_check_first_param(char *s);
 void		ft_checker(t_hit *hit, t_vctr original_normal);
-t_ray		*get_ray(t_scene *scene, int x, int y);
+t_ray		*get_ray(t_scene *scene, double x, double y);
 t_vctr		ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene,
 				t_material *mtrl);
 void		render_scene_cy_rows(t_scene *scene, char *img_data, int y,

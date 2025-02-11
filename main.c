@@ -32,6 +32,7 @@ int	main(int ac, char **av)
 	if (!data->win)
 		return (mlx_destroy_display(data->ptr), 1);
 	data->img = mlx_new_image(data->ptr, WIDTH, HEIGHT);
+	scene->data = data;
 	ft_display_scene(scene, data);
 	return (0);
 }

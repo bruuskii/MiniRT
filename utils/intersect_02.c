@@ -15,21 +15,14 @@
 void	ft_get_plane_axes(t_vctr *plane_u, t_vctr *plane_v, t_vctr *normal)
 {
 	t_vctr	up;
-
-	if (fabs(normal->z) > 0.9)
-	{
-		*plane_u = (t_vctr){1, 0, 0};
-		*plane_v = (t_vctr){0, 1, 0};
-	}
-	else
-	{
-		if (fabs(normal->y) < 0.9)
-			up = (t_vctr){0, 1, 0};
-		else
-			up = (t_vctr){0, 0, 1};
-		*plane_u = vec3_normalize(vec3_cross(*normal, up));
-		*plane_v = vec3_normalize(vec3_cross(*normal, *plane_u));
-	}
+	double	dot;
+	
+	up = (t_vctr){0, 1, 0};
+	dot = vec3_dot(*normal, up);
+	if (fabs(dot) > 1e-6)
+		up = (t_vctr){0, 0, 1};
+	*plane_u = vec3_normalize(vec3_cross(*normal, up));
+	*plane_v = vec3_normalize(vec3_cross(*normal, *plane_u));
 }
 
 int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
@@ -44,20 +37,20 @@ int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
 	local_point = vec3_sub(intersection, *plane->point);
 	u = vec3_dot(local_point, plane_u);
 	v = vec3_dot(local_point, plane_v);
-	if (fabs(u) > M_W / 2 || (fabs(v) >= M_H / 2))
+	if (fabs(u) > M_W || (fabs(v) > M_H))
 		return (1);
 	return (0);
 }
 
-t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
+t_vctr	ft_calculate_intersection_plane(t_vctr denom,t_plane *plane, double t,
 		t_ray *ray)
 {
-	t_vctr	intersection;
+	t_vctr	inter;
 
-	intersection = vec3_add(*ray->origin, vec3_scale(denom, t));
-	if (ft_resize_plane_00(intersection, plane))
+	inter = vec3_add(*ray->origin, vec3_scale(denom, t));
+	if (ft_resize_plane_00(inter, plane))
 		return ((t_vctr){0, 0, 0});
-	return (intersection);
+	return (inter);
 }
 
 void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
@@ -71,9 +64,7 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 	hit->t = t;
 	hit->point = ft_calculate_intersection_plane(denom, plane, hit->t, ray);
 	if (den < 0)
-	{
 		hit->normal = *plane->normal;
-	}
 	else
 		hit->normal = vec3_scale(*plane->normal, -1);
 }

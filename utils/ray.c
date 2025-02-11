@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/06 22:35:33 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/07 21:43:20 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	ft_innit_viewports(t_cam *cam)
 
 void	ft_viewport_vectors(t_cam *cam)
 {
-	cam->viewport_u = vec3_create(cam->viewport_width, 0.0, 0.0);
-	cam->viewport_v = vec3_create(0.0, cam->viewport_height, 0.0);
+	cam->viewport_u = vec3_create(cam->viewport_width * cam->dir->z, cam->viewport_width * cam->dir->x,cam->viewport_width * cam->dir->y);
+	cam->viewport_v = vec3_create(-cam->viewport_height * cam->dir->y, cam->viewport_height * cam->dir->z, cam->viewport_height * cam->dir->x);
 }
 
 void	ft_delta_pixels(t_cam *cam)
@@ -82,21 +82,18 @@ void	ft_delta_pixels(t_cam *cam)
 
 void	ft_viewport_upper_left(t_cam *cam)
 {
-	t_vctr	*focal;
 	t_vctr	*sum;
 	t_vctr	*tmp;
 	t_vctr	*scaled_u;
 	t_vctr	*scaled_v;
-	
-	focal = cam->dir;
-	if (!focal)
-	 	return ;
+	t_vctr	tmp1 = *cam->dir;
+
 	scaled_u = vec_scale(cam->viewport_u, 0.5);
 	scaled_v = vec_scale(cam->viewport_v, 0.5);
 	sum = vec_add(*scaled_u, *scaled_v);
 	if (!sum)
 		return ;
-	tmp = vec_add(*focal, *sum);
+	tmp = vec_add(tmp1, *sum);
 	if (!tmp)
 		return ;
 	cam->upper_left = vec_sub(*cam->pos, *tmp);
@@ -146,7 +143,7 @@ void	ft_free_cam(t_cam *cam)
 		free(cam->upper_left);
 }
 
-t_ray	*create_ray(t_cam *cam, int x, int y)
+t_ray	*create_ray(t_cam *cam, double x, double y)
 {
 	t_ray	*ray;
 	t_vctr	*pixel_center;

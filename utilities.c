@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:07 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 22:37:23 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/07 22:52:37 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_vctr	ft_check_elemts(t_ray *ray, t_hit *hit, t_world *world, t_scene *scene)
 {
 	t_vctr	final_color;
 
+	final_color = (t_vctr){0,0,0};
 	if (world->type == 0)
 	{
 		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
@@ -44,6 +45,7 @@ t_vctr	ft_check_elemts_bonus(t_ray *ray, t_hit *hit, t_world *world,
 {
 	t_vctr	final_color;
 
+	final_color = (t_vctr){0,0,0};
 	if (world->type == 5)
 	{
 		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
@@ -57,34 +59,111 @@ void	ft_apply_color(char *img_data, int x, int y, t_vctr final_color)
 			(int)final_color.y, (int)final_color.z));
 }
 
+// void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
+// {
+// 	int		x;
+// 	t_ray	*ray;
+// 	t_hit	*hit;
+// 	t_vctr	final_color;
+
+// 	x = -1;
+// 	while (++x < WIDTH)
+// 	{
+// 		ft_innit_cam(scene->cam);
+// 		ray = get_ray(scene, (double)x, (double)y);
+// 		if (!ray)
+// 			continue ;
+// 		hit = ft_get_hit(ray, world, scene);
+// 		if (hit && hit->hit)
+// 		{
+// 			if (world->type == 5)
+// 				ft_check_elemts_bonus(ray, hit, world, scene);
+// 			else
+// 				final_color = ft_check_elemts(ray, hit, world, scene);
+// 			ft_apply_color(img_data, x, y, final_color);
+// 		}
+// 		free(ray->direction), free(ray), ft_free_cam(scene->cam);
+// 		if (hit)
+// 			free(hit->mtrl), free(hit);
+// 	}
+// }
+
+double generate_random_double(double num)
+{
+    double x;
+
+    x = rand() / (RAND_MAX + 1.0);
+    return (num + x);
+}
+
 void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 {
 	int		x;
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
+	int		img_width;
+	int		img_height;
+	void	*txtr;
+	double	count;
+	t_vctr col;
 
 	x = -1;
+	count = 0.0;
+	final_color = (t_vctr){0, 0, 0};
+	txtr = mlx_xpm_file_to_image(scene->data->ptr, "1.xpm", &img_width, &img_height);
+	char *img_dt = mlx_get_data_addr(txtr, &scene->data->bpp,  &scene->data->size_line,  &scene->data->endian);
 	while (++x < WIDTH)
 	{
 		ft_innit_cam(scene->cam);
-		ray = get_ray(scene, x, y);
+		ray = get_ray(scene, (double) x, (double)y);
 		if (!ray)
 			continue ;
 		hit = ft_get_hit(ray, world, scene);
 		if (hit && hit->hit)
 		{
+			count += 1.0;
 			if (world->type == 5)
 				ft_check_elemts_bonus(ray, hit, world, scene);
 			else
-				final_color = ft_check_elemts(ray, hit, world, scene);
-			ft_apply_color(img_data, x, y, final_color);
+			{
+				if (hit && hit->type == 9)
+				{
+					t_sp	*sphere;
+
+					sphere = (t_sp *)world->ptr; 
+					t_vctr vec = vec3_scale(vec3_sub(hit->point, *sphere->cntr), 1.0 / (sphere->d / 2.0)); 
+					float u = 0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI);
+					float v = 0.5 - asin(vec.y) / M_PI ;
+					int	 tex_x = (int)(u * img_width);
+					int	 tex_y = (int)(v * img_height);
+					if (!txtr)
+						return ;
+					int color = *(unsigned int *)(img_dt + (tex_y * img_width + tex_x) * 4);
+					unsigned char r = (color >> 16) & 0xFF;
+					unsigned char g = (color >> 8) & 0xFF;  
+					unsigned char b = color & 0xFF;       
+					col = (t_vctr){(double)r , (double)g , (double)b};
+					// if (r > 127.5)
+					// {
+					// 	hit->point = vec3_scale(hit->point, -ft_magnitude(col) / 255.0 - 1.0);
+					// 	printf("%f \n", ft_magnitude(col) / 255.0);
+					// }
+					// else 
+					// 	hit->point = vec3_scale(hit->point, ft_magnitude(col) / 255.0 + 1.0);
+					hit->mtrl->color = col;
+					hit->normal = vec3_scale(hit->normal, ft_magnitude(col) / 255.0);
+					final_color = ft_check_elemts(ray, hit, world, scene);
+				}
+				else
+					final_color = vec3_add(final_color,ft_check_elemts(ray, hit, world, scene));
+				ft_apply_color(img_data, x, y, final_color);
+			}
 		}
-		free(ray->direction);
-		free(ray);
+		free(ray->direction), free(ray), ft_free_cam(scene->cam);
 		if (hit)
-			free(hit->mtrl);
-		ft_free_cam(scene->cam);
-		free(hit);
+			free(hit->mtrl), free(hit);
+		final_color = (t_vctr){0, 0, 0};
+		count = 0.0;
 	}
 }

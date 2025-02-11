@@ -61,6 +61,7 @@ void	ft_assign_cy_axis(t_cylinder **cy, char *s)
 	(*cy)->c_axis->x = ft_atodbl(tmp[0]);
 	(*cy)->c_axis->y = ft_atodbl(tmp[1]);
 	(*cy)->c_axis->z = ft_atodbl(tmp[2]);
+	*(*cy)->c_axis = vec3_normalize(*(*cy)->c_axis);
 	ft_lstfree(tmp);
 }
 
