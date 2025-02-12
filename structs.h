@@ -57,6 +57,7 @@ typedef struct s_material
 	double				diffuse;
 	double				specular;
 	double				shininess;
+	int					type;//TODO
 }						t_material;
 
 typedef struct s_light

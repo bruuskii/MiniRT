@@ -96,6 +96,35 @@ double generate_random_double(double num)
     return (num + x);
 }
 
+t_vctr	ft_bump(t_vctr color)
+{
+	t_vctr tmp;
+
+	tmp.x = 2 * color.x / 255.0 - 1.0;
+	tmp.y = 2 * color.y / 255.0 - 1.0;
+	tmp.z = 2 * color.z / 255.0 - 1.0;
+	return (tmp);
+}
+
+t_vctr	get_normal_vector(t_vctr normal, t_vctr color)
+{
+	t_vctr tang;
+	t_vctr btang;
+	t_vctr	norml;
+	t_vctr	bump;
+
+	tang = (t_vctr){1, 0, 0};
+	normal = vec3_normalize(normal);
+	bump = ft_bump(color);
+	btang = vec3_cross(tang, normal);
+	tang = vec3_cross(btang, normal);
+	norml.x = normal.x + bump.x * tang.x + bump.x * btang.x;
+	norml.y = normal.y + bump.y * tang.y + bump.y * btang.y;
+	norml.z = normal.z + bump.z * tang.y + bump.z * btang.z;
+	norml = vec3_normalize(norml);
+	return (norml);
+}
+
 void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 {
 	int		x;
@@ -111,7 +140,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	while (++x < WIDTH)
 	{
 		ft_innit_cam(scene->cam);
-		ray = get_ray(scene, (double) x, (double)y);
+		ray = get_ray(scene, (double)x, (double)y);
 		if (!ray)
 			continue ;
 		hit = ft_get_hit(ray, world, scene);
@@ -140,16 +169,17 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					unsigned char b = color & 0xFF;       
 					col = (t_vctr){(double)r , (double)g , (double)b};
 					hit->mtrl->color = col;
-					final_color = ft_check_elemts(ray, hit, world, scene);
+					hit->normal= vec3_scale(get_normal_vector(hit->normal, col), 0.1);
+					final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
 				}
 				else
 					final_color = vec3_add(final_color,ft_check_elemts(ray, hit, world, scene));
-				ft_apply_color(img_data, x, y, final_color);
 			}
 		}
 		free(ray->direction), free(ray), ft_free_cam(scene->cam);
 		if (hit)
 			free(hit->mtrl), free(hit);
+		ft_apply_color(img_data, x, y, vec3_scale(final_color, 1.0));
 		final_color = (t_vctr){0, 0, 0};
 		count = 0.0;
 	}

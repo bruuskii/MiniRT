@@ -75,22 +75,8 @@ void	ft_assign_flag_sphere(int n, char **tmp, t_sp *node, int fl)
 	}
 	else if (n == 6 && fl)
 	{
-		if ((!ft_strcmp(tmp[4], "B") && !ft_strcmp(tmp[5], "C"))
-			|| (!ft_strcmp(tmp[4], "C") && !ft_strcmp(tmp[5], "B")))
-		{
-			node->fl = 1;
-			node->chess = 1;
-		}
-		if ((!ft_strcmp(tmp[4], "T")))
-		{
-			node->texture = 1;
-			if (tmp[6])
-				ft_print_and_exit("Only one texture", 1);
-			if (tmp[5])
-				node->txtr_ref = tmp[5];
-			if (tmp[4] && !tmp[5])
-				node->txtr_ref = "Default";
-		}
+		node->texture = 1;
+		node->txtr_ref = ft_strdup(tmp[5]);
 	}
 }
 
@@ -103,7 +89,7 @@ int	check_input_bonus(int n, char **tmp)
 	}
 	if (n == 6)
 	{
-		if ((ft_strcmp(tmp[4], "B") || ft_strcmp(tmp[5], "C")) && (ft_strcmp(tmp[4], "C") || ft_strcmp(tmp[5], "B")) && (ft_strcmp(tmp[4], "T")))
+		if ((ft_strcmp(tmp[4], "C") || (!ft_strcmp(tmp[4], "C") && !tmp[5])))
 			return (1);
 	}
 	return (0);

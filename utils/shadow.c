@@ -29,7 +29,7 @@ int	ft_hit_world(t_world *world, t_ray raysh)
 			shadow_hit = intersect_plane(&raysh, (t_plane *)current_wrld->ptr);
 		else if (current_wrld->type == CONE)
 			shadow_hit = intersect_cone(&raysh, (t_cone *)current_wrld->ptr);
-		if (shadow_hit && shadow_hit->hit && shadow_hit->t)
+		if (shadow_hit && shadow_hit->t )
 			return (free(shadow_hit->mtrl), free(shadow_hit), 1);
 		if (shadow_hit)
 			free(shadow_hit);

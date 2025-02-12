@@ -13,8 +13,8 @@
 NAME = miniRT
 BONUS_NAME = miniRT_bonus
 
-CC = cc -g3
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CC = cc #-g3
+CFLAGS = -Wall #-Wextra #-Werror -fsanitize=address
 CFILES = libft/libft.c\
 		libft/ft_fullsplit.c\
 		libft/ft_split.c\

@@ -169,8 +169,8 @@ t_ray	*create_ray(t_cam *cam, double x, double y)
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	scaled_x = vec_scale(*cam->pixel_delta_u, x);
-	scaled_y = vec_scale(*cam->pixel_delta_v, y);
+	scaled_x = vec_scale(*cam->pixel_delta_v, x);
+	scaled_y = vec_scale(*cam->pixel_delta_u, y);
 	tmp = vec_add(*scaled_x, *scaled_y);
 	pixel_center = vec_add(*cam->pixel_offset, *tmp);
 	ray->origin = cam->pos;

@@ -19,7 +19,7 @@ static t_vctr	calculate_ambient_lighting(t_scene *scene, t_material *material,
 
 	if (in_shadow)
 	{
-		ambient = vec3_scale((t_vctr){50, 50, 50}, material->ambient);
+		ambient = vec3_scale((t_vctr){10, 10, 10}, material->ambient);
 		color = vec3_scale(vec3_add(ambient, color), 0.5);
 	}
 	else
@@ -36,29 +36,21 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	t_helpers	h;
 	int			in_shadow;
 	t_ray       *raysh;
-	t_vctr		pattern_color;
-	t_sp		*sphere;
 
 	raysh = malloc(sizeof(t_ray));
 	raysh->direction = view->light->dir;
-	t_vctr tmp = vec3_add(hit.point, vec3_scale(hit.point, 1e-6));
+	if (hit.type == PLANE)
+		material->type = 1;
+	t_vctr tmp = hit.point;
 	raysh->origin = &tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, *raysh);
 	if (raysh)
 		free(raysh);
-	sphere = (t_sp *)(scene->world->ptr);
-	if (sphere && sphere->chess == 1)
-	{
-		pattern_color = calculate_chess_pattern(hit);
-		h.color = calculate_ambient_lighting(scene, material, h.color,
-				in_shadow);
-		h.color = vec3_multiply(h.color, pattern_color);
-	}
-	else if (in_shadow)
+	if (in_shadow)
 		h.color = calculate_ambient_lighting(scene, material, h.color,
 				in_shadow);
 	else
-		fill_dhiya(h);
+	 	fill_dhiya(h);
 	return (h.color);
 }
