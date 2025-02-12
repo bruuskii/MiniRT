@@ -18,6 +18,7 @@
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100
+
 typedef enum s_type
 {
 	SPHERE,
@@ -80,6 +81,7 @@ typedef struct s_world
 	double				t;
 	t_material			*mtrl;
 	t_type				type;
+	t_win				*txtr_dt;
 	struct s_world		*next;
 }						t_world;
 

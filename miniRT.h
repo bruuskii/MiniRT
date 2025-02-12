@@ -72,7 +72,6 @@ t_hit		*intersect_cylinder(t_ray *ray, t_cylinder *cy);
 t_hit		*intersect_scene(t_ray *ray, t_scene *scene);
 t_ray		*reflected_ray(t_hit *hit, t_ray *ray);
 void		ft_free_all(t_scene **scene);
-t_win		*ft_window(int height, int width);
 void		ft_free_win(t_win *win);
 int			ft_escape_key(int key, void *param);
 int			ft_close(t_win *param);

@@ -70,8 +70,19 @@ void	ft_innit_viewports(t_cam *cam)
 
 void	ft_viewport_vectors(t_cam *cam)
 {
-	cam->viewport_u = vec3_create(cam->viewport_width * cam->dir->z, cam->viewport_width * cam->dir->x,cam->viewport_width * cam->dir->y);
+	double fl;
+
+	fl = 0.0;
+	if (cam->dir->x)
+		fl += 1.0;
+	if (cam->dir->y)
+		fl += 1.0;
+	if (cam->dir->z)
+		fl += 1.0;
+	cam->viewport_u = vec3_create(cam->viewport_width * cam->dir->z, cam->viewport_width * cam->dir->x, cam->viewport_width * cam->dir->y);
 	cam->viewport_v = vec3_create(-cam->viewport_height * cam->dir->y, cam->viewport_height * cam->dir->z, cam->viewport_height * cam->dir->x);
+	cam->viewport_u = vec3_normalize(cam->viewport_u);
+	cam->viewport_v = vec3_normalize(cam->viewport_v);
 }
 
 void	ft_delta_pixels(t_cam *cam)
@@ -86,8 +97,9 @@ void	ft_viewport_upper_left(t_cam *cam)
 	t_vctr	*tmp;
 	t_vctr	*scaled_u;
 	t_vctr	*scaled_v;
-	t_vctr	tmp1 = *cam->dir;
+	t_vctr	tmp1;
 
+	tmp1 = vec3_normalize(*cam->dir);
 	scaled_u = vec_scale(cam->viewport_u, 0.5);
 	scaled_v = vec_scale(cam->viewport_v, 0.5);
 	sum = vec_add(*scaled_u, *scaled_v);

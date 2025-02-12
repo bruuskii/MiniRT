@@ -17,7 +17,6 @@
 int		is_in_sphere(t_vctr *pnt, t_sp *sp);
 int		ft_escape_key(int key, void *param);
 int		ft_close(t_win *param);
-t_win	*ft_window(int height, int width);
 void	ft_free_win(t_win *w);
 double	ft_magnitude(t_vctr c);
 

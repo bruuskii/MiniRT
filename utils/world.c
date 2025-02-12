@@ -20,6 +20,9 @@ t_world	*new_node(void *ptr, t_type type)
 	if (!node)
 		return (NULL);
 	node->ptr = ptr;
+	node->txtr_dt = malloc(sizeof(t_win));
+	if (!node->txtr_dt)
+		return (NULL);
 	node->type = type;
 	node->next = NULL;
 	return (node);

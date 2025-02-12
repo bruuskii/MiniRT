@@ -64,6 +64,8 @@ void	ft_free_world(t_world **world)
 			ft_free_cylinder((t_cylinder *)lt->ptr);
 		else if (lt->type == CONE)
 			ft_free_cone((t_cone *)lt->ptr);
+		if (lt->txtr_dt)
+			free(lt->txtr_dt);
 		free(lt->ptr);
 		free(lt);
 		if (lt)

@@ -102,17 +102,12 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	t_ray	*ray;
 	t_hit	*hit;
 	t_vctr	final_color;
-	int		img_width;
-	int		img_height;
-	void	*txtr;
 	double	count;
 	t_vctr col;
 
 	x = -1;
 	count = 0.0;
 	final_color = (t_vctr){0, 0, 0};
-	txtr = mlx_xpm_file_to_image(scene->data->ptr, "1.xpm", &img_width, &img_height);
-	char *img_dt = mlx_get_data_addr(txtr, &scene->data->bpp,  &scene->data->size_line,  &scene->data->endian);
 	while (++x < WIDTH)
 	{
 		ft_innit_cam(scene->cam);
@@ -127,7 +122,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 				ft_check_elemts_bonus(ray, hit, world, scene);
 			else
 			{
-				if (hit && hit->type == 9)
+				if (hit && hit->type == 0)
 				{
 					t_sp	*sphere;
 
@@ -135,24 +130,16 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					t_vctr vec = vec3_scale(vec3_sub(hit->point, *sphere->cntr), 1.0 / (sphere->d / 2.0)); 
 					float u = 0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI);
 					float v = 0.5 - asin(vec.y) / M_PI ;
-					int	 tex_x = (int)(u * img_width);
-					int	 tex_y = (int)(v * img_height);
-					if (!txtr)
+					int	 tex_x = (int)(u * world->txtr_dt->width);
+					int	 tex_y = (int)(v * world->txtr_dt->height);
+					if (!world->txtr_dt->ptr)
 						return ;
-					int color = *(unsigned int *)(img_dt + (tex_y * img_width + tex_x) * 4);
+					int color = *(unsigned int *)(world->txtr_dt->img_data + (tex_y * world->txtr_dt->width + tex_x) * 4);
 					unsigned char r = (color >> 16) & 0xFF;
 					unsigned char g = (color >> 8) & 0xFF;  
 					unsigned char b = color & 0xFF;       
 					col = (t_vctr){(double)r , (double)g , (double)b};
-					// if (r > 127.5)
-					// {
-					// 	hit->point = vec3_scale(hit->point, -ft_magnitude(col) / 255.0 - 1.0);
-					// 	printf("%f \n", ft_magnitude(col) / 255.0);
-					// }
-					// else 
-					// 	hit->point = vec3_scale(hit->point, ft_magnitude(col) / 255.0 + 1.0);
 					hit->mtrl->color = col;
-					hit->normal = vec3_scale(hit->normal, ft_magnitude(col) / 255.0);
 					final_color = ft_check_elemts(ray, hit, world, scene);
 				}
 				else
