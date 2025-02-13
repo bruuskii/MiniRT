@@ -113,14 +113,19 @@ t_vctr	get_normal_vector(t_vctr normal, t_vctr color)
 	t_vctr	norml;
 	t_vctr	bump;
 
-	tang = (t_vctr){1, 0, 0};
 	normal = vec3_normalize(normal);
+	if (fabs(normal.x) > 0.9)
+		tang = (t_vctr){0, 1.0, 0};
+	if (fabs(normal.x) > 0.9)
+		tang = (t_vctr){1.0, 0, 0};
 	bump = ft_bump(color);
 	btang = vec3_cross(tang, normal);
+	btang = vec3_normalize(btang);
 	tang = vec3_cross(btang, normal);
-	norml.x = normal.x + bump.x * tang.x + bump.x * btang.x;
-	norml.y = normal.y + bump.y * tang.y + bump.y * btang.y;
-	norml.z = normal.z + bump.z * tang.y + bump.z * btang.z;
+	tang = vec3_normalize(tang);
+	norml.x = normal.x + bump.x * tang.x + bump.y * btang.x;
+	norml.y = normal.y + bump.x * tang.y + bump.y * btang.y;
+	norml.z = normal.z + bump.x * tang.z + bump.y * btang.z;
 	norml = vec3_normalize(norml);
 	return (norml);
 }
