@@ -41,7 +41,7 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 		return ;
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	if (world->type == 0)
-		world->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr, "moon.xpm", &world->txtr_dt->width, &world->txtr_dt->height);
+		world->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr, "1.xpm", &world->txtr_dt->width, &world->txtr_dt->height);
 	if (world->txtr_dt->ptr)
 		world->txtr_dt->img_data = mlx_get_data_addr(world->txtr_dt->ptr, &world->txtr_dt->bpp,  &world->txtr_dt->size_line,  &world->txtr_dt->endian);
 	y = 0;
