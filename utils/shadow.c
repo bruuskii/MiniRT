@@ -20,6 +20,7 @@ int	ft_hit_world(t_world *world, t_ray raysh)
 	current_wrld = world;
 	while (current_wrld)
 	{
+		shadow_hit = NULL;
 		if (current_wrld->type == SPHERE)
 			shadow_hit = intersect_sphere(&raysh, (t_sp *)current_wrld->ptr);
 		else if (current_wrld->type == CYLINDRE)

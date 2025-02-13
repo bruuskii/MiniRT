@@ -41,7 +41,7 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	raysh->direction = view->light->dir;
 	if (hit.type == PLANE)
 		material->type = 1;
-	t_vctr tmp = hit.point;
+	t_vctr tmp = vec3_add(hit.point, vec3_scale(hit.point, 0,001));
 	raysh->origin = &tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, *raysh);
