@@ -29,6 +29,40 @@ t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
 	return (mtrl);
 }
 
+void	ft_assign_ptrs(t_scene *scene, t_world *world)
+{
+	t_world *tp;
+
+	tp = world;
+	while (tp)
+	{
+		if (tp->type == 0)
+		{
+			tp->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr, "1.xpm", &tp->txtr_dt->width, &tp->txtr_dt->height);
+			tp->txtr_dt->img_data = mlx_get_data_addr(tp->txtr_dt->ptr, &tp->txtr_dt->bpp,  &tp->txtr_dt->size_line,  &tp->txtr_dt->endian);
+		}
+		else if (tp->type == 1)
+		{
+			tp->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr, "Checker.xpm", &tp->txtr_dt->width, &tp->txtr_dt->height);
+			tp->txtr_dt->img_data = mlx_get_data_addr(tp->txtr_dt->ptr, &tp->txtr_dt->bpp,  &tp->txtr_dt->size_line,  &tp->txtr_dt->endian);
+		}
+		tp = tp->next;
+	} 
+}
+
+void	ft_destroy_images(t_scene *scene, t_world *world)
+{
+	t_world *tp;
+
+	tp = world;
+	while (tp)
+	{
+		if (tp->txtr_dt->ptr)
+			mlx_destroy_image(scene->data->ptr, tp->txtr_dt->ptr);
+		tp = tp->next;
+	}
+}
+
 void	render_scene(void *img, t_scene *scene, t_world *world)
 {
 	char	*img_data;
@@ -40,17 +74,13 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 	if (!world->txtr_dt)
 		return ;
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	if (world->type == 0)
-		world->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr, "1.xpm", &world->txtr_dt->width, &world->txtr_dt->height);
-	if (world->txtr_dt->ptr)
-		world->txtr_dt->img_data = mlx_get_data_addr(world->txtr_dt->ptr, &world->txtr_dt->bpp,  &world->txtr_dt->size_line,  &world->txtr_dt->endian);
+	ft_assign_ptrs(scene, world);
 	y = 0;
 	if (!scene)
 		return ;
 	while (y < HEIGHT)
 		render_scene_rows(scene, img_data, y++, world);
-	if (world->txtr_dt->ptr)
-		mlx_destroy_image(scene->data->ptr, world->txtr_dt->ptr);
+	ft_destroy_images(scene, world);
 }
 
 void	ft_display_scene(t_scene *scene, t_win *data)

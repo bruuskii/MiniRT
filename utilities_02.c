@@ -78,28 +78,41 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		sp = (t_sp *)tp->ptr;
 		hit = intersect_sphere(ray, sp);
 		if (hit)
+		{
 			hit->type = SPHERE;
+			hit->world = tp;
+			//hit->world->txtr_ref = ft_strdup(sp->txtr_ref);  
+		}
 	}
 	else if (tp->type == 1)
 	{
 		plane = (t_plane *)tp->ptr;
 		hit = intersect_plane(ray, plane);
 		if (hit)
+		{
 			hit->type = PLANE;
+			hit->world = tp;
+		}
 	}
 	else if (tp->type == 2)
 	{
 		cy = (t_cylinder *)tp->ptr;
 		hit = intersect_cylinder(ray, cy);
 		if (hit)
+		{
 			hit->type = CYLINDRE;
+			hit->world = tp;
+		}
 	}
 	else if (tp->type == 5)
 	{
 		cn = (t_cone *)tp->ptr;
 		hit = intersect_cone(ray, cn);
 		if (hit)
+		{
 			hit->type = CONE;
+			hit->world = tp;
+		}
 	}
 	return (hit);
 }

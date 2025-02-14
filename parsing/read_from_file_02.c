@@ -66,12 +66,8 @@ void	ft_assign_flag_sphere(int n, char **tmp, t_sp *node, int fl)
 {
 	if (n == 5 && fl)
 	{
-		if (!ft_strcmp(tmp[4], "B"))
-			node->fl = 1;
-		else if (!ft_strcmp(tmp[4], "C"))
-		{
-			node->chess = 1;
-		}
+		if (!ft_strcmp(tmp[4], "C"))
+			ft_print_and_exit("Insufficient Parameters", 1);
 	}
 	else if (n == 6 && fl)
 	{

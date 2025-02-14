@@ -49,25 +49,14 @@ void	ft_checker_plane(t_hit *hit, t_vctr original_normal)
 	hit->normal = vec3_normalize(vec3_add(original_normal, noise_offset));
 }
 
-t_vctr	calculate_chess_pattern(t_hit hit)
-{
-	t_helpers	helper;
+// t_vctr	calculate_chess_pattern(t_hit hit)
+// {
+// 	t_helpers	helper;
 
-	helper.u = 0.5 + atan2(hit.normal.z, hit.normal.x) / (2 * M_PI);
-	helper.v = 0.5 - asin(hit.normal.y) / M_PI;
-	helper.square_u = floor(helper.u * 16);
-	helper.square_v = floor(helper.v * 16);
-	// helper.white.x = 255.0;
-	// helper.white.y = 255.0;
-	// helper.white.z = 255.0;
-	// helper.black.x = 0.0;
-	// helper.black.y = 0.0;
-	// helper.black.z = 0.0;
-	// if ((helper.square_u + helper.square_v) % 2 == 0)
-	// 	return (helper.white);
-	// else
-		return ((t_vctr){0,0,0});
-}
+// 	helper.u = 0.5 + atan2(hit.normal.z, hit.normal.x) / (2 * M_PI);
+// 	helper.v = 0.5 - asin(hit.normal.y) / M_PI;
+// 	return ((t_vctr){0,0,0});
+// }
 
 void	fill_dhiya(t_helpers h)
 {

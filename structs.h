@@ -82,6 +82,7 @@ typedef struct s_world
 	double				t;
 	t_material			*mtrl;
 	t_type				type;
+	char				*txtr_ref;
 	t_win				*txtr_dt;
 	struct s_world		*next;
 }						t_world;
@@ -197,8 +198,7 @@ typedef struct s_hit
 	int					hit;
 	double				shaddow;
 	double				t;
-	int					checker;
-	int					bump;
+	t_world				*world;
 	t_type				type;
 	t_material			*mtrl;
 	t_vctr				point;
