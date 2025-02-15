@@ -87,7 +87,7 @@ void	ft_destroy_images(t_scene *scene, t_world *world)
 	tp = world;
 	while (tp)
 	{
-		if (tp->txtr_dt->ptr)
+		if (tp->fl && tp->txtr_dt->ptr)
 			mlx_destroy_image(scene->data->ptr, tp->txtr_dt->ptr);
 		tp = tp->next;
 	}
@@ -119,8 +119,11 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 		return ;
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	ft_assign_fl(world);
-	ft_assign_txtrs(&world);
-	ft_assign_ptrs(scene, world);
+	if (check_fl_world(world))
+	{
+		ft_assign_txtrs(&world);
+		ft_assign_ptrs(scene, world);
+	}	
 	y = 0;
 	if (!scene)
 		return ;

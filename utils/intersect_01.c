@@ -27,6 +27,7 @@ t_hit	*ft_hit(void)
 	hit_point->mtrl->diffuse = 0.6;
 	hit_point->mtrl->specular = 0.6;
 	hit_point->mtrl->shininess = 60;
+	hit_point->fl = 0;
 	return (hit_point);
 }
 

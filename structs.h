@@ -199,6 +199,7 @@ typedef struct s_hit
 	int					hit;
 	double				shaddow;
 	double				t;
+	int					fl;
 	t_world				*world;
 	t_type				type;
 	t_material			*mtrl;

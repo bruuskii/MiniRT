@@ -59,35 +59,6 @@ void	ft_apply_color(char *img_data, int x, int y, t_vctr final_color)
 			(int)final_color.y, (int)final_color.z));
 }
 
-// void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
-// {
-// 	int		x;
-// 	t_ray	*ray;
-// 	t_hit	*hit;
-// 	t_vctr	final_color;
-
-// 	x = -1;
-// 	while (++x < WIDTH)
-// 	{
-// 		ft_innit_cam(scene->cam);
-// 		ray = get_ray(scene, (double)x, (double)y);
-// 		if (!ray)
-// 			continue ;
-// 		hit = ft_get_hit(ray, world, scene);
-// 		if (hit && hit->hit)
-// 		{
-// 			if (world->type == 5)
-// 				ft_check_elemts_bonus(ray, hit, world, scene);
-// 			else
-// 				final_color = ft_check_elemts(ray, hit, world, scene);
-// 			ft_apply_color(img_data, x, y, final_color);
-// 		}
-// 		free(ray->direction), free(ray), ft_free_cam(scene->cam);
-// 		if (hit)
-// 			free(hit->mtrl), free(hit);
-// 	}
-// }
-
 double generate_random_double(double num)
 {
     double x;
@@ -156,7 +127,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	while (++x < WIDTH)
 	{
 		int k = 0;
-		while (k < 4)
+		while (k < 9)
 		{
 			ft_innit_cam(scene->cam);
 			ray = get_ray(scene, generate_random_double(x), generate_random_double(y));
@@ -170,54 +141,36 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					ft_check_elemts_bonus(ray, hit, world, scene);
 				else
 				{
-					if (hit && hit->type == 0)
+					if (hit && hit->fl)
 					{
-						t_sp	*sphere;
+						if (hit->type == 0)
+						{
+							t_sp	*sphere;
 
-						sphere = (t_sp *)hit->world->ptr; 
-						t_vctr vec = vec3_scale(vec3_sub(hit->point, *sphere->cntr), 1.0 / (sphere->d / 2.0)); 
-						float u = 0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI);
-						float v = 0.5 - asin(vec.y) / M_PI ;
-						int	 tex_x = (int)(u * hit->world->txtr_dt->width);
-						int	 tex_y = (int)(v * hit->world->txtr_dt->height);
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data + (tex_y * hit->world->txtr_dt->width + tex_x) * 4);
-						unsigned char r = (color >> 16) & 0xFF;
-						unsigned char g = (color >> 8) & 0xFF;  
-						unsigned char b = color & 0xFF;       
-						col = (t_vctr){(double)r , (double)g , (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+							sphere = (t_sp *)hit->world->ptr; 
+							t_vctr vec = vec3_scale(vec3_sub(hit->point, *sphere->cntr), 1.0 / (sphere->d / 2.0)); 
+							float u = 0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI);
+							float v = 0.5 - asin(vec.y) / M_PI ;
+							int	 tex_x = (int)(u * hit->world->txtr_dt->width);
+							int	 tex_y = (int)(v * hit->world->txtr_dt->height);
+							if (!hit->world->txtr_dt->ptr)
+								return ;
+							color = *(unsigned int *)(hit->world->txtr_dt->img_data + (tex_y * hit->world->txtr_dt->width + tex_x) * 4);
+							unsigned char r = (color >> 16) & 0xFF;
+							unsigned char g = (color >> 8) & 0xFF;  
+							unsigned char b = color & 0xFF;       
+							col = (t_vctr){(double)r , (double)g , (double)b};
+							hit->mtrl->color = col;
+							final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+							count += 1.0;
+
+						}
 					}
-					// else if (hit && hit->type == 1)
-					// {
-					// 	t_plane	*pl;
-
-					// 	pl = (t_plane *)hit->world->ptr; 
-					// 	float u = pl->point->x - hit->point.x;
-					// 	float v = pl->point->y - hit->point.y;
-					// 	int	 tex_x = (u * hit->world->txtr_dt->width);
-					// 	int	 tex_y = (v * hit->world->txtr_dt->height);
-					// 	if (!hit->world->txtr_dt->ptr)
-					// 		return ;
-					// 	double t_x = fabs((double)tex_x); 
-					// 	double t_y = fabs((double)tex_y); 
-					// 	if (t_x < 0)
-					// 	{ 
-					// 		printf("00\n");
-					// 		// exit
-					// 	}
-					// 	color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((int)t_y * hit->world->txtr_dt->width + (int)(t_x)) * 4);
-					// 	unsigned char r = (color >> 16) & 0xFF;
-					// 	unsigned char g = (color >> 8) & 0xFF;  
-					// 	unsigned char b = color & 0xFF;       
-					// 	col = (t_vctr){(double)r , (double)g , (double)b};
-					// 	hit->mtrl->color = col;
-					// 	final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
-					// }
 					else
+					{
 						final_color = vec3_add(final_color,ft_check_elemts(ray, hit, world, scene));
+						count += 1.0;
+					}
 				}
 			}
 			free(ray->direction), free(ray), ft_free_cam(scene->cam);
@@ -225,7 +178,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 				free(hit->mtrl), free(hit);
 			k++;
 		}
-		ft_apply_color(img_data, x, y, vec3_scale(final_color, 1.0 / 4.0));
+		ft_apply_color(img_data, x, y, vec3_scale(final_color, 1.0 / count));
 		final_color = (t_vctr){0, 0, 0};
 		count = 0.0;
 	}

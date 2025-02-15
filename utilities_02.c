@@ -81,6 +81,8 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		{
 			hit->type = SPHERE;
 			hit->world = tp;
+			if (hit->world->fl)
+				hit->fl = 1;
 		}
 	}
 	else if (tp->type == 1)
@@ -91,6 +93,8 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		{
 			hit->type = PLANE;
 			hit->world = tp;
+			if (hit->world->fl)
+				hit->fl = 1;
 		}
 	}
 	else if (tp->type == 2)
@@ -101,6 +105,8 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		{
 			hit->type = CYLINDRE;
 			hit->world = tp;
+			if (hit->world->fl)
+				hit->fl = 1;
 		}
 	}
 	else if (tp->type == 5)
@@ -111,6 +117,8 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		{
 			hit->type = CONE;
 			hit->world = tp;
+			if (hit->world->fl)
+				hit->fl = 1;
 		}
 	}
 	return (hit);
@@ -132,9 +140,6 @@ void	ft_get_hit_color(t_world *world, t_hit *hit)
 	{
 		plane = (t_plane *)world->ptr;
 		hit->mtrl->color = *plane->color;
-		hit->mtrl->shininess = 60;
-		hit->mtrl->diffuse = 0.6;
-		hit->mtrl->specular = 0.3;
 	}
 	else if (hit->type == CYLINDRE)
 	{
@@ -167,17 +172,11 @@ t_hit	*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene)
 			if (!c_hit || hit->t < c_hit->t)
 			{
 				if (c_hit)
-				{
-					free(c_hit->mtrl);
-					free(c_hit);
-				}
+					free(c_hit->mtrl),free(c_hit);
 				c_hit = hit;
 			}
 			else
-			{
-				free(hit->mtrl);
-				free(hit);
-			}
+				free(hit->mtrl), free(hit);
 		}
 		tp = tp->next;
 	}

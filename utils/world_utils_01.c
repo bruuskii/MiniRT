@@ -66,6 +66,8 @@ void	ft_free_world(t_world **world)
 			ft_free_cone((t_cone *)lt->ptr);
 		if (lt->txtr_dt)
 			free(lt->txtr_dt);
+		if (lt->txtr_ref)
+			free(lt->txtr_ref);
 		free(lt->ptr);
 		free(lt);
 		if (lt)
