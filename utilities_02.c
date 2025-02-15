@@ -81,7 +81,6 @@ t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 		{
 			hit->type = SPHERE;
 			hit->world = tp;
-			//hit->world->txtr_ref = ft_strdup(sp->txtr_ref);  
 		}
 	}
 	else if (tp->type == 1)

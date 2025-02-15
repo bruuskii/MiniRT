@@ -106,7 +106,7 @@ void	ft_assign_sphere(char **tmp, t_sp **lt, int n, int fl)
 	ft_assign_sp(ptr, tmp + 1);
 	node = ft_new(ptr);
 	node->fl = 0;
-	node->chess = 0;
+	node->texture = 0;
 	ft_assign_flag_sphere(n, tmp, node, fl);
 	ft_add_back(lt, node);
 	free(ptr);

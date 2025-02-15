@@ -35,6 +35,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	data->img = mlx_new_image(data->ptr, WIDTH, HEIGHT);
+	scene->data = data;
 	ft_display_scene(scene, data);
 	return (0);
 }

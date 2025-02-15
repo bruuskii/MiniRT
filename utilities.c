@@ -190,32 +190,32 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 						hit->mtrl->color = col;
 						final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
 					}
-					else if (hit && hit->type == 1)
-					{
-						t_plane	*pl;
+					// else if (hit && hit->type == 1)
+					// {
+					// 	t_plane	*pl;
 
-						pl = (t_plane *)hit->world->ptr; 
-						float u = pl->point->x - hit->point.x;
-						float v = pl->point->y - hit->point.y;
-						int	 tex_x = (u * hit->world->txtr_dt->width);
-						int	 tex_y = (v * hit->world->txtr_dt->height);
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						double t_x = fabs((double)tex_x); 
-						double t_y = fabs((double)tex_y); 
-						if (t_x < 0)
-						{ 
-							printf("00\n");
-							// exit
-						}
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((int)t_y * hit->world->txtr_dt->width + (int)(t_x)) * 4);
-						unsigned char r = (color >> 16) & 0xFF;
-						unsigned char g = (color >> 8) & 0xFF;  
-						unsigned char b = color & 0xFF;       
-						col = (t_vctr){(double)r , (double)g , (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
-					}
+					// 	pl = (t_plane *)hit->world->ptr; 
+					// 	float u = pl->point->x - hit->point.x;
+					// 	float v = pl->point->y - hit->point.y;
+					// 	int	 tex_x = (u * hit->world->txtr_dt->width);
+					// 	int	 tex_y = (v * hit->world->txtr_dt->height);
+					// 	if (!hit->world->txtr_dt->ptr)
+					// 		return ;
+					// 	double t_x = fabs((double)tex_x); 
+					// 	double t_y = fabs((double)tex_y); 
+					// 	if (t_x < 0)
+					// 	{ 
+					// 		printf("00\n");
+					// 		// exit
+					// 	}
+					// 	color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((int)t_y * hit->world->txtr_dt->width + (int)(t_x)) * 4);
+					// 	unsigned char r = (color >> 16) & 0xFF;
+					// 	unsigned char g = (color >> 8) & 0xFF;  
+					// 	unsigned char b = color & 0xFF;       
+					// 	col = (t_vctr){(double)r , (double)g , (double)b};
+					// 	hit->mtrl->color = col;
+					// 	final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+					// }
 					else
 						final_color = vec3_add(final_color,ft_check_elemts(ray, hit, world, scene));
 				}

@@ -83,6 +83,7 @@ typedef struct s_world
 	t_material			*mtrl;
 	t_type				type;
 	char				*txtr_ref;
+	int					fl;
 	t_win				*txtr_dt;
 	struct s_world		*next;
 }						t_world;

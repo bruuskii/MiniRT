@@ -24,6 +24,8 @@ t_world	*new_node(void *ptr, t_type type)
 	if (!node->txtr_dt)
 		return (NULL);
 	node->type = type;
+	node->fl = 0;
+	node->txtr_ref = NULL;
 	node->next = NULL;
 	return (node);
 }
