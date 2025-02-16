@@ -21,7 +21,7 @@ void	ft_assign_world_to_scene(t_world **world, char **lst, int fl)
 
 	sphere = ft_obj(lst, fl);
 	plane = ft_obj_pl(lst, fl);
-	cylinder = ft_obj_cy(lst);
+	cylinder = ft_obj_cy(lst, fl);
 	cone = ft_cone(lst, fl);
 	if (!sphere && !plane && !cylinder && !cone)
 	{

@@ -120,7 +120,6 @@ void		ft_assign_alight(t_alight *lt, char **lst);
 t_alight	*ft_alight(char **lst);
 void		ft_add_back_cy(t_cylinder **objs, t_cylinder *node);
 t_cylinder	*ft_new_cy(t_cylinder *content);
-t_cylinder	*ft_obj_cy(char **lst);
 t_cone		*ft_new_cone(t_cone *content);
 double		ft_magnitude(t_vctr vec);
 void		ft_free_cylinder(t_cylinder *c);

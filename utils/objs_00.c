@@ -22,7 +22,8 @@ t_sp	*ft_new(t_sp *content)
 	obj->cntr = content->cntr;
 	obj->color = content->color;
 	obj->d = content->d;
-	obj->chess = 0;
+	obj->texture = 0;
+	obj->txtr_ref = NULL;
 	obj->id = 0;
 	obj->next = NULL;
 	return (obj);
@@ -41,6 +42,8 @@ t_cone	*ft_new_cone(t_cone *content)
 	obj->minm = content->minm;
 	obj->maxm = content->maxm;
 	obj->color = content->color;
+	obj->texture = 0;
+	obj->txtr_ref = NULL;
 	obj->next = NULL;
 	return (obj);
 }
@@ -56,6 +59,8 @@ t_plane	*ft_new_pl(t_plane *content)
 	obj->point = content->point;
 	obj->color = content->color;
 	obj->normal = content->normal;
+	obj->texture = 0;
+	obj->txtr_ref = NULL;
 	obj->next = NULL;
 	return (obj);
 }
@@ -73,6 +78,8 @@ t_cylinder	*ft_new_cy(t_cylinder *content)
 	obj->d = content->d;
 	obj->height = content->height;
 	obj->c_cntr = content->c_cntr;
+	obj->texture = 0;
+	obj->txtr_ref = NULL;
 	obj->next = NULL;
 	return (obj);
 }

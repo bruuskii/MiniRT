@@ -22,18 +22,35 @@ int	ft_lst_count(char **lst)
 	return (i);
 }
 
-void	ft_assign_cone_ptr(char **tmp, t_cone **lt)
+void	ft_assign_flag_cn(int n, char **tmp, t_cone *node, int fl)
+{
+	if (n == 8 && fl)
+	{
+		if (!ft_strcmp(tmp[7], "C"))
+			ft_print_and_exit("Insufficient Parameters", 1);
+	}
+	else if (n == 9 && fl)
+	{
+		node->texture = 1;
+		node->txtr_ref = ft_strdup(tmp[8]);
+	}
+}
+
+void	ft_assign_cone_ptr(char **tmp, t_cone **lt, int fl)
 {
 	t_cone	*ptr;
 	t_cone	*node;
+	int		n;
 
-	if (ft_lst_count(tmp) != 7)
+	n = ft_lst_count(tmp);
+	if (n < 7 || n > 9)
 		ft_print_and_exit("Cone has wrong number of elements", 1);
 	ptr = malloc(sizeof(t_cone));
 	if (!ptr)
 		return ;
 	ft_assign_cone(ptr, tmp + 1);
 	node = ft_new_cone(ptr);
+	ft_assign_flag_cn(n, tmp, node, fl);
 	ft_add_back_cn(lt, node);
 	free(ptr);
 }
@@ -44,7 +61,6 @@ t_cone	*ft_cone(char **lst, int fl)
 	char	**tmp;
 	t_cone	*lt;
 
-	(void)fl;
 	if (!lst || !*lst)
 		return (NULL);
 	i = 0;
@@ -55,7 +71,7 @@ t_cone	*ft_cone(char **lst, int fl)
 		if (!ft_check_first_param(tmp[0]))
 			ft_print_and_exit("Unditenfied object", 1);
 		if (!ft_strcmp(tmp[0], "cn"))
-			ft_assign_cone_ptr(tmp, &lt);
+			ft_assign_cone_ptr(tmp, &lt, fl);
 		ft_lstfree(tmp);
 		i++;
 	}

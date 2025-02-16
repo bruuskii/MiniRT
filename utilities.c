@@ -127,10 +127,10 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	while (++x < WIDTH)
 	{
 		int k = 0;
-		while (k < 9)
+		while (k < 1)
 		{
 			ft_innit_cam(scene->cam);
-			ray = get_ray(scene, generate_random_double(x), generate_random_double(y));
+			ray = get_ray(scene, (double)(x), (double)(y));
 			if (!ray)
 				continue ;
 			hit = ft_get_hit(ray, world, scene);
@@ -155,7 +155,7 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 							int	 tex_y = (int)(v * hit->world->txtr_dt->height);
 							if (!hit->world->txtr_dt->ptr)
 								return ;
-							color = *(unsigned int *)(hit->world->txtr_dt->img_data + (tex_y * hit->world->txtr_dt->width + tex_x) * 4);
+							color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x * 4)));
 							unsigned char r = (color >> 16) & 0xFF;
 							unsigned char g = (color >> 8) & 0xFF;  
 							unsigned char b = color & 0xFF;       
@@ -164,6 +164,77 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 							final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
 							count += 1.0;
 
+						}
+						if (hit->type == 1)
+						{
+							t_plane	*pl;
+
+							pl = (t_plane *)hit->world->ptr; 
+
+							float u = fabs(floor(hit->point.x * 2.0));
+							float v = fabs(floor(hit->point.z * 2.0));
+							if (pl->normal->z)
+								v = fabs(floor(hit->point.y * 8.0));
+							int	 tex_x = (int)(u);
+							int	 tex_y = (int)(v);
+							if (!hit->world->txtr_dt->ptr)
+								return ;
+							color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x * 4)));
+							unsigned char r = (color >> 16) & 0xFF;
+							unsigned char g = (color >> 8) & 0xFF;  
+							unsigned char b = color & 0xFF;       
+							col = (t_vctr){(double)r , (double)g , (double)b};
+							hit->mtrl->color = col;
+							final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+							count += 1.0;
+						}
+						if (hit->type == 2)
+						{
+							t_cylinder *cy;
+
+							cy = (t_cylinder *)hit->world->ptr;
+							float u = 0.5 + atan2(hit->point.x - cy->c_cntr->x, hit->point.z - cy->c_cntr->z) / (2.0* M_PI);
+							float v = (hit->point.y - cy->c_cntr->y) / cy->height;
+							u = fmod(u, 1.0);
+							if (u < 0) 
+								u += 1.0;
+							v = fmax(0.0, fmin(1.0, v));
+							int tex_x = (int)(u * hit->world->txtr_dt->width);
+							int tex_y = (int)(v * hit->world->txtr_dt->height);
+							if (!hit->world->txtr_dt->ptr)
+								return ;
+							color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x * 4)));
+							unsigned char r = (color >> 16) & 0xFF;
+							unsigned char g = (color >> 8) & 0xFF;  
+							unsigned char b = color & 0xFF;       
+							col = (t_vctr){(double)r , (double)g , (double)b};
+							hit->mtrl->color = col;
+							final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+							count += 1.0;
+						}
+						if (hit->type == 5)
+						{
+							t_cone *cn;
+
+							cn = (t_cone *)hit->world->ptr;
+							float u = 0.5 + atan2(hit->point.z - cn->vertex->z, hit->point.x - cn->vertex->x) / (2.0 * M_PI);
+							float v = (hit->point.y - cn->minm) / (cn->maxm - cn->minm) ;
+							u = fmod(u, 1.0);
+							if (u < 0) 
+								u += 1.0;
+							v = fmax(0.0, fmin(1.0, v));
+							int tex_x = (int)(floor(u * hit->world->txtr_dt->height));
+    						int tex_y = (int)(floor(v * hit->world->txtr_dt->width));
+							if (!hit->world->txtr_dt->ptr)
+								return ;
+							color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x * 4)));
+							unsigned char r = (color >> 16) & 0xFF;
+							unsigned char g = (color >> 8) & 0xFF;  
+							unsigned char b = color & 0xFF;       
+							col = (t_vctr){(double)r , (double)g , (double)b};
+							hit->mtrl->color = col;
+							final_color = vec3_add(final_color, ft_check_elemts(ray, hit, world, scene));
+							count += 1.0;
 						}
 					}
 					else

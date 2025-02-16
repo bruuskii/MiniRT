@@ -98,7 +98,6 @@ typedef struct s_sp
 	void				*txtr;
 	char				*txtr_ref;
 	int					fl;
-	int					chess;
 	int					id;
 	struct s_sp			*next;
 
@@ -109,7 +108,8 @@ typedef struct s_plane
 	t_vctr				*point;
 	t_vctr				*normal;
 	t_material			*mtrl;
-	int					fl;
+	int					texture;
+	char				*txtr_ref;
 	t_vctr				*color;
 	struct s_plane		*next;
 	int					chess;
@@ -123,6 +123,8 @@ typedef struct s_cylinder
 	double				d;
 	int					fl;
 	double				height;
+	int					texture;
+	char				*txtr_ref;
 	t_vctr				*color;
 	struct s_cylinder	*next;
 	int					chess;
@@ -190,6 +192,8 @@ typedef struct s_cone
 	double				tang;
 	double				minm;
 	double				maxm;
+	int					texture;
+	char				*txtr_ref;
 	t_material			*mtrl;
 	struct s_cone		*next;
 }						t_cone;
