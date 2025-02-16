@@ -19,8 +19,8 @@ double	ft_discriminant_cylinder(t_ray *ray, t_cylinder *cy, t_vctr oc)
 	double	c;
 	double	discriminant;
 
-	a = vec3_dot(*ray->direction, *ray->direction) - pow(vec3_dot(*ray->direction,
-				*cy->c_axis), 2);
+	a = vec3_dot(*ray->direction, *ray->direction)
+		- pow(vec3_dot(*ray->direction, *cy->c_axis), 2);
 	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
 				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
 	c = vec3_dot(oc, oc) - pow(vec3_dot(oc, *cy->c_axis), 2) - pow(cy->d / 2,

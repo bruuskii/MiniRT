@@ -57,7 +57,7 @@ typedef struct s_material
 	double				diffuse;
 	double				specular;
 	double				shininess;
-	int					type;//TODO
+	int type; // TODO
 }						t_material;
 
 typedef struct s_light
@@ -168,7 +168,7 @@ typedef struct s_scene
 	struct s_alight		*alight;
 	struct s_world		*world;
 	struct s_win		*data;
-	
+
 }						t_scene;
 
 typedef struct s_ray
@@ -211,7 +211,6 @@ typedef struct s_hit
 	t_vctr				normal;
 }						t_hit;
 
-
 typedef struct s_view
 {
 	t_vctr				light_dir;
@@ -230,7 +229,6 @@ typedef struct s_cone_data
 	double				b;
 	double				discriminant;
 }						t_cone_data;
-
 
 typedef struct s_helpers
 {

@@ -51,8 +51,8 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	double	a;
 	double	b;
 
-	a = vec3_dot(*ray->direction, *ray->direction) - pow(vec3_dot(*ray->direction,
-				*cy->c_axis), 2);
+	a = vec3_dot(*ray->direction, *ray->direction)
+		- pow(vec3_dot(*ray->direction, *cy->c_axis), 2);
 	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
 				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
 	sqrt_discriminant = sqrt(ft_discriminant_cylinder(ray, cy, oc));

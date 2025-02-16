@@ -38,8 +38,8 @@ t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 	t_vctr	color;
 	t_vctr	reflect_dir;
 
-	 reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal,
-	 				view->light_dir)), view->light_dir);
+	reflect_dir = vec3_sub(vec3_scale(normal, 2 * vec3_dot(normal,
+					view->light_dir)), view->light_dir);
 	ambient = material->ambient;
 	diffuse = fmax(vec3_dot(normal, view->light_dir), 0.0) * material->diffuse;
 	specular = pow(fmax(vec3_dot(view->view_dir, reflect_dir), 0.0),
@@ -86,8 +86,8 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 {
 	t_helpers	h;
 	int			in_shadow;
-	t_ray       *raysh;
-	t_vctr 		tmp;
+	t_ray		*raysh;
+	t_vctr		tmp;
 
 	raysh = malloc(sizeof(t_ray));
 	raysh->direction = view->light->dir;
@@ -101,6 +101,6 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 		h.color = calculate_ambient_lighting(scene, material, h.color,
 				in_shadow);
 	else
-	 	fill_dhiya(h);
+		fill_dhiya(h);
 	return (h.color);
 }

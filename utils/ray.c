@@ -15,55 +15,55 @@
 t_vctr	*new_vec(double x, double y, double z)
 {
 	t_vctr	*vctr;
-	
+
 	vctr = malloc(sizeof(t_vctr));
 	if (!vctr)
 		return (NULL);
 	vctr->x = x;
 	vctr->y = y;
 	vctr->z = z;
-	return (vctr);		
+	return (vctr);
 }
 
 t_vctr	*vec_add(t_vctr v1, t_vctr v2)
 {
 	t_vctr	*vctr;
-	
+
 	vctr = malloc(sizeof(t_vctr));
 	if (!vctr)
 		return (NULL);
 	vctr->x = v1.x + v2.x;
 	vctr->y = v1.y + v2.y;
 	vctr->z = v1.z + v2.z;
-	return (vctr);		
+	return (vctr);
 }
 
-t_vctr *vec_sub(t_vctr v1, t_vctr v2)
+t_vctr	*vec_sub(t_vctr v1, t_vctr v2)
 {
 	t_vctr	*vctr;
-	
+
 	vctr = malloc(sizeof(t_vctr));
 	if (!vctr)
 		return (NULL);
 	vctr->x = v1.x - v2.x;
 	vctr->y = v1.y - v2.y;
 	vctr->z = v1.z - v2.z;
-	return (vctr);		
+	return (vctr);
 }
 
-t_vctr *vec_scale(t_vctr v, double d)
+t_vctr	*vec_scale(t_vctr v, double d)
 {
 	t_vctr	*vctr;
-	
+
 	vctr = new_vec(v.x * d, v.y * d, v.z * d);
 	if (!vctr)
 		return (NULL);
-	return (vctr);		
+	return (vctr);
 }
 
 void	ft_innit_viewports(t_cam *cam)
 {
-	cam->aspect_ratio = (double)WIDTH/ (double)HEIGHT;
+	cam->aspect_ratio = (double)WIDTH / (double)HEIGHT;
 	cam->viewport_width = 2.0 * tan(cam->fov * 0.5 * M_PI / 180);
 	cam->viewport_height = cam->viewport_width / cam->aspect_ratio;
 }
@@ -79,9 +79,8 @@ void	ft_viewport_vectors(t_cam *cam)
 		up = (t_vctr){1, 0, 1};
 	else
 		up = (t_vctr){0, 1, 0};
-
 	right = vec3_normalize(vec3_cross(tmp, up));
-	up = vec3_normalize(vec3_cross(right,tmp));
+	up = vec3_normalize(vec3_cross(right, tmp));
 	cam->viewport_u = vec3_scale(up, cam->viewport_width);
 	cam->viewport_v = vec3_scale(right, -cam->viewport_height);
 }
@@ -145,7 +144,6 @@ void	ft_innit_cam(t_cam *cam)
 
 void	ft_free_cam(t_cam *cam)
 {
-
 	if (cam->pixel_delta_u)
 		free(cam->pixel_delta_u);
 	if (cam->pixel_delta_v)
@@ -158,12 +156,12 @@ void	ft_free_cam(t_cam *cam)
 
 t_ray	*create_ray(t_cam *cam, double x, double y)
 {
-	t_ray	*ray;
-	t_vctr	*pixel_center;
-	t_vctr	*scaled_x;
-	t_vctr	*tmp;
-	t_vctr	*scaled_y;
-	
+	t_ray *ray;
+	t_vctr *pixel_center;
+	t_vctr *scaled_x;
+	t_vctr *tmp;
+	t_vctr *scaled_y;
+
 	if (!cam)
 		return (NULL);
 	ray = malloc(sizeof(t_ray));

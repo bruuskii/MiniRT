@@ -60,7 +60,7 @@ t_cone		*ft_cone(char **lst, int fl);
 void		ft_assign_flag_sphere(int n, char **tmp, t_sp *node, int fl);
 void		ft_assign_sphere(char **tmp, t_sp **lt, int n, int fl);
 t_sp		*ft_obj(char **lst, int fl);
-void	    ft_assign_ptr_plane(char **tmp, t_plane **lt, int fl);
+void		ft_assign_ptr_plane(char **tmp, t_plane **lt, int fl);
 t_plane		*ft_obj_pl(char **lst, int fl);
 void		ft_assign_cy_ptr(char **tmp, t_cylinder **lt, int fl);
 t_cylinder	*ft_obj_cy(char **lst, int fl);

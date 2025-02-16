@@ -96,7 +96,8 @@ int	check_input_bonus(int n, char **tmp)
 {
 	if (n == 5)
 	{
-		if (ft_strcmp(tmp[4], "B") && ft_strcmp(tmp[4], "C") && ft_strcmp(tmp[4], "T"))
+		if (ft_strcmp(tmp[4], "B") && ft_strcmp(tmp[4], "C")
+			&& ft_strcmp(tmp[4], "T"))
 			return (1);
 	}
 	if (n == 6)

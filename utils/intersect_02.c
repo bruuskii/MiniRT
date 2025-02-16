@@ -16,7 +16,7 @@ void	ft_get_plane_axes(t_vctr *plane_u, t_vctr *plane_v, t_vctr *normal)
 {
 	t_vctr	up;
 	double	dot;
-	
+
 	up = (t_vctr){0, 1, 0};
 	dot = vec3_dot(*normal, up);
 	if (fabs(dot) > 1e-6)
@@ -42,7 +42,7 @@ int	ft_resize_plane_00(t_vctr intersection, t_plane *plane)
 	return (0);
 }
 
-t_vctr	ft_calculate_intersection_plane(t_vctr denom,t_plane *plane, double t,
+t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 		t_ray *ray)
 {
 	t_vctr	inter;

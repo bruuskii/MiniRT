@@ -26,5 +26,3 @@ t_vctr	vec3_multiply(t_vctr v1, t_vctr v2)
 	result.z = (v1.z * v2.z) / 255.0;
 	return (result);
 }
-
-

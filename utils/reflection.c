@@ -31,7 +31,8 @@
 // 		return (NULL);
 // 	normal = vec3_normalize(hit->normal);
 // 	vctr_dot = 2 * vec3_dot(vec3_normalize(*ray->direction), normal);
-// 	reflection_dir = vec3_sub(vec3_normalize(*ray->direction), vec3_scale(normal,
+// 	reflection_dir = vec3_sub(vec3_normalize(*ray->direction),
+//			vec3_scale(normal,
 // 				vctr_dot));
 // 	reflect_ray->direction = vec3_normalize(reflection_dir);
 // 	reflect_ray->origin = vec3_add(hit->point, vec3_scale(normal, 1e-4));

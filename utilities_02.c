@@ -172,7 +172,7 @@ t_hit	*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene)
 			if (!c_hit || hit->t < c_hit->t)
 			{
 				if (c_hit)
-					free(c_hit->mtrl),free(c_hit);
+					free(c_hit->mtrl), free(c_hit);
 				c_hit = hit;
 			}
 			else

@@ -31,11 +31,11 @@ t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
 
 void	ft_assign_txtrs(t_world **world)
 {
-	t_world *tp;
-	t_sp 	*sp;
-	t_plane	*pl;
+	t_world		*tp;
+	t_sp		*sp;
+	t_plane		*pl;
 	t_cylinder	*cy;
-	t_cone	*cn;
+	t_cone		*cn;
 
 	tp = *world;
 	while (tp)
@@ -44,43 +44,55 @@ void	ft_assign_txtrs(t_world **world)
 		{
 			sp = (t_sp *)tp->ptr;
 			if (sp->texture)
-				tp->txtr_ref= ft_strdup(sp->txtr_ref), free(sp->txtr_ref);
+			{
+				tp->txtr_ref = ft_strdup(sp->txtr_ref):
+				free(sp->txtr_ref);
+			}
 		}
 		else if (tp->type == 1)
 		{
 			pl = (t_plane *)tp->ptr;
 			if (pl->texture)
-				tp->txtr_ref= ft_strdup(pl->txtr_ref), free(pl->txtr_ref);
+			{
+				tp->txtr_ref = ft_strdup(pl->txtr_ref);
+				free(pl->txtr_ref);
+			}
 		}
 		else if (tp->type == 2)
 		{
 			cy = (t_cylinder *)tp->ptr;
 			if (cy->texture)
-				tp->txtr_ref= ft_strdup(cy->txtr_ref), free(cy->txtr_ref);
+			{
+				tp->txtr_ref = ft_strdup(cy->txtr_ref);
+				free(cy->txtr_ref);
+			}
 		}
 		else if (tp->type == 5)
 		{
 			cn = (t_cone *)tp->ptr;
 			if (cn->texture)
-				tp->txtr_ref= ft_strdup(cn->txtr_ref), free(cn->txtr_ref);
+			{
+				tp->txtr_ref = ft_strdup(cn->txtr_ref);
+				free(cn->txtr_ref);
+			}
 		}
 		tp = tp->next;
-	} 
+	}
 }
 void	ft_assign_fl(t_world *world)
 {
-	t_world 	*tp;
-	t_sp 		*sp;
+	t_world		*tp;
+	t_sp		*sp;
 	t_plane		*pl;
-	t_cylinder 	*cy;
-	t_cone 		*cn;
+	t_cylinder	*cy;
+	t_cone		*cn;
 
 	tp = world;
 	while (tp)
 	{
 		if (tp->type == 0)
 		{
-			sp =tp->ptr;
+			sp = tp->ptr;
 			if (sp->texture)
 				tp->fl = 1;
 		}
@@ -92,39 +104,42 @@ void	ft_assign_fl(t_world *world)
 		}
 		else if (tp->type == 2)
 		{
-			cy =tp->ptr;
+			cy = tp->ptr;
 			if (cy->texture)
 				tp->fl = 1;
 		}
 		else if (tp->type == 5)
 		{
-			cn =tp->ptr;
+			cn = tp->ptr;
 			if (cn->texture)
 				tp->fl = 1;
 		}
 		tp = tp->next;
-	} 
+	}
 }
 
 void	ft_assign_ptrs(t_scene *scene, t_world *world)
 {
-	t_world *tp;
+	t_world	*tp;
 
 	tp = world;
 	while (tp)
 	{
 		if (tp->fl)
 		{
-			tp->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr,tp->txtr_ref, &tp->txtr_dt->width, &tp->txtr_dt->height);
-			tp->txtr_dt->img_data = mlx_get_data_addr(tp->txtr_dt->ptr, &tp->txtr_dt->bpp,  &tp->txtr_dt->size_line,  &tp->txtr_dt->endian);
+			tp->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr,
+					tp->txtr_ref, &tp->txtr_dt->width, &tp->txtr_dt->height);
+			tp->txtr_dt->img_data = mlx_get_data_addr(tp->txtr_dt->ptr,
+					&tp->txtr_dt->bpp, &tp->txtr_dt->size_line,
+					&tp->txtr_dt->endian);
 		}
 		tp = tp->next;
-	} 
+	}
 }
 
 void	ft_destroy_images(t_scene *scene, t_world *world)
 {
-	t_world *tp;
+	t_world	*tp;
 
 	tp = world;
 	while (tp)
@@ -135,9 +150,9 @@ void	ft_destroy_images(t_scene *scene, t_world *world)
 	}
 }
 
-int check_fl_world(t_world *world)
+int	check_fl_world(t_world *world)
 {
-	t_world *tp;
+	t_world	*tp;
 
 	tp = world;
 	while (tp)
@@ -165,7 +180,7 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 	{
 		ft_assign_txtrs(&world);
 		ft_assign_ptrs(scene, world);
-	}	
+	}
 	y = 0;
 	if (!scene)
 		return ;
