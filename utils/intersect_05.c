@@ -19,8 +19,10 @@ int	valid_cyl_inter(t_ray *ray, double t1, double t2, t_cylinder *cy)
 	double	h_1;
 	double	h_2;
 
-	hit_point1 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t1));
-	hit_point2 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t2));
+	hit_point1 = vec3_add(*ray->origin,
+			vec3_scale(vec3_normalize(*ray->direction), t1));
+	hit_point2 = vec3_add(*ray->origin,
+			vec3_scale(vec3_normalize(*ray->direction), t2));
 	h_1 = vec3_dot(vec3_sub(hit_point1, *cy->c_cntr), *cy->c_axis);
 	h_2 = vec3_dot(vec3_sub(hit_point2, *cy->c_cntr), *cy->c_axis);
 	if ((t1 > 1e-6 && h_1 >= 0 && h_1 <= cy->height) && (t2 > 1e-6 && h_2 >= 0
@@ -51,10 +53,12 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	double	a;
 	double	b;
 
-	a = vec3_dot(*ray->direction, *ray->direction)
-		- pow(vec3_dot(*ray->direction, *cy->c_axis), 2);
-	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
-				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
+	a = vec3_dot(vec3_normalize(*ray->direction),
+			vec3_normalize(*ray->direction))
+		- pow(vec3_dot(vec3_normalize(*ray->direction), *cy->c_axis), 2);
+	b = 2 * (vec3_dot(vec3_normalize(*ray->direction), oc)
+			- vec3_dot(vec3_normalize(*ray->direction), *cy->c_axis)
+			* vec3_dot(oc, *cy->c_axis));
 	sqrt_discriminant = sqrt(ft_discriminant_cylinder(ray, cy, oc));
 	t1 = (-b - sqrt_discriminant) / (2 * a);
 	t2 = (-b + sqrt_discriminant) / (2 * a);
@@ -105,7 +109,8 @@ t_hit	*intersect_cylinder(t_ray *ray, t_cylinder *cy)
 		return (free(hit->mtrl), free(hit), NULL);
 	hit->t = t;
 	hit->hit = 1;
-	hit->point = vec3_add(*ray->origin, vec3_scale(*ray->direction, hit->t));
+	hit->point = vec3_add(*ray->origin,
+			vec3_scale(vec3_normalize(*ray->direction), hit->t));
 	if (ft_distance_cylinder(hit, cy) > cy->height)
 		return (free(hit->mtrl), free(hit), NULL);
 	return (hit);

@@ -56,13 +56,13 @@ t_vctr	ft_calculate_intersection_plane(t_vctr denom, t_plane *plane, double t,
 void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 {
 	double	den;
-	t_vctr	denom;
+	t_vctr	ray_norm;
 
-	denom = vec3_normalize(*ray->direction);
-	den = vec3_dot(denom, *plane->normal);
+	ray_norm = vec3_normalize(*ray->direction);
+	den = vec3_dot(ray_norm, *plane->normal);
 	hit->hit = 1;
 	hit->t = t;
-	hit->point = ft_calculate_intersection_plane(denom, plane, hit->t, ray);
+	hit->point = ft_calculate_intersection_plane(ray_norm, plane, hit->t, ray);
 	if (den < 0)
 		hit->normal = *plane->normal;
 	else
@@ -72,7 +72,7 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 {
 	t_hit	*hit;
-	t_vctr	denom;
+	t_vctr	ray_norm;
 	double	den;
 	t_vctr	ray_to_plane;
 	double	t;
@@ -82,15 +82,16 @@ t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 		return (NULL);
 	hit->hit = 0;
 	hit->t = 0;
-	denom = vec3_normalize(*ray->direction);
-	den = vec3_dot(denom, *plane->normal);
+	ray_norm = vec3_normalize(*ray->direction);
+	den = vec3_dot(ray_norm, *plane->normal);
 	if (fabs(den) < 1e-6)
 		return (free(hit->mtrl), free(hit), NULL);
 	ray_to_plane = vec3_sub(*plane->point, *ray->origin);
 	t = vec3_dot(ray_to_plane, *plane->normal) / den;
 	if (t < 1e-6)
 		return (free(hit->mtrl), free(hit), NULL);
-	if (is_zero_vector(ft_calculate_intersection_plane(denom, plane, t, ray)))
+	if (is_zero_vector(ft_calculate_intersection_plane(ray_norm, plane, t,
+				ray)))
 		return (free(hit->mtrl), free(hit), NULL);
 	ft_assign_hit_plane(hit, ray, plane, t);
 	return (hit);

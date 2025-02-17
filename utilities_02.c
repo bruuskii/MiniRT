@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:20 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/07 21:43:59 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/17 04:01:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,11 +172,17 @@ t_hit	*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene)
 			if (!c_hit || hit->t < c_hit->t)
 			{
 				if (c_hit)
-					free(c_hit->mtrl), free(c_hit);
+				{
+					free(c_hit->mtrl);
+					free(c_hit);
+				}
 				c_hit = hit;
 			}
 			else
-				free(hit->mtrl), free(hit);
+			{
+				free(hit->mtrl);
+				free(hit);
+			}
 		}
 		tp = tp->next;
 	}

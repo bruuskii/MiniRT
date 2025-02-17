@@ -83,11 +83,12 @@ t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
 	if (!hit)
 		return (NULL);
 	ft_initialize_cone_data(ray, cone, &data);
-	ft_calculate_quadratic_coeffs(*ray->direction, &data);
+	ft_calculate_quadratic_coeffs(vec3_normalize(*ray->direction), &data);
 	ft_calculate_discriminant(&data);
 	if (ft_validate_and_solve(&data, &t))
 		return (free(hit->mtrl), free(hit), NULL);
-	intersection = vec3_add(*ray->origin, vec3_scale(*ray->direction, t));
+	intersection = vec3_add(*ray->origin,
+			vec3_scale(vec3_normalize(*ray->direction), t));
 	if (ft_check_intersection_constraints(intersection, cone, data.v, hit))
 		return (free(hit->mtrl), free(hit), NULL);
 	hit->t = t;

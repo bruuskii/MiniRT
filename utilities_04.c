@@ -45,7 +45,7 @@ void	ft_assign_txtrs(t_world **world)
 			sp = (t_sp *)tp->ptr;
 			if (sp->texture)
 			{
-				tp->txtr_ref = ft_strdup(sp->txtr_ref):
+				tp->txtr_ref = ft_strdup(sp->txtr_ref);
 				free(sp->txtr_ref);
 			}
 		}
@@ -79,6 +79,7 @@ void	ft_assign_txtrs(t_world **world)
 		tp = tp->next;
 	}
 }
+
 void	ft_assign_fl(t_world *world)
 {
 	t_world		*tp;

@@ -20,7 +20,7 @@ static t_vctr	calculate_ambient_lighting(t_scene *scene, t_material *material,
 	if (in_shadow)
 	{
 		ambient = vec3_scale((t_vctr){10, 10, 10}, material->ambient);
-		color = vec3_scale(vec3_add(ambient, color), 0.5);
+		color = vec3_scale(vec3_add(ambient, color), 0.25);
 	}
 	else
 	{
@@ -86,17 +86,19 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 {
 	t_helpers	h;
 	int			in_shadow;
-	t_ray		*raysh;
-	t_vctr		tmp;
+	t_ray		raysh;
+	t_vctr		light_dir;
+	t_vctr		*tm0;
+	t_vctr		ori;
 
-	raysh = malloc(sizeof(t_ray));
-	raysh->direction = view->light->dir;
-	tmp = hit.point;
-	raysh->origin = &tmp;
+	tm0 = vec_sub(*view->light->dir, hit.point);
+	light_dir = vec3_normalize(*tm0);
+	free(tm0);
+	raysh.direction = &light_dir;
+	ori = vec3_add(hit.point, hit.normal);
+	raysh.origin = &ori;
 	h.color = light_colors(view->light, hit, material, view->ray);
-	in_shadow = is_in_shaddow(scene, *raysh);
-	if (raysh)
-		free(raysh);
+	in_shadow = is_in_shaddow(scene, raysh);
 	if (in_shadow)
 		h.color = calculate_ambient_lighting(scene, material, h.color,
 				in_shadow);

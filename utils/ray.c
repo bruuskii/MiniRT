@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/07 21:43:20 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/17 03:56:59 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,11 @@ void	ft_free_cam(t_cam *cam)
 
 t_ray	*create_ray(t_cam *cam, double x, double y)
 {
-	t_ray *ray;
-	t_vctr *pixel_center;
-	t_vctr *scaled_x;
-	t_vctr *tmp;
-	t_vctr *scaled_y;
+	t_ray	*ray;
+	t_vctr	*pixel_center;
+	t_vctr	*scaled_x;
+	t_vctr	*tmp;
+	t_vctr	*scaled_y;
 
 	if (!cam)
 		return (NULL);
