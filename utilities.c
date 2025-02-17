@@ -25,18 +25,8 @@ t_vctr	ft_assign_cylinder_color(t_ray *ray, t_hit *hit, t_world *world,
 t_vctr	ft_check_elemts(t_ray *ray, t_hit *hit, t_world *world, t_scene *scene)
 {
 	t_vctr	final_color;
-
-	final_color = (t_vctr){0, 0, 0};
-	if (world->type == 0)
-	{
-		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
-	}
-	else if (world->type == 1)
-	{
-		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
-	}
-	else if (world->type == 2)
-		return (ft_assign_cylinder_color(ray, hit, world, scene));
+	(void)world;
+	final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	return (final_color);
 }
 
@@ -44,12 +34,9 @@ t_vctr	ft_check_elemts_bonus(t_ray *ray, t_hit *hit, t_world *world,
 		t_scene *scene)
 {
 	t_vctr	final_color;
+	(void) world;
 
-	final_color = (t_vctr){0, 0, 0};
-	if (world->type == 5)
-	{
-		final_color = ft_final_color(ray, hit, scene, hit->mtrl);
-	}
+	final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	return (final_color);
 }
 
@@ -147,12 +134,9 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 		if (hit && hit->hit)
 		{
 			count += 1.0;
-			if (world->type == 5)
-				ft_check_elemts_bonus(ray, hit, world, scene);
-			else
-			{
-				if (hit && hit->fl)
+				if (hit->fl)
 				{
+					
 					if (hit->type == 0)
 					{
 						sphere = (t_sp *)hit->world->ptr;
@@ -225,16 +209,20 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					}
 					if (hit->type == 5)
 					{
+						// printf("hit->type == %d && txt == %s\n", hit->type, hit->world->txtr_ref);
 						cn = (t_cone *)hit->world->ptr;
 						u = 0.5 + atan2(hit->point.z - cn->vertex->z,
 								hit->point.x - cn->vertex->x) / (2.0 * M_PI);
-						v = (hit->point.y - cn->minm) / (cn->maxm - cn->minm);
+						v = 1.0 - (hit->point.y - cn->minm) / (cn->maxm - cn->minm);
 						u = fmod(u, 1.0);
 						if (u < 0)
 							u += 1.0;
 						v = fmax(0.0, fmin(1.0, v));
-						tex_x = (int)(floor(u * hit->world->txtr_dt->height));
-						tex_y = (int)(floor(v * hit->world->txtr_dt->width));
+						tex_x = (int)floor(u * hit->world->txtr_dt->width);
+						tex_y = (int)floor(v * hit->world->txtr_dt->height);
+
+						tex_x = (int)fmax(0, tex_x);
+						tex_y = (int)fmax(0, tex_y);
 						if (!hit->world->txtr_dt->ptr)
 							return ;
 						color = *(unsigned int *)(hit->world->txtr_dt->img_data
@@ -257,7 +245,6 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					count += 1.0;
 				}
 			}
-		}
 		free(ray->direction), free(ray), ft_free_cam(scene->cam);
 		if (hit)
 			free(hit->mtrl), free(hit);

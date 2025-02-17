@@ -33,6 +33,7 @@ void	ft_assign_flag_cn(int n, char **tmp, t_cone *node, int fl)
 	{
 		node->texture = 1;
 		node->txtr_ref = ft_strdup(tmp[8]);
+		printf("%s\n", node->txtr_ref);
 	}
 }
 
