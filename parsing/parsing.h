@@ -75,7 +75,7 @@ t_scene		*data_input(char *s, int fl);
 void		ft_free_scene(t_scene *scene);
 void		ft_swap_circle(t_sp *a, t_sp *b);
 
-int	        ft_check_txtr_extention(char *s);
+int			ft_check_txtr_extention(char *s);
 void		swap_planes(t_plane *a, t_plane *b);
 
 void		swap_cylinders(t_cylinder *a, t_cylinder *b);

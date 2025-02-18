@@ -25,6 +25,7 @@ t_vctr	ft_assign_cylinder_color(t_ray *ray, t_hit *hit, t_world *world,
 t_vctr	ft_check_elemts(t_ray *ray, t_hit *hit, t_world *world, t_scene *scene)
 {
 	t_vctr	final_color;
+
 	(void)world;
 	final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	return (final_color);
@@ -34,8 +35,8 @@ t_vctr	ft_check_elemts_bonus(t_ray *ray, t_hit *hit, t_world *world,
 		t_scene *scene)
 {
 	t_vctr	final_color;
-	(void) world;
 
+	(void)world;
 	final_color = ft_final_color(ray, hit, scene, hit->mtrl);
 	return (final_color);
 }
@@ -118,9 +119,9 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
-						t_vctr *text_ptr;
+	t_vctr			*text_ptr;
+	t_plane			*pl;
 
-	// int				k;
 	x = -1;
 	count = 0.0;
 	final_color = (t_vctr){0, 0, 0};
@@ -130,141 +131,137 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 		ray = get_ray(scene, (double)(x), (double)(y));
 		if (!ray)
 			continue ;
-		hit = ft_get_hit(ray, world, scene);
+		hit = ft_get_hit(ray, world);
 		if (hit && hit->hit)
 		{
+			hit->mtrl->ambient = scene->alight->ratio;
 			count += 1.0;
-				if (hit->fl)
+			if (hit->fl)
+			{
+				if (hit->type == 0)
 				{
-					
-					if (hit->type == 0)
-					{
-						sphere = (t_sp *)hit->world->ptr;
-						text_ptr = vec_sub(hit->point, *sphere->cntr);
-						vec = vec3_scale(*text_ptr, 1.0 / (sphere->d / 2.0));
-						free(text_ptr);
-						u = -(0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI));
-						v = (0.5 - asin(vec.y) / M_PI);
-						tex_x = (int)(u * hit->world->txtr_dt->width);
-						tex_y = (int)(v * hit->world->txtr_dt->height);
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data
-								+ ((tex_y * hit->world->txtr_dt->width * 4)
-									+ (tex_x * 4)));
-						r = (color >> 16) & 0xFF;
-						g = (color >> 8) & 0xFF;
-						b = color & 0xFF;
-						col = (t_vctr){(double)r, (double)g, (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray,
-									hit, world, scene));
-					}
-					if (hit->type == 1)
-					{
-						t_plane *pl;
-
-						pl = (t_plane *)hit->world->ptr;
-						if (pl->normal->z)
-						{
-							u = hit->world->txtr_dt->width / 2.0 + (hit->point.x
-									* hit->world->txtr_dt->width / M_W * 0.5);
-							v = hit->world->txtr_dt->height / 2.0 - hit->point.y
-								* hit->world->txtr_dt->height / M_H * 0.5;
-						}
-						if (pl->normal->x)
-						{
-							u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
-									* hit->world->txtr_dt->width / M_W * 0.5);
-							v = hit->world->txtr_dt->height / 2.0 - hit->point.y
-								* hit->world->txtr_dt->height / M_H * 0.5;
-						}
-						if (pl->normal->y)
-						{
-							u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
-									* hit->world->txtr_dt->width / M_W * 0.5);
-							v = hit->world->txtr_dt->height / 2.0 - hit->point.x
-								* hit->world->txtr_dt->height / M_H * 0.5;
-						}
-						tex_x = (int)fabs(floor(u));
-						tex_y = (int)fabs(floor(v));
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data
-								+ ((tex_y * hit->world->txtr_dt->width * 4)
-									+ (tex_x * 4)));
-						r = (color >> 16) & 0xFF;
-						g = (color >> 8) & 0xFF;
-						b = color & 0xFF;
-						col = (t_vctr){(double)r, (double)g, (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray,
-									hit, world, scene));
-					}
-					if (hit->type == 2)
-					{
-						cy = (t_cylinder *)hit->world->ptr;
-						u = 0.5 + atan2(hit->point.x - cy->c_cntr->x,
-								hit->point.z - cy->c_cntr->z) / (2.0 * M_PI);
-						v = (hit->point.y - cy->c_cntr->y) / cy->height;
-						u = fmod(u, 1.0);
-						if (u < 0)
-							u += 1.0;
-						v = fmax(0.0, fmin(1.0, v));
-						tex_x = (int)(u * hit->world->txtr_dt->width);
-						tex_y = (int)(v * hit->world->txtr_dt->height);
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data
-								+ ((tex_y * hit->world->txtr_dt->width * 4)
-									+ (tex_x * 4)));
-						r = (color >> 16) & 0xFF;
-						g = (color >> 8) & 0xFF;
-						b = color & 0xFF;
-						col = (t_vctr){(double)r, (double)g, (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray,
-									hit, world, scene));
-						count += 1.0;
-					}
-					if (hit->type == 5)
-					{
-						// printf("hit->type == %d && txt == %s\n", hit->type, hit->world->txtr_ref);
-						cn = (t_cone *)hit->world->ptr;
-						u = 0.5 + atan2(hit->point.z - cn->vertex->z,
-								hit->point.x - cn->vertex->x) / (2.0 * M_PI);
-						v = 1.0 - (hit->point.y - cn->minm) / (cn->maxm - cn->minm);
-						u = fmod(u, 1.0);
-						if (u < 0)
-							u += 1.0;
-						v = fmax(0.0, fmin(1.0, v));
-						tex_x = (int)floor(u * hit->world->txtr_dt->width);
-						tex_y = (int)floor(v * hit->world->txtr_dt->height);
-
-						tex_x = (int)fmax(0, tex_x);
-						tex_y = (int)fmax(0, tex_y);
-						if (!hit->world->txtr_dt->ptr)
-							return ;
-						color = *(unsigned int *)(hit->world->txtr_dt->img_data
-								+ ((tex_y * hit->world->txtr_dt->width * 4)
-									+ (tex_x * 4)));
-						r = (color >> 16) & 0xFF;
-						g = (color >> 8) & 0xFF;
-						b = color & 0xFF;
-						col = (t_vctr){(double)r, (double)g, (double)b};
-						hit->mtrl->color = col;
-						final_color = vec3_add(final_color, ft_check_elemts(ray,
-									hit, world, scene));
-						count += 1.0;
-					}
+					sphere = (t_sp *)hit->world->ptr;
+					text_ptr = vec_sub(hit->point, *sphere->cntr);
+					vec = vec3_scale(*text_ptr, 1.0 / (sphere->d / 2.0));
+					free(text_ptr);
+					u = -(0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI));
+					v = (0.5 - asin(vec.y) / M_PI);
+					tex_x = (int)(u * hit->world->txtr_dt->width);
+					tex_y = (int)(v * hit->world->txtr_dt->height);
+					if (!hit->world->txtr_dt->ptr)
+						return ;
+					color = *(unsigned int *)(hit->world->txtr_dt->img_data
+							+ ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x
+									* 4)));
+					r = (color >> 16) & 0xFF;
+					g = (color >> 8) & 0xFF;
+					b = color & 0xFF;
+					col = (t_vctr){(double)r, (double)g, (double)b};
+					hit->mtrl->color = col;
+					final_color = vec3_add(final_color, ft_check_elemts(ray,
+								hit, world, scene));
 				}
-				else
+				if (hit->type == 1)
 				{
+					pl = (t_plane *)hit->world->ptr;
+					if (pl->normal->z)
+					{
+						u = hit->world->txtr_dt->width / 2.0 + (hit->point.x
+								* hit->world->txtr_dt->width / M_W * 0.5);
+						v = hit->world->txtr_dt->height / 2.0 - hit->point.y
+							* hit->world->txtr_dt->height / M_H * 0.5;
+					}
+					if (pl->normal->x)
+					{
+						u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
+								* hit->world->txtr_dt->width / M_W * 0.5);
+						v = hit->world->txtr_dt->height / 2.0 - hit->point.y
+							* hit->world->txtr_dt->height / M_H * 0.5;
+					}
+					if (pl->normal->y)
+					{
+						u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
+								* hit->world->txtr_dt->width / M_W * 0.5);
+						v = hit->world->txtr_dt->height / 2.0 - hit->point.x
+							* hit->world->txtr_dt->height / M_H * 0.5;
+					}
+					tex_x = (int)fabs(floor(u));
+					tex_y = (int)fabs(floor(v));
+					if (!hit->world->txtr_dt->ptr)
+						return ;
+					color = *(unsigned int *)(hit->world->txtr_dt->img_data
+							+ ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x
+									* 4)));
+					r = (color >> 16) & 0xFF;
+					g = (color >> 8) & 0xFF;
+					b = color & 0xFF;
+					col = (t_vctr){(double)r, (double)g, (double)b};
+					hit->mtrl->color = col;
+					final_color = vec3_add(final_color, ft_check_elemts(ray,
+								hit, world, scene));
+				}
+				if (hit->type == 2)
+				{
+					cy = (t_cylinder *)hit->world->ptr;
+					u = 0.5 + atan2(hit->point.x - cy->c_cntr->x, hit->point.z
+							- cy->c_cntr->z) / (2.0 * M_PI);
+					v = (hit->point.y - cy->c_cntr->y) / cy->height;
+					u = fmod(u, 1.0);
+					if (u < 0)
+						u += 1.0;
+					v = fmax(0.0, fmin(1.0, v));
+					tex_x = (int)(u * hit->world->txtr_dt->width);
+					tex_y = (int)(v * hit->world->txtr_dt->height);
+					if (!hit->world->txtr_dt->ptr)
+						return ;
+					color = *(unsigned int *)(hit->world->txtr_dt->img_data
+							+ ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x
+									* 4)));
+					r = (color >> 16) & 0xFF;
+					g = (color >> 8) & 0xFF;
+					b = color & 0xFF;
+					col = (t_vctr){(double)r, (double)g, (double)b};
+					hit->mtrl->color = col;
+					final_color = vec3_add(final_color, ft_check_elemts(ray,
+								hit, world, scene));
+					count += 1.0;
+				}
+				if (hit->type == 5)
+				{
+					cn = (t_cone *)hit->world->ptr;
+					u = 0.5 + atan2(hit->point.z - cn->vertex->z, hit->point.x
+							- cn->vertex->x) / (2.0 * M_PI);
+					v = 1.0 - (hit->point.y - cn->minm) / (cn->maxm - cn->minm);
+					u = fmod(u, 1.0);
+					if (u < 0)
+						u += 1.0;
+					v = fmax(0.0, fmin(1.0, v));
+					tex_x = (int)floor(u * hit->world->txtr_dt->width);
+					tex_y = (int)floor(v * hit->world->txtr_dt->height);
+					tex_x = (int)fmax(0, tex_x);
+					tex_y = (int)fmax(0, tex_y);
+					if (!hit->world->txtr_dt->ptr)
+						return ;
+					color = *(unsigned int *)(hit->world->txtr_dt->img_data
+							+ ((tex_y * hit->world->txtr_dt->width * 4) + (tex_x
+									* 4)));
+					r = (color >> 16) & 0xFF;
+					g = (color >> 8) & 0xFF;
+					b = color & 0xFF;
+					col = (t_vctr){(double)r, (double)g, (double)b};
+					hit->mtrl->color = col;
 					final_color = vec3_add(final_color, ft_check_elemts(ray,
 								hit, world, scene));
 					count += 1.0;
 				}
 			}
+			else
+			{
+				final_color = vec3_add(final_color, ft_check_elemts(ray, hit,
+							world, scene));
+				count += 1.0;
+			}
+		}
 		free(ray->direction), free(ray), ft_free_cam(scene->cam);
 		if (hit)
 			free(hit->mtrl), free(hit);

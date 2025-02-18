@@ -13,8 +13,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# define HEIGHT 800
-# define WIDTH 800
+# define HEIGHT 1200
+# define WIDTH 1200
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100

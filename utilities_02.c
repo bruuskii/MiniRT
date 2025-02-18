@@ -64,63 +64,79 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 	return (final_color);
 }
 
+void	ft_innit_hit_sp(t_ray *ray, t_world *tp, t_hit **hit)
+{
+	t_sp		*sp;
+
+	sp = (t_sp *)tp->ptr;
+	*hit = intersect_sphere(ray, sp);
+	if (*hit)
+	{
+		(*hit)->type = SPHERE;
+		(*hit)->world = tp;
+		if ((*hit)->world->fl)
+			(*hit)->fl = 1;
+	}
+}
+
+void	ft_innit_hit_pl(t_ray *ray, t_world *tp, t_hit **hit)
+{
+	t_plane		*plane;
+
+	plane = (t_plane *)tp->ptr;
+	*hit = intersect_plane(ray, plane);
+	if (*hit)
+	{
+		(*hit)->type = PLANE;
+		(*hit)->world = tp;
+		if ((*hit)->world->fl)
+			(*hit)->fl = 1;
+	}
+}
+
+void	ft_innit_hit_cy(t_ray *ray, t_world *tp, t_hit **hit)
+{
+	t_cylinder	*cy;
+
+	cy = (t_cylinder *)tp->ptr;
+	*hit = intersect_cylinder(ray, cy);
+	if (*hit)
+	{
+		(*hit)->type = CYLINDRE;
+		(*hit)->world = tp;
+		if ((*hit)->world->fl)
+			(*hit)->fl = 1;
+	}
+}
+
+void	ft_innit_hit_cn(t_ray *ray, t_world *tp, t_hit **hit)
+{
+	t_cone		*cn;
+
+	cn = (t_cone *)tp->ptr;
+	*hit = intersect_cone(ray, cn);
+	if (*hit)
+	{
+		(*hit)->type = CONE;
+		(*hit)->world = tp;
+		if ((*hit)->world->fl)
+			(*hit)->fl = 1;
+	}
+}
+
 t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 {
 	t_hit		*hit;
-	t_sp		*sp;
-	t_plane		*plane;
-	t_cylinder	*cy;
-	t_cone		*cn;
-
+	
 	hit = NULL;
 	if (tp->type == 0)
-	{
-		sp = (t_sp *)tp->ptr;
-		hit = intersect_sphere(ray, sp);
-		if (hit)
-		{
-			hit->type = SPHERE;
-			hit->world = tp;
-			if (hit->world->fl)
-				hit->fl = 1;
-		}
-	}
+		ft_innit_hit_sp(ray, tp, &hit);
 	else if (tp->type == 1)
-	{
-		plane = (t_plane *)tp->ptr;
-		hit = intersect_plane(ray, plane);
-		if (hit)
-		{
-			hit->type = PLANE;
-			hit->world = tp;
-			if (hit->world->fl)
-				hit->fl = 1;
-		}
-	}
+		ft_innit_hit_pl(ray, tp, &hit);
 	else if (tp->type == 2)
-	{
-		cy = (t_cylinder *)tp->ptr;
-		hit = intersect_cylinder(ray, cy);
-		if (hit)
-		{
-			hit->type = CYLINDRE;
-			hit->world = tp;
-			if (hit->world->fl)
-				hit->fl = 1;
-		}
-	}
+		ft_innit_hit_cy(ray, tp, &hit);
 	else if (tp->type == 5)
-	{
-		cn = (t_cone *)tp->ptr;
-		hit = intersect_cone(ray, cn);
-		if (hit)
-		{
-			hit->type = CONE;
-			hit->world = tp;
-			if (hit->world->fl)
-				hit->fl = 1;
-		}
-	}
+		ft_innit_hit_cn(ray, tp, &hit);
 	return (hit);
 }
 
@@ -153,36 +169,35 @@ void	ft_get_hit_color(t_world *world, t_hit *hit)
 	}
 }
 
-t_hit	*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene)
+void	ft_free_hit_elems(t_hit *hit)
+{
+	free(hit->mtrl);
+	free(hit);
+}
+
+t_hit	*ft_get_hit(t_ray *ray, t_world *world)
 {
 	t_hit	*hit;
 	t_hit	*c_hit;
 	t_world	*tp;
 
+	hit = NULL;
 	c_hit = NULL;
 	tp = world;
-	hit = NULL;
 	while (tp)
 	{
 		hit = ft_innit_hit(ray, tp);
 		if (hit && hit->hit)
 		{
-			hit->mtrl->ambient = scene->alight->ratio;
 			ft_get_hit_color(tp, hit);
 			if (!c_hit || hit->t < c_hit->t)
 			{
 				if (c_hit)
-				{
-					free(c_hit->mtrl);
-					free(c_hit);
-				}
+					ft_free_hit_elems(c_hit);
 				c_hit = hit;
 			}
 			else
-			{
-				free(hit->mtrl);
-				free(hit);
-			}
+				ft_free_hit_elems(hit);
 		}
 		tp = tp->next;
 	}

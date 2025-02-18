@@ -140,7 +140,7 @@ void		ft_assign_plane_mtrl(t_material *mtrl, t_plane **pl);
 void		ft_assign_cylinder_mtrl(t_material *mtrl, t_cylinder **cy);
 void		ft_assign_cone_mtrl(t_material *mtrl, t_cone **cn);
 void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
-t_hit		*ft_get_hit(t_ray *ray, t_world *world, t_scene *scene);
+t_hit		*ft_get_hit(t_ray *ray, t_world *world);
 void		fill_dhiya(t_helpers h);
 t_vctr		calculate_chess_pattern(t_hit hit);
 #endif

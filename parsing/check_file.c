@@ -46,7 +46,7 @@ int	ft_check_txtr_extention(char *s)
 	}
 	else if (ft_strcmp(chck, ".xpm"))
 	{
-		ft_print_and_exit("Wrong texture extention !",1);
+		ft_print_and_exit("Wrong texture extention !", 1);
 		return (1);
 	}
 	return (0);
