@@ -50,6 +50,8 @@ void	ft_assign_flag_plane(int n, char **tmp, t_plane *node, int fl)
 	{
 		node->texture = 1;
 		node->txtr_ref = ft_strdup(tmp[5]);
+		if (ft_check_txtr_extention(node->txtr_ref))
+			return ;
 	}
 }
 
@@ -106,6 +108,8 @@ void	ft_assign_flag_cy(int n, char **tmp, t_cylinder *node, int fl)
 	{
 		node->texture = 1;
 		node->txtr_ref = ft_strdup(tmp[7]);
+		if (ft_check_txtr_extention(node->txtr_ref))
+			exit (1);
 	}
 }
 

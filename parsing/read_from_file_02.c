@@ -28,12 +28,15 @@ void	ft_assign_flag_cn(int n, char **tmp, t_cone *node, int fl)
 	{
 		if (!ft_strcmp(tmp[7], "C"))
 			ft_print_and_exit("Insufficient Parameters", 1);
+		else
+			ft_print_and_exit("Wrong flag", 1);
 	}
 	else if (n == 9 && fl)
 	{
 		node->texture = 1;
 		node->txtr_ref = ft_strdup(tmp[8]);
-		printf("%s\n", node->txtr_ref);
+		if (ft_check_txtr_extention(node->txtr_ref))
+			return ;
 	}
 }
 
@@ -90,6 +93,8 @@ void	ft_assign_flag_sphere(int n, char **tmp, t_sp *node, int fl)
 	{
 		node->texture = 1;
 		node->txtr_ref = ft_strdup(tmp[5]);
+		if (ft_check_txtr_extention(node->txtr_ref))
+			return ;
 	}
 }
 

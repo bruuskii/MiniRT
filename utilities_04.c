@@ -130,9 +130,13 @@ void	ft_assign_ptrs(t_scene *scene, t_world *world)
 		{
 			tp->txtr_dt->ptr = mlx_xpm_file_to_image(scene->data->ptr,
 					tp->txtr_ref, &tp->txtr_dt->width, &tp->txtr_dt->height);
+			if (!tp->txtr_dt->ptr)
+				ft_print_and_exit("texture ptr failed", 1);
 			tp->txtr_dt->img_data = mlx_get_data_addr(tp->txtr_dt->ptr,
 					&tp->txtr_dt->bpp, &tp->txtr_dt->size_line,
 					&tp->txtr_dt->endian);
+			if (!tp->txtr_dt->img_data)
+				ft_print_and_exit("texture image failed", 1);
 		}
 		tp = tp->next;
 	}

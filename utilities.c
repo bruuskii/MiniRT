@@ -162,10 +162,30 @@ void	render_scene_rows(t_scene *scene, char *img_data, int y, t_world *world)
 					}
 					if (hit->type == 1)
 					{
-						u = hit->world->txtr_dt->width / 2.0 + (hit->point.x
-								* hit->world->txtr_dt->width / M_W * 0.5);
-						v = hit->world->txtr_dt->height / 2.0 - hit->point.y
-							* hit->world->txtr_dt->height / M_H * 0.5;
+						t_plane *pl;
+
+						pl = (t_plane *)hit->world->ptr;
+						if (pl->normal->z)
+						{
+							u = hit->world->txtr_dt->width / 2.0 + (hit->point.x
+									* hit->world->txtr_dt->width / M_W * 0.5);
+							v = hit->world->txtr_dt->height / 2.0 - hit->point.y
+								* hit->world->txtr_dt->height / M_H * 0.5;
+						}
+						if (pl->normal->x)
+						{
+							u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
+									* hit->world->txtr_dt->width / M_W * 0.5);
+							v = hit->world->txtr_dt->height / 2.0 - hit->point.y
+								* hit->world->txtr_dt->height / M_H * 0.5;
+						}
+						if (pl->normal->y)
+						{
+							u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
+									* hit->world->txtr_dt->width / M_W * 0.5);
+							v = hit->world->txtr_dt->height / 2.0 - hit->point.x
+								* hit->world->txtr_dt->height / M_H * 0.5;
+						}
 						tex_x = (int)fabs(floor(u));
 						tex_y = (int)fabs(floor(v));
 						if (!hit->world->txtr_dt->ptr)

@@ -20,9 +20,35 @@ int	ft_check_extention(char *s)
 		return (1);
 	chck = ft_strchr(s, '.');
 	if (!chck)
-		return (printf("%sFile with no extention !\n", ERROR_MESSAGE), 1);
+	{
+		ft_print_and_exit("File with no extention !", 1);
+		return (1);
+	}
 	else if (ft_strcmp(chck, ".rt"))
-		return (printf("%sWrong file extention !\n", ERROR_MESSAGE), 1);
+	{
+		ft_print_and_exit("Wrong file extention !", 1);
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_check_txtr_extention(char *s)
+{
+	char	*chck;
+
+	if (!s)
+		return (1);
+	chck = ft_strchr(s, '.');
+	if (!chck)
+	{
+		ft_print_and_exit("Texture with no extention !", 1);
+		return (1);
+	}
+	else if (ft_strcmp(chck, ".xpm"))
+	{
+		ft_print_and_exit("Wrong texture extention !",1);
+		return (1);
+	}
 	return (0);
 }
 
