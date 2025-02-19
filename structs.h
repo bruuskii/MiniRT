@@ -59,6 +59,14 @@ typedef struct s_material
 	double				shininess;
 }						t_material;
 
+typedef struct s_txtr
+{
+	double	u;
+	double	v;
+	int		tex_x;
+	int		tex_y;
+}				t_txtr;
+
 typedef struct s_light
 {
 	t_vctr				*dir;
