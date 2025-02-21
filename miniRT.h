@@ -141,6 +141,6 @@ void		ft_assign_cylinder_mtrl(t_material *mtrl, t_cylinder **cy);
 void		ft_assign_cone_mtrl(t_material *mtrl, t_cone **cn);
 void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
 t_hit		*ft_get_hit(t_ray *ray, t_world *world);
-void		fill_dhiya(t_helpers h);
+void		fill_color(t_helpers h);
 t_vctr		calculate_chess_pattern(t_hit hit);
 #endif

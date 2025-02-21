@@ -76,7 +76,7 @@ void	ft_viewport_vectors(t_cam *cam)
 
 	tmp = vec3_normalize(*cam->dir);
 	if (fabs(tmp.x) > 0.99)
-		up = (t_vctr){1, 0, 1};
+		up = (t_vctr){0, 0, 1};
 	else
 		up = (t_vctr){0, 1, 0};
 	right = vec3_normalize(vec3_cross(tmp, up));

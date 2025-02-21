@@ -13,8 +13,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# define HEIGHT 1200
-# define WIDTH 1200
+# define HEIGHT 1080
+# define WIDTH 1080
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100
@@ -58,14 +58,6 @@ typedef struct s_material
 	double				specular;
 	double				shininess;
 }						t_material;
-
-typedef struct s_txtr
-{
-	double	u;
-	double	v;
-	int		tex_x;
-	int		tex_y;
-}				t_txtr;
 
 typedef struct s_light
 {
@@ -241,26 +233,11 @@ typedef struct s_helpers
 {
 	double				u;
 	double				v;
-	int					square_u;
-	int					square_v;
-	int					square_x;
-	int					square_y;
-	double				angle;
-	double				height;
-	int					square_angle;
-	int					square_height;
-	double				radius;
-	t_vctr				pattern_color;
-	t_vctr				white;
-	t_vctr				black;
-	t_vctr				ambient;
-	t_vctr				shadowed;
-	t_hit				*lol;
-	t_hit				hit_point;
+	int					tex_x;
+	int					tex_y;
 	t_ray				raysh;
+	t_vctr				tmp;
 	t_vctr				normal;
-	t_hit				hit;
-	int					in_shadow;
 	t_vctr				color;
 }						t_helpers;
 #endif

@@ -89,20 +89,19 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	t_ray		raysh;
 	t_vctr		light_dir;
 	t_vctr		*tm0;
-	t_vctr		ori;
 
 	tm0 = vec_sub(*view->light->dir, hit.point);
 	light_dir = vec3_normalize(*tm0);
 	free(tm0);
 	raysh.direction = &light_dir;
-	ori = vec3_add(hit.point, hit.normal);
-	raysh.origin = &ori;
+	h.tmp = vec3_add(hit.point, hit.normal);
+	raysh.origin = &h.tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, raysh);
 	if (in_shadow)
 		h.color = calculate_ambient_lighting(scene, material, h.color,
 				in_shadow);
 	else
-		fill_dhiya(h);
+		fill_color(h);
 	return (h.color);
 }

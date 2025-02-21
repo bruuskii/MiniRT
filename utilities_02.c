@@ -66,7 +66,7 @@ t_vctr	ft_final_color(t_ray *ray, t_hit *hit, t_scene *scene, t_material *mtrl)
 
 void	ft_innit_hit_sp(t_ray *ray, t_world *tp, t_hit **hit)
 {
-	t_sp		*sp;
+	t_sp	*sp;
 
 	sp = (t_sp *)tp->ptr;
 	*hit = intersect_sphere(ray, sp);
@@ -81,7 +81,7 @@ void	ft_innit_hit_sp(t_ray *ray, t_world *tp, t_hit **hit)
 
 void	ft_innit_hit_pl(t_ray *ray, t_world *tp, t_hit **hit)
 {
-	t_plane		*plane;
+	t_plane	*plane;
 
 	plane = (t_plane *)tp->ptr;
 	*hit = intersect_plane(ray, plane);
@@ -111,7 +111,7 @@ void	ft_innit_hit_cy(t_ray *ray, t_world *tp, t_hit **hit)
 
 void	ft_innit_hit_cn(t_ray *ray, t_world *tp, t_hit **hit)
 {
-	t_cone		*cn;
+	t_cone	*cn;
 
 	cn = (t_cone *)tp->ptr;
 	*hit = intersect_cone(ray, cn);
@@ -126,8 +126,8 @@ void	ft_innit_hit_cn(t_ray *ray, t_world *tp, t_hit **hit)
 
 t_hit	*ft_innit_hit(t_ray *ray, t_world *tp)
 {
-	t_hit		*hit;
-	
+	t_hit	*hit;
+
 	hit = NULL;
 	if (tp->type == 0)
 		ft_innit_hit_sp(ray, tp, &hit);

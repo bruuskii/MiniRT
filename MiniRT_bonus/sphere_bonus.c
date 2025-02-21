@@ -58,7 +58,7 @@ void	ft_checker_plane(t_hit *hit, t_vctr original_normal)
 // 	return ((t_vctr){0,0,0});
 // }
 
-void	fill_dhiya(t_helpers h)
+void	fill_color(t_helpers h)
 {
 	h.color.x = fmin(fmax(h.color.x, 0.0), 255.0);
 	h.color.y = fmin(fmax(h.color.y, 0.0), 255.0);
