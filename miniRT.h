@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:46:17 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void		ft_scene_cylinder(t_scene *scene, t_win *data, void *ptr);
 void		ft_scene_plane(t_scene *scene, void *ptr, t_win *data);
 void		ft_scene_sphere(t_scene *scene, void *ptr, t_win *data);
 int			create_trgb(int t, int r, int g, int b);
-t_vctr		amb_color(t_vctr ambiant, t_material *mtrl);
 void		ft_display_scene(t_scene *scene, t_win *data);
 void		put_pixel_to_image(char *img_data, int x, int y, int color);
 double		dgrs_to_rdn(double angle);
@@ -143,4 +142,30 @@ void		ft_assign_sphere_mtrl(t_material *mtrl, t_sp **sp);
 t_hit		*ft_get_hit(t_ray *ray, t_world *world);
 void		fill_color(t_helpers h);
 t_vctr		calculate_chess_pattern(t_hit hit);
+t_hit	*ft_innit_hit(t_ray *ray, t_world *tp);
+void	ft_free_hit_elems(t_hit *hit);
+void	ft_free_scene_utils(t_scene *scene, t_hit *hit, t_ray *ray);
+void	ft_get_hit_color(t_world *world, t_hit *hit);
+t_hit	*ft_get_hit(t_ray *ray, t_world *world);
+void	ft_innit_hit_sp(t_ray *ray, t_world *tp, t_hit **hit);
+void	ft_innit_hit_pl(t_ray *ray, t_world *tp, t_hit **hit);
+void	ft_innit_hit_cy(t_ray *ray, t_world *tp, t_hit **hit);
+void	ft_innit_hit_cn(t_ray *ray, t_world *tp, t_hit **hit);
+// bonus
+void		ft_render_sphere_bonus(t_hit *hit);
+void		ft_render_plane_bonus_utils(t_hit *hit, t_plane *pl, t_helpers *h);
+void		ft_render_plane_bonus(t_hit *hit);
+void		ft_render_cylinder_bonus(t_hit *hit);
+void		ft_render_cone_bonus(t_hit *hit);
+t_vctr		rgb_to_color(unsigned int color);
+void		ft_assign_txtr_sp(t_world *tp);
+void		ft_assign_txtr_pl(t_world *tp);
+void		ft_assign_txtr_cy(t_world *tp);
+void		ft_assign_txtr_cn(t_world *tp);
+void		ft_assign_txtrs(t_world **world);
+void		ft_assign_fl_sp(t_world *tp);
+void		ft_assign_fl_pl(t_world *tp);
+void		ft_assign_fl_cy(t_world *tp);
+void		ft_assign_fl_cn(t_world *tp);
+void		ft_assign_fl(t_world *world);
 #endif

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/07 21:45:16 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:16:54 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ double		ft_distance_cylinder(t_hit *hit, t_cylinder *cy);
 t_hit		*intersect_cylinder(t_ray *ray, t_cylinder *cy);
 double		ft_calculate_k(double tang);
 double		ft_calculate_discriminant(t_cone_data *data);
-int			ft_solve_quadratic(double a, double b, double discriminant,
-				double *t);
-int			ft_validate_and_solve(t_cone_data *data, double *t);
 int			ft_check_intersection_constraints(t_vctr intersection, t_cone *cone,
 				t_vctr v, t_hit *hit);
 t_hit		*intersect_cone(t_ray *ray, t_cone *cone);
@@ -90,16 +87,26 @@ t_vctr		*new_vec(double x, double y, double z);
 t_vctr		*vec_add(t_vctr v1, t_vctr v2);
 t_vctr		*vec_sub(t_vctr v1, t_vctr v2);
 t_vctr		*vec_scale(t_vctr v, double d);
-
+int			ft_validate_and_solve(t_cone_data *data, double *t, t_cone *cn,
+				t_ray *ray);
+int			ft_solve_quadratic(t_cone_data *data, double *t, t_cone *cn,
+				t_ray *ray);
+int			ft_valid_cone_inter(t_cone *cn, t_ray *ray, double t1, double t2);
 void		ft_innit_viewports(t_cam *cam);
-
 void		ft_viewport_vectors(t_cam *cam);
 void		ft_delta_pixels(t_cam *cam);
 void		ft_viewport_upper_left(t_cam *cam);
-
 void		ft_pixel_offset(t_cam *cam);
-
 void		ft_innit_cam(t_cam *cam);
 void		ft_free_cam(t_cam *cam);
 t_ray		*create_ray(t_cam *cam, double x, double y);
+void		ft_innit_viewports(t_cam *cam);
+void		ft_viewport_vectors(t_cam *cam);
+void		ft_delta_pixels(t_cam *cam);
+void		ft_viewport_upper_left(t_cam *cam);
+void		ft_pixel_offset(t_cam *cam);
+t_vctr		*new_vec(double x, double y, double z);
+t_vctr		*vec_add(t_vctr v1, t_vctr v2);
+t_vctr		*vec_sub(t_vctr v1, t_vctr v2);
+t_vctr		*vec_scale(t_vctr v, double d);
 #endif

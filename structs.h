@@ -13,8 +13,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# define HEIGHT 1080
-# define WIDTH 1080
+# define HEIGHT 800
+# define WIDTH 800
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100
@@ -191,6 +191,7 @@ typedef struct s_cone
 	double				tang;
 	double				minm;
 	double				maxm;
+	double				height;
 	int					texture;
 	char				*txtr_ref;
 	t_material			*mtrl;

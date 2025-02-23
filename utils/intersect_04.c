@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:12:01 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/06 07:28:11 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/23 10:48:31 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,36 +22,61 @@ double	ft_calculate_discriminant(t_cone_data *data)
 	return (data->discriminant);
 }
 
-int	ft_solve_quadratic(double a, double b, double discriminant, double *t)
+int	ft_valid_cone_inter(t_cone *cn, t_ray *ray, double t1, double t2)
+{
+	t_vctr	hitpoint_1;
+	t_vctr	tmp;
+	t_vctr	hitpoint_2;
+	double	height_1;
+	double	height_2;
+
+	cn->height = cn->maxm - cn->minm;
+	tmp = vec3_create(cn->vertex->x - cn->height, cn->vertex->y - cn->height,
+			cn->vertex->z - cn->height);
+	hitpoint_1 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t1));
+	hitpoint_2 = vec3_add(*ray->origin, vec3_scale(*ray->direction, t2));
+	height_1 = vec3_dot(vec3_sub(hitpoint_1, tmp), *cn->axis);
+	height_2 = vec3_dot(vec3_sub(hitpoint_2, tmp), *cn->axis);
+	if ((t1 > 1e-6 && height_1 >= 0 && height_1 <= cn->height) && (t2 > 1e-6
+			&& height_2 >= 0 && height_2 <= cn->height))
+		return (2);
+	else if (t1 > 1e-6 && height_1 >= 0 && height_1 <= cn->height)
+		return (3);
+	else if (t2 > 1e-6 && height_2 >= 0 && height_2 <= cn->height)
+		return (4);
+	else
+		return (1);
+	return (0);
+}
+
+int	ft_solve_quadratic(t_cone_data *data, double *t, t_cone *cn, t_ray *ray)
 {
 	double	t0;
 	double	t1;
+	int		res;
 
-	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
-	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
-	if (t0 > 1e-6 && t1 > 1e-6)
+	t0 = (-data->b - sqrt(data->discriminant)) / (2.0 * data->a);
+	t1 = (-data->b + sqrt(data->discriminant)) / (2.0 * data->a);
+	res = ft_valid_cone_inter(cn, ray, t0, t1);
+	if (res == 2)
 	{
-		*t = fmin(t0, t1);
-		return (0);
+		if (t0 < t1)
+			*t = t0;
+		else
+			*t = t1;
 	}
-	else if (t0 > 1e-6)
-	{
+	else if (res == 3)
 		*t = t0;
-		return (0);
-	}
-	else if (t1 > 1e-6)
-	{
+	else if (res == 4)
 		*t = t1;
-		return (0);
-	}
-	return (1);
+	return (res);
 }
 
-int	ft_validate_and_solve(t_cone_data *data, double *t)
+int	ft_validate_and_solve(t_cone_data *data, double *t, t_cone *cn, t_ray *ray)
 {
 	if (data->discriminant < 0)
 		return (1);
-	return (ft_solve_quadratic(data->a, data->b, data->discriminant, t));
+	return (ft_solve_quadratic(data, t, cn, ray));
 }
 
 int	ft_check_intersection_constraints(t_vctr intersection, t_cone *cone,
@@ -68,31 +93,4 @@ int	ft_check_intersection_constraints(t_vctr intersection, t_cone *cone,
 	normal = vec3_sub(hit_to_vertex, vec3_scale(v, m));
 	hit->normal = vec3_normalize(normal);
 	return (0);
-}
-
-t_hit	*intersect_cone(t_ray *ray, t_cone *cone)
-{
-	t_hit		*hit;
-	t_cone_data	data;
-	double		t;
-	t_vctr		intersection;
-
-	if (!ray || !cone)
-		return (NULL);
-	hit = ft_hit();
-	if (!hit)
-		return (NULL);
-	ft_initialize_cone_data(ray, cone, &data);
-	ft_calculate_quadratic_coeffs(vec3_normalize(*ray->direction), &data);
-	ft_calculate_discriminant(&data);
-	if (ft_validate_and_solve(&data, &t))
-		return (free(hit->mtrl), free(hit), NULL);
-	intersection = vec3_add(*ray->origin,
-			vec3_scale(vec3_normalize(*ray->direction), t));
-	if (ft_check_intersection_constraints(intersection, cone, data.v, hit))
-		return (free(hit->mtrl), free(hit), NULL);
-	hit->t = t;
-	hit->hit = 1;
-	hit->point = intersection;
-	return (hit);
 }

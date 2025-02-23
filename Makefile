@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/02/06 22:30:52 by kbassim          ###   ########.fr        #
+#    Updated: 2025/02/23 11:47:26 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ CFILES = libft/libft.c\
 		parsing/read_from_file_02.c\
 		parsing/read_from_file_03.c\
 		parsing/read_from_file_04.c\
+		parsing/read_from_file_05.c\
+		parsing/read_from_file_06.c\
 		parsing/assign_vals_01.c\
 		parsing/assign_vals.c\
 		parsing/assign_vals_utils.c\
@@ -53,10 +55,13 @@ CFILES = libft/libft.c\
 		utils/intersect_03.c\
 		utils/intersect_04.c\
 		utils/intersect_05.c\
+		utils/intersect_06.c\
 		utils/reflection.c\
 		utils/lighting_00.c\
 		utils/lighting_01.c\
 		utils/ray.c\
+		utils/ray_utils.c\
+		utils/ray_utils_01.c\
 		utilities.c\
 		utilities_01.c\
 		utilities_02.c\
@@ -65,6 +70,10 @@ CFILES = libft/libft.c\
 		utils/vectors_00.c\
 		utils/vectors_01.c\
 		MiniRT_bonus/sphere_bonus.c\
+		utilities_bonus_00.c\
+		utilities_bonus_01.c\
+		utilities_bonus_02.c\
+		closest_hit.c\
 		
 CBFILES = MiniRT_bonus/main.c\
 		
