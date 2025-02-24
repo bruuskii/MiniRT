@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:19:41 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 23:20:05 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:51:24 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_scene	*ft_scene(char **lst, int fl)
 		return (NULL);
 	scene->cam = ft_cam(lst);
 	ft_assign_world_to_scene(&scene->world, lst, fl);
-	scene->light = ft_light(lst);
+	scene->light = ft_light(lst, fl);
 	scene->alight = ft_alight(lst);
 	ft_lstfree(lst);
 	return (scene);

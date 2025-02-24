@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:02:43 by kbassim           #+#    #+#             */
-/*   Updated: 2024/12/28 19:59:35 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:46:57 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ void	ft_assign_camera(t_cam *cam, char **tmp)
 	}
 }
 
-void	ft_assign_light(t_light *lt, char **lst)
+void	ft_assign_light(t_light *lt, char **lst, int fl)
 {
 	int	i;
 
 	i = 0;
 	while (lst[i])
 	{
-		ft_assign_light_utils(&lt, lst, i);
+		ft_assign_light_utils(&lt, lst, i, fl);
 		i++;
 	}
 }

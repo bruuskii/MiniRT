@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:01:32 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/27 23:22:52 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:51:02 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		ft_assign_cam_utils_dir(t_cam **cam, char *lst);
 void		ft_assign_cam_utils(t_cam **cam, char **lst, int i);
 void		ft_assign_light_dir(t_light **lt, char *s);
 void		ft_assign_light_color(t_light **lt, char *s);
-void		ft_assign_light_utils(t_light **lt, char **lst, int i);
+void		ft_assign_light_utils(t_light **lt, char **lst, int i, int fl);
 void		ft_assign_alight_color(t_alight **lt, char *s);
 void		ft_assign_alight_utils(t_alight **lt, char **lst, int i);
 void		ft_assign_cn_vertex(t_cone **cn, char *s);
@@ -46,7 +46,7 @@ void		ft_assign_plane(t_plane *pl, char **lst);
 void		ft_assign_cy(t_cylinder *cy, char **lst);
 void		ft_assign_sp(t_sp *sp, char **lst);
 void		ft_assign_camera(t_cam *cam, char **tmp);
-void		ft_assign_light(t_light *lt, char **lst);
+void		ft_assign_light(t_light *lt, char **lst, int fl);
 int			ft_check_extention(char *s);
 int			ft_check_args(int ac);
 int			ft_check_first_param(char *s);
@@ -66,8 +66,8 @@ void		ft_assign_cy_ptr(char **tmp, t_cylinder **lt, int fl);
 t_cylinder	*ft_obj_cy(char **lst, int fl);
 void		ft_process_cam(char *entry, t_cam **ptr, int *c);
 t_cam		*ft_cam(char **lst);
-void		ft_process_light(char *entry, t_light **lt, int *c);
-t_light		*ft_light(char **lst);
+void		ft_process_light(char *entry, t_light **lt, int *, int fl);
+t_light		*ft_light(char **lst, int fl);
 void		ft_alight_ptr(int *c, char **tmp, t_alight **node);
 t_alight	*ft_alight(char **lst);
 t_scene		*ft_scene(char **lst, int fl);

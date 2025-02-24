@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/22 22:27:58 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:54:08 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,29 +62,31 @@ t_cam	*ft_cam(char **lst)
 	return (ptr);
 }
 
-void	ft_process_light(char *entry, t_light **lt, int *c)
+void	ft_process_light(char *s, t_light **lt, int *c, int fl)
 {
 	char	**tmp;
 	t_light	*node;
+	int		count;
 
-	tmp = ft_fullsplit(entry);
+	tmp = ft_fullsplit(s);
 	if (!tmp)
 		ft_print_and_exit("Split failed", 1);
+	count = ft_lst_count(tmp);
 	if (!ft_check_first_param(tmp[0]))
 		ft_print_and_exit("Undefined object", 1);
 	if (!ft_strcmp(tmp[0], "L"))
 	{
-		if (ft_lst_count(tmp) != 4)
+		if ((count != 4 && fl) || (!fl && (count < 3 || count > 4)))
 			ft_print_and_exit("Light has wrong number of elements", 1);
 		node = ft_new_lt();
-		ft_assign_light(node, tmp + 1);
+		ft_assign_light(node, tmp + 1, fl);
 		ft_add_back_lt(lt, node);
 		(*c)++;
 	}
 	ft_lstfree(tmp);
 }
 
-t_light	*ft_light(char **lst)
+t_light	*ft_light(char **lst, int fl)
 {
 	int		i;
 	t_light	*lt;
@@ -97,7 +99,7 @@ t_light	*ft_light(char **lst)
 	lt = NULL;
 	while (lst[i])
 	{
-		ft_process_light(lst[i], &lt, &c);
+		ft_process_light(lst[i], &lt, &c, fl);
 		i++;
 	}
 	if (c == 0)

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:46:17 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:50:52 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,6 @@ t_cam		*ft_cam(char **lst);
 t_sp		*ft_obj(char **lst, int fl);
 t_scene		*ft_scene(char **lst, int fl);
 t_scene		*data_input(char *s, int fl);
-void		ft_assign_light_utils(t_light **lt, char **lst, int i);
-void		ft_assign_light(t_light *lt, char **lst);
-t_light		*ft_light(char **lst);
 void		ft_add_back_lt(t_light **objs, t_light *node);
 t_light		*ft_new_lt(void);
 t_alight	*ft_a_light(void);

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:32:58 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/22 22:37:34 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:48:23 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ void	ft_assign_light_color(t_light **lt, char *s)
 	ft_lstfree(tmp);
 }
 
-void	ft_assign_light_utils(t_light **lt, char **lst, int i)
+void	ft_assign_light_utils(t_light **lt, char **lst, int i, int fl)
 {
+	int	c;
+
+	c = ft_lst_count(lst);
 	if (i == 0)
 		ft_assign_light_dir(lt, lst[i]);
 	else if (i == 1)
@@ -81,6 +84,13 @@ void	ft_assign_light_utils(t_light **lt, char **lst, int i)
 		if (is_valid_str(lst[i]))
 			ft_print_and_exit("Light brightness has non numerical", 1);
 		(*lt)->brightness = ft_atodbl(lst[i]);
+	}
+	if ((i == 1 && c == 2) ||(i == 2 && !fl))
+	{
+		(*lt)->color = malloc(sizeof(t_vctr));
+		(*lt)->color->x = 255.0;
+		(*lt)->color->y = 255.0;
+		(*lt)->color->z = 255.0;
 	}
 	else if (i == 2)
 		ft_assign_light_color(lt, lst[i]);
