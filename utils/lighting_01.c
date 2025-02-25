@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/24 12:40:33 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:25:00 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shaddow(scene, raysh);
 	if (in_shadow)
-		h.color = vec3_sub(material->color, vec3_scale(material->color, 0.8));
+		h.color = vec3_sub(material->color, vec3_scale(material->color, .85));
 	else
 		fill_color(h);
 	return (h.color);

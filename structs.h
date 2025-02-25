@@ -6,15 +6,15 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/06 07:36:49 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:26:18 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# define HEIGHT 800
-# define WIDTH 800
+# define HEIGHT 1080
+# define WIDTH 1080
 # define ERROR_MESSAGE "Error\n"
 # define M_W 100
 # define M_H 100
