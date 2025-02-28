@@ -12,6 +12,13 @@
 
 #include "../miniRT.h"
 
+void	fill_color(t_helpers h)
+{
+	h.color.x = fmin(fmax(h.color.x, 0.0), 255.0);
+	h.color.y = fmin(fmax(h.color.y, 0.0), 255.0);
+	h.color.z = fmin(fmax(h.color.z, 0.0), 255.0);
+}
+
 void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 {
 	double	den;
@@ -27,6 +34,7 @@ void	ft_assign_hit_plane(t_hit *hit, t_ray *ray, t_plane *plane, double t)
 	else
 		hit->normal = vec3_scale(*plane->normal, -1);
 }
+
 
 t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
 {
