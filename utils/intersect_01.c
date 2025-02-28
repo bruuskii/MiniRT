@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:05:25 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/06 07:28:38 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:51:08 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,6 @@ t_hit	*intersect_sphere(t_ray *ray, t_sp *sphere)
 	hit->point = vec3_add(*ray->origin,
 			vec3_scale(vec3_normalize(*ray->direction), hit->t));
 	original_normal = vec3_normalize(vec3_sub(hit->point, *sphere->cntr));
-	if (sphere->fl == 1)
-		ft_checker(hit, original_normal);
-	else
-		hit->normal = original_normal;
+	hit->normal = original_normal;
 	return (hit);
 }
