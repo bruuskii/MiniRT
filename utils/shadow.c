@@ -26,8 +26,6 @@ int	ft_hit_world(t_world *world, t_ray raysh)
 		else if (current_wrld->type == CYLINDRE)
 			shadow_hit = intersect_cylinder(&raysh,
 					(t_cylinder *)current_wrld->ptr);
-		else if (current_wrld->type == PLANE)
-			shadow_hit = intersect_plane(&raysh, (t_plane *)current_wrld->ptr);
 		else if (current_wrld->type == CONE)
 			shadow_hit = intersect_cone(&raysh, (t_cone *)current_wrld->ptr);
 		if (shadow_hit && shadow_hit->t)
