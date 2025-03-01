@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:17:29 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:18:06 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/02/28 22:23:03 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	ft_viewport_vectors(t_cam *cam)
 	t_vctr	tmp;
 
 	tmp = vec3_normalize(*cam->dir);
-	if (fabs(tmp.x) > 0.99)
-		up = (t_vctr){0, 0, 1};
-	else
+	// if (fabs(tmp.x) > 0.99)
+	// 	up = (t_vctr){0, 0, 1};
+	// else
 		up = (t_vctr){0, 1, 0};
 	right = vec3_normalize(vec3_cross(tmp, up));
 	up = vec3_normalize(vec3_cross(right, tmp));

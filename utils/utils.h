@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:16:54 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 18:37:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			ft_sphere_param(t_scene *scene, t_ray raysh);
 int			ft_hit_plane(t_scene *scene, t_ray raysh);
 int			ft_hit_cone(t_scene *scene, t_ray raysh);
 int			ft_hit_cy(t_scene *scene, t_ray raysh);
-int			is_in_shaddow(t_scene *scene, t_ray raysh);
+int			is_in_shadow(t_scene *scene, t_ray raysh, int fl);
 t_vctr		calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 				t_material *material);
 t_sp		*ft_new(t_sp *content);

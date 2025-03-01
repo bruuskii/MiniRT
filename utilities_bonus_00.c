@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:28:59 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:34:24 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 14:43:11 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,41 @@ void	ft_render_sphere_bonus(t_hit *hit)
 	hit->mtrl->color = rgb_to_color(color);
 }
 
-void	ft_render_plane_bonus_utils(t_hit *hit, t_plane *pl, t_helpers *h)
+void	assign_u_v(float screen_1, float screen_2, t_hit *hit, t_helpers *h)
 {
-	if (pl->normal->z)
-	{
-		h->u = hit->world->txtr_dt->width / 2.0 + (hit->point.x
-				* hit->world->txtr_dt->width / M_W * 0.5);
-		h->v = hit->world->txtr_dt->height / 2.0 - hit->point.y
-			* hit->world->txtr_dt->height / M_H * 0.5;
-	}
-	if (pl->normal->x)
-	{
-		h->u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
-				* hit->world->txtr_dt->width / M_W * 0.5);
-		h->v = hit->world->txtr_dt->height / 2.0 - hit->point.y
-			* hit->world->txtr_dt->height / M_H * 0.5;
-	}
-	if (pl->normal->y)
-	{
-		h->u = hit->world->txtr_dt->width / 2.0 + (hit->point.z
-				* hit->world->txtr_dt->width / M_W * 0.5);
-		h->v = hit->world->txtr_dt->height / 2.0 - hit->point.x
-			* hit->world->txtr_dt->height / M_H * 0.5;
-	}
+	float scale_x;
+    float scale_y;
+
+	scale_x = hit->world->txtr_dt->width;
+    scale_y = hit->world->txtr_dt->height;
+	h->u = (screen_1 + 1.0) * scale_x / 2.0; 
+	h->v = (1.0 - screen_2) * scale_y / 2.0;
+}
+
+void ft_render_plane_bonus_utils(t_hit *hit, t_plane *pl, t_helpers *h)
+{
+	float screen_x;
+	float screen_y;
+	float screen_z;
+
+    if (pl->normal->z)
+    {
+		screen_x = hit->point.x / (WIDTH / 2.0);
+		screen_y = hit->point.y / (HEIGHT / 2.0);
+		assign_u_v(screen_x, screen_y, hit, h);
+    }
+    else if (pl->normal->x)
+    {
+		screen_z = hit->point.z / (WIDTH / 2.0);
+		screen_y = hit->point.y / (HEIGHT / 2.0);
+		assign_u_v(screen_z, screen_y, hit, h);
+    }
+    else if (pl->normal->y)
+    {
+        screen_z = hit->point.z / (WIDTH / 2.0);
+		screen_x = hit->point.x / (HEIGHT / 2.0);
+		assign_u_v(screen_z, screen_x, hit, h);
+    }
 }
 
 void	ft_render_plane_bonus(t_hit *hit)
@@ -66,12 +78,20 @@ void	ft_render_plane_bonus(t_hit *hit)
 	t_plane			*pl;
 	t_helpers		h;
 
+	if (!hit || !hit->world->txtr_dt->ptr || !hit->world->txtr_dt->img_data)
+		return ;
 	pl = (t_plane *)hit->world->ptr;
 	ft_render_plane_bonus_utils(hit, pl, &h);
-	h.tex_x = (int)fabs(floor(h.u));
-	h.tex_y = (int)fabs(floor(h.v));
-	if (!hit->world->txtr_dt->ptr)
-		return ;
+	h.tex_x = (int)(h.u);
+	h.tex_y = (int)(h.v);
+	if (h.tex_x < 0) 
+		h.tex_x = 0;
+	if (h.tex_x >= hit->world->txtr_dt->width) 
+		h.tex_x = hit->world->txtr_dt->width - 1;
+	if (h.tex_y < 0) 
+		h.tex_y = 0;
+	if (h.tex_y >= hit->world->txtr_dt->height) 
+		h.tex_y = hit->world->txtr_dt->height - 1;
 	color = *(unsigned int *)(hit->world->txtr_dt->img_data + ((h.tex_y
 					* hit->world->txtr_dt->width * 4) + (h.tex_x * 4)));
 	hit->mtrl->color = rgb_to_color(color);

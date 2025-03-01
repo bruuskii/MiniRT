@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:11:55 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/28 15:22:28 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 14:22:51 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_hit	*intersect_plane(t_ray *ray, t_plane *plane)
     D = vec3_normalize(*ray->direction);
     N = vec3_normalize(*plane->normal);
     denom = vec3_dot(D, N);
-    const double EPSILON = 1e-7;
+    const double EPSILON = 1e-5;
     if (fabs(denom) < EPSILON)
         return (free(hit->mtrl), free(hit), NULL);
     ray_to_plane = vec3_sub(*plane->point, *ray->origin);

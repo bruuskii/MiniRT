@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/28 14:46:21 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 20:21:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,57 @@ t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,
 	return (color);
 }
 
+int check_planes(t_plane *pl, t_light *light)
+{
+	int fl;
+
+	fl = 0;
+	if (!pl || !light || !pl->normal || !pl->point || !light->dir)
+		return (0);
+	if (pl && pl->normal->x != 0)
+	{
+		if (light->dir->x > 0 && pl->point->x > 0 && light->dir->x > pl->point->x)
+			fl = 1;
+		if (light->dir->x < 0  && fabs(light->dir->x) > fabs(pl->point->x))
+			fl = 1; 
+	}
+	return (fl);
+}
+
+int	get_fl(t_world *world, t_light *light)
+{
+	t_world	*current_wrld;
+	t_plane *pl;
+	int		fl;
+	t_vctr	sub0;
+	int inf;
+
+	current_wrld = world;
+	fl = 0;
+	inf = 0;
+	while (current_wrld)
+	{
+		if (current_wrld->type == PLANE)
+		{
+			pl = (t_plane *)current_wrld->ptr;
+			inf = check_planes(pl, light);
+			if (pl && pl->normal && pl->point)
+			{
+				sub0 = vec3_sub(*light->dir, *pl->point);
+				if (vec3_dot(sub0, *pl->normal) < 0 && !inf)
+				{
+					fl = 1;
+					break ;
+				}	
+				else
+					fl = 0;
+			}
+		}
+		current_wrld = current_wrld->next;
+	}
+	return (fl);
+}
+
 t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 		t_material *material)
 {
@@ -71,6 +122,7 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	t_ray		raysh;
 	t_vctr		light_dir;
 	t_vctr		*tm0;
+	int			fl;
 
 	tm0 = vec_sub(*view->light->dir, hit.point);
 	light_dir = vec3_normalize(*tm0);
@@ -79,12 +131,10 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 	h.tmp = vec3_add(hit.point, hit.normal);
 	raysh.origin = &h.tmp;
 	h.color = light_colors(view->light, hit, material, view->ray);
-	in_shadow = is_in_shaddow(scene, raysh);
+	fl = get_fl(scene->world, view->light);
+	in_shadow = is_in_shadow(scene, raysh, fl);
 	if (in_shadow)
-	{
-		h.color = vec3_scale(material->color, scene->alight->ratio * 0.7);
-	}
-	else
-		fill_color(h);
+		h.color = vec3_scale(material->color, scene->alight->ratio * view->light->brightness);
+	fill_color(h);
 	return (h.color);
 }
