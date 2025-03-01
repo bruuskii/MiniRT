@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 18:37:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 22:21:14 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,8 @@ t_vctr		*new_vec(double x, double y, double z);
 t_vctr		*vec_add(t_vctr v1, t_vctr v2);
 t_vctr		*vec_sub(t_vctr v1, t_vctr v2);
 t_vctr		*vec_scale(t_vctr v, double d);
+int			check_planes(t_plane *pl, t_light *light);
+int			get_fl_utils(int inf, int *fl, t_plane *pl, t_light *light);
+int			get_fl(t_world *world, t_light *light);
+
 #endif

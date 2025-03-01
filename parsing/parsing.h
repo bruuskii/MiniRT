@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:01:32 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/24 12:51:02 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 21:07:15 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		ft_assign_cy_ptr(char **tmp, t_cylinder **lt, int fl);
 t_cylinder	*ft_obj_cy(char **lst, int fl);
 void		ft_process_cam(char *entry, t_cam **ptr, int *c);
 t_cam		*ft_cam(char **lst);
-void		ft_process_light(char *entry, t_light **lt, int *, int fl);
+void		ft_process_light(char *s, t_light **lt, int *c, int fl);
 t_light		*ft_light(char **lst, int fl);
 void		ft_alight_ptr(int *c, char **tmp, t_alight **node);
 t_alight	*ft_alight(char **lst);

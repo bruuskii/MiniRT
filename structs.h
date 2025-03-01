@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/28 00:17:33 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/01 22:12:02 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,5 +240,7 @@ typedef struct s_helpers
 	t_vctr				tmp;
 	t_vctr				normal;
 	t_vctr				color;
+	double				t;
+	double				denom;
 }						t_helpers;
 #endif

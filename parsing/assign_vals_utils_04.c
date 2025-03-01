@@ -85,7 +85,7 @@ void	ft_assign_light_utils(t_light **lt, char **lst, int i, int fl)
 			ft_print_and_exit("Light brightness has non numerical", 1);
 		(*lt)->brightness = ft_atodbl(lst[i]);
 	}
-	if ((i == 1 && c == 2) ||(i == 2 && !fl))
+	if ((i == 1 && c == 2) || (i == 2 && !fl))
 	{
 		(*lt)->color = malloc(sizeof(t_vctr));
 		(*lt)->color->x = 255.0;

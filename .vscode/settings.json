@@ -8,6 +8,7 @@
         "structs.h": "c",
         "parsing.h": "c",
         "random": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "charconv": "c"
     }
 }

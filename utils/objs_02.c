@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objs_02.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:23:59 by izouine           #+#    #+#             */
-/*   Updated: 2025/01/22 22:25:13 by izouine          ###   ########.fr       */
+/*   Updated: 2025/03/01 22:22:34 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,11 @@ void	ft_add_back_cn(t_cone **cn, t_cone *node)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = node;
+}
+
+void	fill_color(t_helpers h)
+{
+	h.color.x = fmin(fmax(h.color.x, 0.0), 255.0);
+	h.color.y = fmin(fmax(h.color.y, 0.0), 255.0);
+	h.color.z = fmin(fmax(h.color.z, 0.0), 255.0);
 }

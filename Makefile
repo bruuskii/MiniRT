@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/01 19:07:40 by kbassim          ###   ########.fr        #
+#    Updated: 2025/03/01 22:21:22 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ CFILES = libft/libft.c\
 		utils/reflection.c\
 		utils/lighting_00.c\
 		utils/lighting_01.c\
+		utils/lighting_02.c\
 		utils/ray.c\
 		utils/ray_utils.c\
 		utils/ray_utils_01.c\
@@ -70,9 +71,9 @@ CFILES = libft/libft.c\
 		utils/vectors_00.c\
 		utils/vectors_01.c\
 		MiniRT_bonus/sphere_bonus.c\
-		utilities_bonus_00.c\
-		utilities_bonus_01.c\
-		utilities_bonus_02.c\
+		MiniRT_bonus/utilities_bonus_00.c\
+		MiniRT_bonus/utilities_bonus_01.c\
+		MiniRT_bonus/utilities_bonus_02.c\
 		closest_hit.c\
 		
 CBFILES = MiniRT_bonus/main.c\
