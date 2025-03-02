@@ -50,18 +50,3 @@ void	put_pixel_to_image(char *img_data, int x, int y, int color)
 	offset = ((HEIGHT - 1 - y) * WIDTH + x) * 4;
 	*(unsigned int *)(img_data + offset) = color;
 }
-
-double	dgrs_to_rdn(double angle)
-{
-	return (angle * (M_PI / 180.0));
-}
-
-double	calculate_distance(double fov)
-{
-	double	d;
-	double	fv;
-
-	fv = dgrs_to_rdn(fov);
-	d = WIDTH / (2 * tan(fv / 2.0));
-	return (d);
-}

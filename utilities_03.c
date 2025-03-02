@@ -12,23 +12,6 @@
 
 #include "miniRT.h"
 
-t_material	*ft_material(t_scene *scene, double dif, double spec, double sh)
-{
-	t_material	*mtrl;
-
-	mtrl = malloc(sizeof(t_material));
-	if (!mtrl)
-	{
-		printf("Failed to allocate cone material\n");
-		return (NULL);
-	}
-	mtrl->ambient = scene->alight->ratio;
-	mtrl->diffuse = dif;
-	mtrl->specular = spec;
-	mtrl->shininess = sh;
-	return (mtrl);
-}
-
 void	ft_assign_plane_mtrl(t_material *mtrl, t_plane **pl)
 {
 	(*pl)->mtrl = mtrl;
