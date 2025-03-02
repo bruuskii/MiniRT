@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
+#    By: izouine <izouine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/02 16:04:06 by kbassim          ###   ########.fr        #
+#    Updated: 2025/03/02 23:39:46 by izouine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,6 @@ CFILES = libft/libft.c\
 		utils/lighting_02.c\
 		utils/ray.c\
 		utils/ray_utils.c\
-		utils/ray_utils_01.c\
 		utilities.c\
 		utilities_01.c\
 		utilities_02.c\

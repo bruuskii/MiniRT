@@ -6,7 +6,7 @@
 /*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 23:33:23 by izouine          ###   ########.fr       */
+/*   Updated: 2025/03/02 23:37:52 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	ft_assign_world_shadow(t_hit **closest_hit, t_ray raysh, int fl,
 		t_world *current_wrld)
 {
 	t_hit	*hit;
-	(void)fl;
 
+	(void)fl;
 	hit = NULL;
 	if (current_wrld->type == SPHERE)
 		hit = intersect_sphere(&raysh, (t_sp *)current_wrld->ptr);
