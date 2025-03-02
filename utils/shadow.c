@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 17:05:49 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 23:33:23 by izouine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@ void	ft_assign_world_shadow(t_hit **closest_hit, t_ray raysh, int fl,
 		t_world *current_wrld)
 {
 	t_hit	*hit;
+	(void)fl;
 
 	hit = NULL;
 	if (current_wrld->type == SPHERE)
 		hit = intersect_sphere(&raysh, (t_sp *)current_wrld->ptr);
 	else if (current_wrld->type == CYLINDRE)
 		hit = intersect_cylinder(&raysh, (t_cylinder *)current_wrld->ptr);
-	else if (current_wrld->type == PLANE && !fl)
-		hit = intersect_plane(&raysh, (t_plane *)current_wrld->ptr);
 	else if (current_wrld->type == CONE)
 		hit = intersect_cone(&raysh, (t_cone *)current_wrld->ptr);
 	if (hit && hit->t && hit->t > 0)
