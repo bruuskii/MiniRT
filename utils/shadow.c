@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 21:44:30 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 17:05:49 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void	ft_assign_world_shadow(t_hit **closest_hit, t_ray raysh, int fl,
 		if (!*closest_hit || hit->t < (*closest_hit)->t)
 		{
 			if (*closest_hit)
-				free(*closest_hit);
+				ft_free_hit_elems(*closest_hit);
 			*closest_hit = hit;
 		}
 		else
-			free(hit);
+			ft_free_hit_elems(hit);
 	}
 	else if (hit)
-		free(hit);
+		ft_free_hit_elems(hit);
 }
 
 int	ft_hit_world(t_world *world, t_ray raysh, int fl)
