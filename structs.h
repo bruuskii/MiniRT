@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:45:14 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 22:12:02 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 16:53:52 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,10 +143,10 @@ typedef struct s_cam
 	t_vctr				*dir;
 	t_vctr				viewport_u;
 	t_vctr				viewport_v;
-	t_vctr				*pixel_delta_u;
-	t_vctr				*pixel_delta_v;
-	t_vctr				*upper_left;
-	t_vctr				*pixel_offset;
+	t_vctr				pixel_delta_u;
+	t_vctr				pixel_delta_v;
+	t_vctr				upper_left;
+	t_vctr				pixel_offset;
 	double				aspect_ratio;
 	double				viewport_height;
 	double				viewport_width;

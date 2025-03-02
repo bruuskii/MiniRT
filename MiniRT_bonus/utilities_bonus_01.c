@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:36:13 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 22:15:43 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:38:31 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_assign_txtrs(t_world **world)
 		else if (tp->type == 2)
 			ft_assign_txtr_cy(tp);
 		else if (tp->type == 5)
-			ft_assign_txtr_cy(tp);
+			ft_assign_txtr_cn(tp);
 		tp = tp->next;
 	}
 }

@@ -6,44 +6,44 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:02:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/24 12:46:57 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:49:43 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	ft_assign_plane(t_plane *pl, char **lst)
+void	ft_assign_plane(t_plane *pl, char **lst, int fl)
 {
 	int	i;
 
 	i = 0;
 	while (lst[i])
 	{
-		ft_assign_plane_utils(&pl, lst, i);
+		ft_assign_plane_utils(&pl, lst, i, fl);
 		i++;
 	}
 }
 
-void	ft_assign_cy(t_cylinder *cy, char **lst)
+void	ft_assign_cy(t_cylinder *cy, char **lst, int n)
 {
 	int	i;
 
 	i = 0;
 	while (lst[i])
 	{
-		ft_assign_cy_utils(&cy, lst, i);
+		ft_assign_cy_utils(&cy, lst, i, n);
 		i++;
 	}
 }
 
-void	ft_assign_sp(t_sp *sp, char **lst)
+void	ft_assign_sp(t_sp *sp, char **lst, int fl)
 {
 	int	i;
 
 	i = 0;
 	while (lst[i])
 	{
-		ft_assign_sp_utils(&sp, lst, i);
+		ft_assign_sp_utils(&sp, lst, i, fl);
 		i++;
 	}
 }

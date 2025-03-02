@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:01:32 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 21:07:15 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:50:51 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 # include "../structs.h"
 
 void		ft_assign_alight(t_alight *lt, char **lst);
-void		ft_assign_cone(t_cone *cn, char **lst);
+void		ft_assign_cone(t_cone *cn, char **lst, int n);
 int			is_valid_str(char *s);
 int			valid_syntax(char **lst);
 void		ft_assign_plane_point(t_plane **pl, char *lst);
 void		ft_assign_plane_color(t_plane **pl, char *lst);
 void		ft_assign_plane_normal(t_plane **pl, char *lst);
-void		ft_assign_plane_utils(t_plane **pl, char **lst, int i);
+void		ft_assign_plane_utils(t_plane **pl, char **lst, int i, int fl);
 void		ft_assign_cy_center(t_cylinder **cy, char *s);
 void		ft_assign_cy_axis(t_cylinder **cy, char *s);
 void		ft_assign_cy_utils_color(t_cylinder **cy, char *s);
-void		ft_assign_cy_utils(t_cylinder **cy, char **lst, int i);
+void		ft_assign_cy_utils(t_cylinder **cy, char **lst, int i, int n);
 void		ft_assign_sp_center(t_sp **sp, char *lst);
 void		ft_assign_sp_utils_color(t_sp **sp, char *lst);
-void		ft_assign_sp_utils(t_sp **sp, char **lst, int i);
+void		ft_assign_sp_utils(t_sp **sp, char **lst, int i, int fl);
 void		ft_assign_cam_utils_pos(t_cam **cam, char *lst);
 void		ft_assign_cam_utils_dir(t_cam **cam, char *lst);
 void		ft_assign_cam_utils(t_cam **cam, char **lst, int i);
@@ -41,10 +41,10 @@ void		ft_assign_cn_vertex(t_cone **cn, char *s);
 void		ft_assign_cn_color(t_cone **cn, char *s);
 void		ft_assign_cn_axis(t_cone **cn, char *lst);
 void		ft_assign_cn_tang(t_cone **cn, char *s);
-void		ft_assign_cn_utils(t_cone **cn, char **lst, int i);
-void		ft_assign_plane(t_plane *pl, char **lst);
-void		ft_assign_cy(t_cylinder *cy, char **lst);
-void		ft_assign_sp(t_sp *sp, char **lst);
+void		ft_assign_cn_utils(t_cone **cn, char **lst, int i, int n);
+void		ft_assign_plane(t_plane *pl, char **lst, int fl);
+void		ft_assign_cy(t_cylinder *cy, char **lst, int n);
+void		ft_assign_sp(t_sp *sp, char **lst, int fl);
 void		ft_assign_camera(t_cam *cam, char **tmp);
 void		ft_assign_light(t_light *lt, char **lst, int fl);
 int			ft_check_extention(char *s);

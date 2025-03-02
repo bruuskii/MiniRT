@@ -6,14 +6,16 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:23:21 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/24 12:50:52 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# include "display/display.h"
 # include "libft/get_next_line/get_next_line.h"
+# include "libft/libft.h"
 # include "parsing/parsing.h"
 # include "structs.h"
 # include "utils/utils.h"
@@ -85,12 +87,16 @@ void		fill_color(t_helpers h);
 t_vctr		calculate_chess_pattern(t_hit hit);
 t_hit		*ft_innit_hit(t_ray *ray, t_world *tp);
 void		ft_free_hit_elems(t_hit *hit);
-void		ft_free_scene_utils(t_scene *scene, t_hit *hit, t_ray *ray);
+void		ft_free_scene_utils(t_hit *hit, t_ray *ray);
 void		ft_get_hit_color(t_world *world, t_hit *hit);
 void		ft_innit_hit_sp(t_ray *ray, t_world *tp, t_hit **hit);
 void		ft_innit_hit_pl(t_ray *ray, t_world *tp, t_hit **hit);
 void		ft_innit_hit_cy(t_ray *ray, t_world *tp, t_hit **hit);
 void		ft_innit_hit_cn(t_ray *ray, t_world *tp, t_hit **hit);
+int			create_trgb(int t, int r, int g, int b);
+void		render_scene_rows(t_scene *scene, char *img_data, int y,
+				t_world *world);
+void		ft_check_txtr(int fl, t_vctr *color_1, t_vctr *color_2);
 // bonus
 void		ft_render_sphere_bonus(t_hit *hit);
 void		ft_render_plane_bonus_utils(t_hit *hit, t_plane *pl, t_helpers *h);

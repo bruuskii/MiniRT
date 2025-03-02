@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:24:13 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:25:24 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:36:06 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@ void	ft_assign_flag_cn(int n, char **tmp, t_cone *node, int fl)
 {
 	if (n == 8 && fl)
 	{
-		if (!ft_strcmp(tmp[7], "C"))
-			ft_print_and_exit("Insufficient Parameters", 1);
+		if (!ft_strcmp(tmp[6], "T") && tmp[7])
+		{
+			node->texture = 1;
+			node->txtr_ref = ft_strdup(tmp[7]);
+			if (ft_check_txtr_extention(node->txtr_ref))
+				return ;
+		}
 		else
-			ft_print_and_exit("Wrong flag", 1);
-	}
-	else if (n == 9 && fl)
-	{
-		node->texture = 1;
-		node->txtr_ref = ft_strdup(tmp[8]);
-		if (ft_check_txtr_extention(node->txtr_ref))
-			return ;
+			ft_print_and_exit("Wrong parameters", 1);
 	}
 }
 
@@ -37,12 +35,12 @@ void	ft_assign_cone_ptr(char **tmp, t_cone **lt, int fl)
 	int		n;
 
 	n = ft_lst_count(tmp);
-	if (n < 7 || n > 9)
+	if ((n != 7 && !fl) || (n != 8 && fl))
 		ft_print_and_exit("Cone has wrong number of elements", 1);
 	ptr = malloc(sizeof(t_cone));
 	if (!ptr)
 		return ;
-	ft_assign_cone(ptr, tmp + 1);
+	ft_assign_cone(ptr, tmp + 1, n);
 	node = ft_new_cone(ptr);
 	ft_assign_flag_cn(n, tmp, node, fl);
 	ft_add_back_cn(lt, node);

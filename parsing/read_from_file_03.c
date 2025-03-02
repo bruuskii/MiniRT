@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:59 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:27:06 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:17:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,8 @@ void	ft_assign_flag_plane(int n, char **tmp, t_plane *node, int fl)
 {
 	if (n == 5 && fl)
 	{
-		if (!ft_strcmp(tmp[4], "C"))
-			ft_print_and_exit("Insufficient Parameters", 1);
-	}
-	else if (n == 6 && fl)
-	{
 		node->texture = 1;
-		node->txtr_ref = ft_strdup(tmp[5]);
+		node->txtr_ref = ft_strdup(tmp[4]);
 		if (ft_check_txtr_extention(node->txtr_ref))
 			return ;
 	}
@@ -62,12 +57,12 @@ void	ft_assign_ptr_plane(char **tmp, t_plane **lt, int fl)
 	int		n;
 
 	n = ft_lst_count(tmp);
-	if (n < 4 || n > 6)
+	if (((n < 4 || n > 5) && fl) || (n != 4 && !fl))
 		ft_print_and_exit("Plane has wrong number of elements", 1);
 	ptr = malloc(sizeof(t_plane));
 	if (!ptr)
 		return ;
-	ft_assign_plane(ptr, tmp + 1);
+	ft_assign_plane(ptr, tmp + 1, n);
 	node = ft_new_pl(ptr);
 	ft_assign_flag_plane(n, tmp, node, fl);
 	ft_add_back_pl(lt, node);

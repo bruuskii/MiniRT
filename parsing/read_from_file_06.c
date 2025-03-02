@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:25:48 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:27:09 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:56:29 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ void	ft_assign_flag_cy(int n, char **tmp, t_cylinder *node, int fl)
 {
 	if (n == 7 && fl)
 	{
-		if (!ft_strcmp(tmp[6], "C"))
+		if (!ft_strcmp(tmp[5], "T") && tmp[6])
+		{
+			node->texture = 1;
+			node->txtr_ref = ft_strdup(tmp[6]);
+			if (ft_check_txtr_extention(node->txtr_ref))
+				ft_print_and_exit("cone has wrong texture extention", 1);
+		}
+		else
 			ft_print_and_exit("Insufficient Parameters", 1);
-	}
-	else if (n == 8 && fl)
-	{
-		node->texture = 1;
-		node->txtr_ref = ft_strdup(tmp[7]);
-		if (ft_check_txtr_extention(node->txtr_ref))
-			exit(1);
 	}
 }
 
@@ -35,12 +35,12 @@ void	ft_assign_cy_ptr(char **tmp, t_cylinder **lt, int fl)
 	int			n;
 
 	n = ft_lst_count(tmp);
-	if (n < 6 || n > 8)
+	if (((n != 6) && !fl) || (fl && (n < 6 || n > 7)))
 		ft_print_and_exit("Cylinder has wrong number of elements", 1);
 	ptr = malloc(sizeof(t_cylinder));
 	if (!ptr)
 		return ;
-	ft_assign_cy(ptr, tmp + 1);
+	ft_assign_cy(ptr, tmp + 1, n);
 	node = ft_new_cy(ptr);
 	ft_assign_flag_cy(n, tmp, node, fl);
 	ft_add_back_cy(lt, node);

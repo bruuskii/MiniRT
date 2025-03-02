@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:43:11 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:39:26 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:39:23 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	render_scene(void *img, t_scene *scene, t_world *world)
 	int		size_line;
 	int		endian;
 
-	if (!world->txtr_dt)
+	if (!world || !world->txtr_dt)
 		return ;
 	img_data = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	ft_assign_fl(world);

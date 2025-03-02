@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:41:10 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/23 11:44:01 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:20 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,10 @@ void	ft_free_hit_elems(t_hit *hit)
 	free(hit);
 }
 
-void	ft_free_scene_utils(t_scene *scene, t_hit *hit, t_ray *ray)
+void	ft_free_scene_utils(t_hit *hit, t_ray *ray)
 {
 	free(ray->direction);
 	free(ray);
-	ft_free_cam(scene->cam);
 	if (hit)
 	{
 		free(hit->mtrl);
@@ -56,22 +55,22 @@ void	ft_get_hit_color(t_world *world, t_hit *hit)
 	if (hit->type == SPHERE)
 	{
 		sp = (t_sp *)world->ptr;
-		hit->mtrl->color = *sp->color;
+		ft_check_txtr(sp->texture, &hit->mtrl->color, sp->color);
 	}
 	else if (hit->type == PLANE)
 	{
 		plane = (t_plane *)world->ptr;
-		hit->mtrl->color = *plane->color;
+		ft_check_txtr(plane->texture, &hit->mtrl->color, plane->color);
 	}
 	else if (hit->type == CYLINDRE)
 	{
 		cy = (t_cylinder *)world->ptr;
-		hit->mtrl->color = *cy->color;
+		ft_check_txtr(cy->texture, &hit->mtrl->color, cy->color);
 	}
 	else if (hit->type == CONE)
 	{
 		cone = (t_cone *)world->ptr;
-		hit->mtrl->color = *cone->color;
+		ft_check_txtr(cone->texture, &hit->mtrl->color, cone->color);
 	}
 }
 

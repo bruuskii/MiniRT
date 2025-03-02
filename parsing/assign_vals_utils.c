@@ -6,13 +6,13 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 23:37:17 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/21 03:00:22 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:33:30 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	ft_assign_cn_utils(t_cone **cn, char **lst, int i)
+void	ft_assign_cn_utils(t_cone **cn, char **lst, int i, int n)
 {
 	if (!*cn || !cn)
 		return ;
@@ -34,6 +34,8 @@ void	ft_assign_cn_utils(t_cone **cn, char **lst, int i)
 			ft_print_and_exit("Cone maxm has non numerical", 1);
 		(*cn)->maxm = ft_atodbl(lst[i]);
 	}
-	else if (i == 5)
+	if (i == 5 && n == 7)
 		ft_assign_cn_color(cn, lst[i]);
+	else if (i == 5 && n != 7)
+		(*cn)->color = NULL;
 }

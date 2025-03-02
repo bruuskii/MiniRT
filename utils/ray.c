@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/23 11:18:25 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 17:00:42 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,12 @@
 
 void	ft_pixel_offset(t_cam *cam)
 {
-	t_vctr	*result;
-	t_vctr	*scaled_result;
+	t_vctr	result;
+	t_vctr	scaled_result;
 
-	result = vec_add(*cam->pixel_delta_u, *cam->pixel_delta_v);
-	if (!result)
-		return ;
-	scaled_result = vec_scale(*result, 0.5);
-	if (!scaled_result)
-		return ;
-	cam->pixel_offset = vec_add(*cam->upper_left, *scaled_result);
-	free(result);
-	free(scaled_result);
+	result = vec3_add(cam->pixel_delta_u, cam->pixel_delta_v);
+	scaled_result = vec3_scale(result, 0.5);
+	cam->pixel_offset = vec3_add(cam->upper_left, scaled_result);
 }
 
 void	ft_innit_cam(t_cam *cam)
@@ -37,40 +31,27 @@ void	ft_innit_cam(t_cam *cam)
 	ft_pixel_offset(cam);
 }
 
-void	ft_free_cam(t_cam *cam)
-{
-	if (cam->pixel_delta_u)
-		free(cam->pixel_delta_u);
-	if (cam->pixel_delta_v)
-		free(cam->pixel_delta_v);
-	if (cam->pixel_offset)
-		free(cam->pixel_offset);
-	if (cam->upper_left)
-		free(cam->upper_left);
-}
-
 t_ray	*create_ray(t_cam *cam, double x, double y)
 {
 	t_ray	*ray;
-	t_vctr	*pixel_center;
-	t_vctr	*scaled_x;
-	t_vctr	*tmp;
-	t_vctr	*scaled_y;
+	t_vctr	pixel_center;
+	t_vctr	scaled_x;
+	t_vctr	tmp;
+	t_vctr	scaled_y;
 
 	if (!cam)
 		return (NULL);
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	scaled_x = vec_scale(*cam->pixel_delta_v, x);
-	scaled_y = vec_scale(*cam->pixel_delta_u, y);
-	tmp = vec_add(*scaled_x, *scaled_y);
-	pixel_center = vec_add(*cam->pixel_offset, *tmp);
+	scaled_x = vec3_scale(cam->pixel_delta_v, x);
+	scaled_y = vec3_scale(cam->pixel_delta_u, y);
+	tmp = vec3_add(scaled_x, scaled_y);
+	pixel_center = vec3_add(cam->pixel_offset, tmp);
 	ray->origin = cam->pos;
-	ray->direction = vec_sub(*pixel_center, *cam->pos);
-	free(pixel_center);
-	free(scaled_x);
-	free(tmp);
-	free(scaled_y);
+	ray->direction = malloc(sizeof(t_vctr));
+	if (!ray->direction)
+		return (NULL);
+	*ray->direction = vec3_sub(pixel_center, *cam->pos);
 	return (ray);
 }

@@ -6,11 +6,23 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/01 22:20:19 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 16:34:05 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
+
+t_vctr	ft_reflected_dir(t_vctr normal, t_view *view)
+{
+	t_vctr	reflect_dir;
+	t_vctr	tmp;
+	double	coeff;
+
+	coeff = 2 * vec3_dot(normal, view->light_dir);
+	tmp = vec3_scale(normal, coeff);
+	reflect_dir = vec3_sub(tmp, view->light_dir);
+	return (vec3_normalize(reflect_dir));
+}
 
 t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 {
@@ -20,8 +32,7 @@ t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 	t_vctr	color;
 	t_vctr	reflect_dir;
 
-	reflect_dir = vec3_normalize(vec3_sub(vec3_scale(normal, 2
-					* vec3_dot(normal, view->light_dir)), view->light_dir));
+	reflect_dir = ft_reflected_dir(normal, view);
 	ambient = material->ambient;
 	diffuse = fmax(vec3_dot(normal, view->light_dir), 0.0) * material->diffuse;
 	specular = pow(fmax(vec3_dot(view->view_dir, reflect_dir), 0.0),
@@ -31,20 +42,6 @@ t_vctr	phong_lighting(t_view *view, t_vctr normal, t_material *material)
 	color = vec3_scale(color, view->light->brightness);
 	return (vec3_create(fmin(color.x, 255.0), fmin(color.y, 255.0),
 			fmin(color.z, 255.0)));
-}
-
-t_view	*ft_view(t_vctr light_dir, t_vctr view_dir, t_light *light, t_ray *ray)
-{
-	t_view	*ptr;
-
-	ptr = malloc(sizeof(t_view));
-	if (!ptr)
-		return (NULL);
-	ptr->light_dir = light_dir;
-	ptr->view_dir = view_dir;
-	ptr->light = light;
-	ptr->ray = ray;
-	return (ptr);
 }
 
 t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,

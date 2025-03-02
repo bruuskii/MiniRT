@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:14:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/28 09:53:17 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 12:49:29 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	ft_free_sphere(t_sp *sp)
 {
 	if (!sp)
 		return ;
-	free(sp->color);
+	if (sp->color)
+		free(sp->color);
 	free(sp->cntr);
 }
 

@@ -6,13 +6,13 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:33:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/22 22:35:39 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:51:22 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	ft_assign_plane_utils(t_plane **pl, char **lst, int i)
+void	ft_assign_plane_utils(t_plane **pl, char **lst, int i, int fl)
 {
 	if (!*pl || !pl)
 		return ;
@@ -20,8 +20,10 @@ void	ft_assign_plane_utils(t_plane **pl, char **lst, int i)
 		ft_assign_plane_point(pl, lst[i]);
 	else if (i == 1)
 		ft_assign_plane_normal(pl, lst[i]);
-	else if (i == 2)
+	else if (i == 2 && fl == 4)
 		ft_assign_plane_color(pl, lst[i]);
+	else if (i == 2 && fl == 5)
+		(*pl)->color = NULL;
 }
 
 void	ft_assign_cy_center(t_cylinder **cy, char *s)
@@ -89,7 +91,7 @@ void	ft_assign_cy_utils_color(t_cylinder **cy, char *s)
 	ft_lstfree(tmp);
 }
 
-void	ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
+void	ft_assign_cy_utils(t_cylinder **cy, char **lst, int i, int n)
 {
 	if (!*cy || !cy)
 		return ;
@@ -109,6 +111,8 @@ void	ft_assign_cy_utils(t_cylinder **cy, char **lst, int i)
 			ft_print_and_exit("cylinder height has non numerical", 1);
 		(*cy)->height = ft_atodbl(lst[i]);
 	}
-	else if (i == 4)
+	else if (i == 4 && n == 6)
 		ft_assign_cy_utils_color(cy, lst[i]);
+	else if (i == 4 && n != 6)
+		(*cy)->color = NULL;
 }

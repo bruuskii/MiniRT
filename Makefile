@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/01 22:21:22 by kbassim          ###   ########.fr        #
+#    Updated: 2025/03/02 16:04:06 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,7 @@ CFILES = libft/libft.c\
 		MiniRT_bonus/utilities_bonus_01.c\
 		MiniRT_bonus/utilities_bonus_02.c\
 		closest_hit.c\
+		closest_hit_utils.c\
 		
 CBFILES = MiniRT_bonus/main.c\
 		

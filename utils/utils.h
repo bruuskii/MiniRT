@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/01 22:21:14 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:05 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void		ft_delta_pixels(t_cam *cam);
 void		ft_viewport_upper_left(t_cam *cam);
 void		ft_pixel_offset(t_cam *cam);
 void		ft_innit_cam(t_cam *cam);
-void		ft_free_cam(t_cam *cam);
 t_ray		*create_ray(t_cam *cam, double x, double y);
 void		ft_innit_viewports(t_cam *cam);
 void		ft_viewport_vectors(t_cam *cam);
