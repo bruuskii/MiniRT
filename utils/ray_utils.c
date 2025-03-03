@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:17:29 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 16:51:20 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 17:38:09 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	ft_viewport_vectors(t_cam *cam)
 	up = (t_vctr){0, 1, 0};
 	right = vec3_normalize(vec3_cross(tmp, up));
 	up = vec3_normalize(vec3_cross(right, tmp));
-	cam->viewport_u = vec3_scale(up, cam->viewport_width);
-	cam->viewport_v = vec3_scale(right, -cam->viewport_height);
+	cam->viewport_u = vec3_scale(right, -cam->viewport_width);
+	cam->viewport_v = vec3_scale(up, cam->viewport_height);
 }
 
 void	ft_delta_pixels(t_cam *cam)

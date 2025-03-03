@@ -6,7 +6,7 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/02 23:46:57 by kbassim          ###   ########.fr        #
+#    Updated: 2025/03/03 16:55:42 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,6 @@ CFILES = libft/libft.c\
 		utils/reflection.c\
 		utils/lighting_00.c\
 		utils/lighting_01.c\
-		utils/lighting_02.c\
 		utils/ray.c\
 		utils/ray_utils.c\
 		utilities.c\

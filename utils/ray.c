@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/02 17:00:42 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 17:37:33 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ t_ray	*create_ray(t_cam *cam, double x, double y)
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	scaled_x = vec3_scale(cam->pixel_delta_v, x);
-	scaled_y = vec3_scale(cam->pixel_delta_u, y);
+	scaled_x = vec3_scale(cam->pixel_delta_u, x);
+	scaled_y = vec3_scale(cam->pixel_delta_v, y);
 	tmp = vec3_add(scaled_x, scaled_y);
 	pixel_center = vec3_add(cam->pixel_offset, tmp);
 	ray->origin = cam->pos;

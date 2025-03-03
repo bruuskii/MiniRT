@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/03 00:37:24 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 17:56:57 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,18 @@ t_vctr	light_colors(t_light *light, t_hit hit, t_material *material,
 	return (color);
 }
 
-void	ft_assign_light_dir_sh(t_vctr *light_dir, t_view *view, t_hit hit)
-{
-	t_vctr	tm0;
-
-	tm0 = vec3_sub(*view->light->dir, hit.point);
-	*light_dir = vec3_normalize(tm0);
-}
-
 t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 		t_material *material)
 {
 	t_helpers	h;
 	int			in_shadow;
-	t_ray		raysh;
 	t_vctr		light_dir;
-	int			fl;
+	t_vctr		tm0;
 
-	ft_assign_light_dir_sh(&light_dir, view, hit);
-	raysh.direction = &light_dir;
-	h.tmp = vec3_add(hit.point, hit.normal);
-	raysh.origin = &h.tmp;
+	tm0 = vec3_sub(*view->light->dir, hit.point);
+	light_dir = vec3_normalize(tm0);
 	h.color = light_colors(view->light, hit, material, view->ray);
-	fl = get_fl(scene->world, view->light);
-	in_shadow = is_in_shadow(scene, raysh, fl);
+	in_shadow = is_in_shadow(scene, hit, view->light);
 	if (in_shadow)
 		h.color = vec3_scale(material->color, scene->alight->ratio
 				* view->light->brightness);
