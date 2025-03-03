@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:15:39 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/03 17:56:57 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 22:32:05 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ t_vctr	calculate_lighting(t_view *view, t_hit hit, t_scene *scene,
 {
 	t_helpers	h;
 	int			in_shadow;
-	t_vctr		light_dir;
-	t_vctr		tm0;
 
-	tm0 = vec3_sub(*view->light->dir, hit.point);
-	light_dir = vec3_normalize(tm0);
 	h.color = light_colors(view->light, hit, material, view->ray);
 	in_shadow = is_in_shadow(scene, hit, view->light);
 	if (in_shadow)

@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:22:31 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/03 17:37:33 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 23:30:54 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ t_ray	*create_ray(t_cam *cam, double x, double y)
 	ray->direction = malloc(sizeof(t_vctr));
 	if (!ray->direction)
 		return (NULL);
-	*ray->direction = vec3_sub(pixel_center, *cam->pos);
+	*ray->direction = vec3_normalize(vec3_sub(pixel_center, *cam->pos));
 	return (ray);
 }

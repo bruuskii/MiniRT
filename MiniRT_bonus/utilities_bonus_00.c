@@ -6,47 +6,33 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:28:59 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/03 17:32:58 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/03 23:24:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	assign_u_v(float screen_1, float screen_2, t_hit *hit, t_helpers *h)
+void	assign_u_v(double world_x, double world_y, t_hit *hit, t_helpers *h)
 {
-	float	scale_x;
-	float	scale_y;
+	double	scale_x;
+	double	scale_y;
+	double	repeat;
 
 	scale_x = hit->world->txtr_dt->width;
 	scale_y = hit->world->txtr_dt->height;
-	h->u = (screen_1 + 1.0) * scale_x / 2.0;
-	h->v = (1.0 - screen_2) * scale_y / 2.0;
+	repeat = 5;
+	h->u = fmodf(world_x * repeat + 10000.0, scale_x);
+	h->v = fmodf(world_y * repeat + 10000.0, scale_y);
 }
 
 void	ft_render_plane_bonus_utils(t_hit *hit, t_plane *pl, t_helpers *h)
 {
-	float	screen_x;
-	float	screen_y;
-	float	screen_z;
-
 	if (pl->normal->z)
-	{
-		screen_x = hit->point.x / (WIDTH / 2.0);
-		screen_y = hit->point.y / (HEIGHT / 2.0);
-		assign_u_v(screen_x, screen_y, hit, h);
-	}
+		assign_u_v(hit->point.x, hit->point.y, hit, h);
 	else if (pl->normal->x)
-	{
-		screen_z = hit->point.z / (WIDTH / 2.0);
-		screen_y = hit->point.y / (HEIGHT / 2.0);
-		assign_u_v(screen_z, screen_y, hit, h);
-	}
+		assign_u_v(hit->point.z, hit->point.y, hit, h);
 	else if (pl->normal->y)
-	{
-		screen_z = hit->point.z / (WIDTH / 2.0);
-		screen_x = hit->point.x / (HEIGHT / 2.0);
-		assign_u_v(screen_z, screen_x, hit, h);
-	}
+		assign_u_v(hit->point.x, hit->point.z, hit, h);
 }
 
 void	ft_render_plane_bonus(t_hit *hit)
