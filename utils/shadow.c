@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:26:43 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/03 17:57:31 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:08:44 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	is_in_shadow(t_scene *scene, t_hit hit, t_light *light)
 
 	light_dir = vec3_sub(*light->dir, hit.point);
 	light_distance = vec3_length(light_dir);
-	origin = vec3_add(hit.point, vec3_scale(hit.normal, 0.001));
+	origin = vec3_add(hit.point, vec3_scale(hit.normal, 1e-6));
 	light_dir = vec3_normalize(light_dir);
 	raysh.origin = &origin;
 	raysh.direction = &light_dir;

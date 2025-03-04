@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/28 01:03:08 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:50:24 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ t_light	*ft_light(char **lst, int fl)
 		ft_process_light(lst[i], &lt, &c, fl);
 		i++;
 	}
-	if (c == 0)
-		ft_print_and_exit("At least one light is needed", 1);
+	// if (c == 0)
+	// 	ft_print_and_exit("At least one light is needed", 1);
 	return (lt);
 }
 

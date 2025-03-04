@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:49 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/03 16:48:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 13:39:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,14 @@ int			ft_valid_cone_inter(t_cone *cn, t_ray *ray, double t1, double t2);
 void		ft_innit_viewports(t_cam *cam);
 void		ft_viewport_vectors(t_cam *cam);
 void		ft_delta_pixels(t_cam *cam);
-void		ft_viewport_upper_left(t_cam *cam);
+void		ft_viewport_bottom_left(t_cam *cam);
 void		ft_pixel_offset(t_cam *cam);
 void		ft_innit_cam(t_cam *cam);
 t_ray		*create_ray(t_cam *cam, double x, double y);
 void		ft_innit_viewports(t_cam *cam);
 void		ft_viewport_vectors(t_cam *cam);
 void		ft_delta_pixels(t_cam *cam);
-void		ft_viewport_upper_left(t_cam *cam);
+void		ft_viewport_bottom_left(t_cam *cam);
 void		ft_pixel_offset(t_cam *cam);
 t_vctr		*new_vec(double x, double y, double z);
 int			check_planes(t_plane *pl, t_light *light);

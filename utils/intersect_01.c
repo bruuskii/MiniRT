@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:05:25 by izouine           #+#    #+#             */
-/*   Updated: 2025/02/28 14:51:08 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 13:27:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ double	ft_calculate_discriminant_sphere(t_ray *ray, t_sp *sphere)
 	double	discriminant;
 
 	oc = vec3_sub(*ray->origin, *sphere->cntr);
-	a = vec3_dot(vec3_normalize(*ray->direction),
-			vec3_normalize(*ray->direction));
-	b = 2.0 * vec3_dot(oc, vec3_normalize(*ray->direction));
+	a = vec3_dot((*ray->direction), (*ray->direction));
+	b = 2.0 * vec3_dot(oc, (*ray->direction));
 	c = vec3_dot(oc, oc) - (sphere->d / 2) * (sphere->d / 2);
 	discriminant = b * b - 4 * a * c;
 	return (discriminant);

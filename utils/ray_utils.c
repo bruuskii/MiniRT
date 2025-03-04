@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:17:29 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/03 23:32:02 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 13:50:44 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,10 @@ void	ft_viewport_vectors(t_cam *cam)
 	right = vec3_normalize(vec3_cross(tmp, up));
 	up = vec3_normalize(vec3_cross(right, tmp));
 	cam->viewport_u = vec3_scale(right, -cam->viewport_width);
-	cam->viewport_v = vec3_scale(up, cam->viewport_height);
+	cam->viewport_v = vec3_scale(up, -cam->viewport_height);
 }
 
-void	ft_delta_pixels(t_cam *cam)
-{
-	cam->pixel_delta_u = vec3_scale(cam->viewport_u, 1.0 / (double)WIDTH);
-	cam->pixel_delta_v = vec3_scale(cam->viewport_v, 1.0 / (double)HEIGHT);
-}
-
-void	ft_viewport_upper_left(t_cam *cam)
+void	ft_viewport_bottom_left(t_cam *cam)
 {
 	t_vctr	sum;
 	t_vctr	tmp;
@@ -52,5 +46,5 @@ void	ft_viewport_upper_left(t_cam *cam)
 	scaled_v = vec3_scale(cam->viewport_v, 0.5);
 	sum = vec3_add(scaled_u, scaled_v);
 	tmp = vec3_add(tmp1, sum);
-	cam->upper_left = vec3_sub(*cam->pos, tmp);
+	cam->bottom_left = vec3_sub(*cam->pos, tmp);
 }
