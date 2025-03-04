@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:33:01 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 15:21:38 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 17:47:28 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,11 @@ void	ft_assign_cam_utils_dir(t_cam **cam, char *lst)
 	(*cam)->dir->x = ft_atodbl(tmp[0]);
 	(*cam)->dir->y = ft_atodbl(tmp[1]);
 	(*cam)->dir->z = ft_atodbl(tmp[2]);
+	if ((*cam)->dir->x < -1 || (*cam)->dir->x > 1)
+		ft_print_and_exit("Error: cam direction x out of range [-1, 1]", 1);
+	if ((*cam)->dir->y < -1 || (*cam)->dir->y > 1)
+		ft_print_and_exit("Error: cam direction y out of range [-1, 1]", 1);
+	if ((*cam)->dir->z < -1 || (*cam)->dir->z > 1)
+		ft_print_and_exit("Error: cam direction z out of range [-1, 1]", 1);
 	ft_lstfree(tmp);
 }

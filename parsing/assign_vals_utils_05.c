@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:32:55 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/22 22:32:56 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 17:46:33 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ void	ft_assign_cn_axis(t_cone **cn, char *lst)
 	(*cn)->axis->x = ft_atodbl(tmp[0]);
 	(*cn)->axis->y = ft_atodbl(tmp[1]);
 	(*cn)->axis->z = ft_atodbl(tmp[2]);
+	if ((*cn)->axis->x < -1 || (*cn)->axis->x > 1)
+		ft_print_and_exit("Error: cone axis x out of range [-1, 1]", 1);
+	if ((*cn)->axis->y < -1 || (*cn)->axis->y > 1)
+		ft_print_and_exit("Error: cone axis y out of range [-1, 1]", 1);
+	if ((*cn)->axis->z < -1 || (*cn)->axis->z > 1)
+		ft_print_and_exit("Error: cone axis z out of range [-1, 1]", 1);
 	ft_lstfree(tmp);
 }
 

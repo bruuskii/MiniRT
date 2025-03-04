@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 11:24:13 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 15:36:06 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 19:40:51 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_assign_cone_ptr(char **tmp, t_cone **lt, int fl)
 	int		n;
 
 	n = ft_lst_count(tmp);
-	if ((n != 7 && !fl) || (n != 8 && fl))
+	if (n < 7 || n > 8)
 		ft_print_and_exit("Cone has wrong number of elements", 1);
 	ptr = malloc(sizeof(t_cone));
 	if (!ptr)

@@ -6,15 +6,15 @@
 #    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/04 14:37:54 by kbassim          ###   ########.fr        #
+#    Updated: 2025/03/04 17:59:12 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 BONUS_NAME = miniRT_bonus
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CC = cc -g3
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 CFILES = libft/libft.c\
 		libft/ft_fullsplit.c\
 		libft/ft_split.c\

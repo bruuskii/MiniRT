@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: izouine <izouine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:49:08 by izouine           #+#    #+#             */
-/*   Updated: 2025/03/02 23:35:15 by izouine          ###   ########.fr       */
+/*   Updated: 2025/03/04 18:01:25 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_render_sphere_bonus(t_hit *hit)
 	sphere = (t_sp *)hit->world->ptr;
 	text_ptr = vec3_sub(hit->point, *sphere->cntr);
 	vec = vec3_scale(text_ptr, 1.0 / (sphere->d / 2.0));
-	h.u = -(0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI));
+	h.u = 0.5 + atan2(vec.z, vec.x) / (2.0 * M_PI);
 	h.v = (0.5 - asin(vec.y) / M_PI);
 	h.tex_x = (int)(h.u * hit->world->txtr_dt->width);
 	h.tex_y = (int)(h.v * hit->world->txtr_dt->height);

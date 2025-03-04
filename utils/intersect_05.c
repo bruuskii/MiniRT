@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:18:12 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/07 21:52:06 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 19:37:55 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,10 @@ int	ft_assign_t_cy(t_ray *ray, double *t, t_vctr oc, t_cylinder *cy)
 	double	a;
 	double	b;
 
-	a = vec3_dot(vec3_normalize(*ray->direction),
-			vec3_normalize(*ray->direction))
-		- pow(vec3_dot(vec3_normalize(*ray->direction), *cy->c_axis), 2);
-	b = 2 * (vec3_dot(vec3_normalize(*ray->direction), oc)
-			- vec3_dot(vec3_normalize(*ray->direction), *cy->c_axis)
-			* vec3_dot(oc, *cy->c_axis));
+	a = vec3_dot(*ray->direction, *ray->direction)
+		- pow(vec3_dot(*ray->direction, *cy->c_axis), 2);
+	b = 2 * (vec3_dot(*ray->direction, oc) - vec3_dot(*ray->direction,
+				*cy->c_axis) * vec3_dot(oc, *cy->c_axis));
 	sqrt_discriminant = sqrt(ft_discriminant_cylinder(ray, cy, oc));
 	t1 = (-b - sqrt_discriminant) / (2 * a);
 	t2 = (-b + sqrt_discriminant) / (2 * a);

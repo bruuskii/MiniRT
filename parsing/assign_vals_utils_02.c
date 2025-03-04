@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:33:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 15:51:22 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 17:47:08 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ void	ft_assign_cy_axis(t_cylinder **cy, char *s)
 	(*cy)->c_axis->x = ft_atodbl(tmp[0]);
 	(*cy)->c_axis->y = ft_atodbl(tmp[1]);
 	(*cy)->c_axis->z = ft_atodbl(tmp[2]);
+	if ((*cy)->c_axis->x < -1 || (*cy)->c_axis->x > 1)
+		ft_print_and_exit("Error: cylinder axis x out of range [-1, 1]", 1);
+	if ((*cy)->c_axis->y < -1 || (*cy)->c_axis->y > 1)
+		ft_print_and_exit("Error: cylinder axis y out of range [-1, 1]", 1);
+	if ((*cy)->c_axis->z < -1 || (*cy)->c_axis->z > 1)
+		ft_print_and_exit("Error: cylinder axis z out of range [-1, 1]", 1);
 	*(*cy)->c_axis = vec3_normalize(*(*cy)->c_axis);
 	ft_lstfree(tmp);
 }

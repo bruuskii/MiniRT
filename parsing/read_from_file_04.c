@@ -6,33 +6,30 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:57 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/04 14:50:24 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 19:27:57 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	ft_process_cam(char *entry, t_cam **ptr, int *c)
+void	ft_process_cam(char *s, t_cam **ptr, int *c)
 {
 	char	**tmp;
 	int		n;
 
-	tmp = ft_fullsplit(entry);
+	tmp = ft_fullsplit(s);
 	if (!tmp)
 		ft_print_and_exit("Split failed", 1);
 	if (!ft_check_first_param(tmp[0]))
 		ft_print_and_exit("Undefined object", 1);
-	if (!ft_strcmp(tmp[0], "C"))
+	if (tmp[0] && !ft_strcmp(tmp[0], "C"))
 	{
-		(*c)++;
 		n = ft_lst_count(tmp);
-		if (n != 4 || *c > 1)
-		{
-			if (*c > 1)
-				ft_print_and_exit("Only one camera is needed", 1);
-			else
-				ft_print_and_exit("The camera has incorrect parameters", 1);
-		}
+		if (n != 4)
+			ft_print_and_exit("The camera has incorrect parameters", 1);
+		if (*c > 1)
+			ft_print_and_exit("Only one camera is needed", 1);
+		(*c)++;
 		*ptr = malloc(sizeof(t_cam));
 		if (!*ptr)
 			ft_print_and_exit("Memory allocation failed", 1);
@@ -102,8 +99,6 @@ t_light	*ft_light(char **lst, int fl)
 		ft_process_light(lst[i], &lt, &c, fl);
 		i++;
 	}
-	// if (c == 0)
-	// 	ft_print_and_exit("At least one light is needed", 1);
 	return (lt);
 }
 

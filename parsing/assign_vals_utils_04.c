@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:32:58 by kbassim           #+#    #+#             */
-/*   Updated: 2025/02/24 12:48:23 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/04 20:03:50 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_assign_cam_utils(t_cam **cam, char **lst, int i)
 		if (is_valid_str(lst[i]))
 			ft_print_and_exit("Field of view has non numerical", 1);
 		(*cam)->fov = ft_atodbl(lst[i]);
-		if ((*cam)->fov > 360)
-			ft_print_and_exit("Field of view overflow", 1);
+		if ((*cam)->fov > 180 || (*cam)->fov < 0)
+			ft_print_and_exit("field of view in degrees in range [0,180]", 1);
 	}
 }
 
