@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: izouine <izouine@student.42.fr>            +#+  +:+       +#+         #
+#    By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 16:07:21 by kbassim           #+#    #+#              #
-#    Updated: 2025/03/05 16:08:19 by izouine          ###   ########.fr        #
+#    Updated: 2025/03/05 17:08:52 by kbassim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 BONUS_NAME = miniRT_bonus
 
-CC = cc -g3
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFILES = libft/libft.c\
 		libft/ft_fullsplit.c\

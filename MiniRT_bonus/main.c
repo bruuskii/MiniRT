@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:38:04 by kbassim           #+#    #+#             */
-/*   Updated: 2025/01/14 02:00:59 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/05 17:15:35 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 	data->ptr = mlx_init();
 	if (!data->ptr)
 		return (free(data), 1);
-	data->win = mlx_new_window(data->ptr, WIDTH, HEIGHT, "miniRT");
+	data->win = mlx_new_window(data->ptr, WIDTH, HEIGHT, "miniRT_bonus");
 	if (!data->win)
 	{
 		mlx_destroy_display(data->ptr);

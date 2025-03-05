@@ -6,7 +6,7 @@
 /*   By: kbassim <kbassim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 22:27:30 by kbassim           #+#    #+#             */
-/*   Updated: 2025/03/02 13:48:41 by kbassim          ###   ########.fr       */
+/*   Updated: 2025/03/05 17:11:56 by kbassim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_assign_sphere(char **tmp, t_sp **lt, int n, int fl)
 	t_sp	*ptr;
 	t_sp	*node;
 
-	if (n < 4 || n > 6 || ((n == 5) && !fl))
+	if (n < 4 || n > 5)
 		ft_print_and_exit("Sphere has incorrect parameters", 1);
 	if (fl)
 		if (check_input_bonus(n, tmp))
