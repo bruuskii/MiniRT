@@ -1,6 +1,7 @@
 A 1 255,255,255
 
-C 0,0,100 0,0,1 70
+C 0,0,-100 0,0,1 70
 L 0,0,100 .7 255,255,255
-
-sp 0,0,-50 75 T earth.xpm
+pl 0,-50,0 0,1,0 T textures/sky.xpm
+pl 0,50,0 0,0,1 T textures/sky.xpm
+sp 0,0,0 75 T textures/earth.xpm
